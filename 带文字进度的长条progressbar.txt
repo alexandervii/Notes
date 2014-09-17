@@ -1,0 +1,126 @@
+一、在开发中我们经常要用到进度条显示下载或者加载的进度。系统自带的黄色进度条在UI效果上经常不能满足策划或者美工的要求。这就要我们屌丝程序员自己自定义进度条。
+话不多说，先上图。
+
+        实现步骤一：先定义进度条的风格样式
+                              
+[html] view plaincopy
+<!-- 自定义进度条 -->  
+   <style name="ProgressBar_Mini" parent="@android:style/Widget.ProgressBar.Horizontal">  
+       <item name="android:maxHeight">50dip</item>  
+       <item name="android:minHeight">8dip</item>  
+       <item name="android:indeterminateOnly">false</item>  
+       <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>  
+       <item name="android:progressDrawable">@drawable/progressbar_mini</item>  
+   </style>  
+
+       实现步骤二：定义样式style中用到的@drawable/progressbar_mini资源文件。可以再xml中绘制进度条的不同样式（圆角，直角……）和颜色。
+            
+[html] view plaincopy
+<?xml version="1.0" encoding="utf-8"?>  
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >  
+    <item android:id="@android:id/background">    
+         <shape >    
+                <corners android:radius="5dip" />    
+                <gradient    
+                    android:angle="270"    
+                    android:centerY="0.75"    
+                    android:endColor="#F5F5F5"    
+                    android:startColor="#BEBEBE" />    
+            </shape>    
+    </item>    
+    
+    <item android:id="@android:id/secondaryProgress">    
+    
+        <clip >    
+            <shape >    
+                <corners android:radius="0dip" />    
+                <gradient    
+                    android:angle="270"    
+                    android:centerY="0.75"    
+                   android:endColor="#165CBC"    
+                    android:startColor="#85B0E9" />    
+            </shape>    
+        </clip>    
+    </item>    
+    
+    <item android:id="@android:id/progress">    
+    
+        <clip >    
+            <shape >    
+                <corners android:radius="5dip" />    
+                <gradient    
+                    android:angle="270"    
+                    android:centerY="0.75"    
+                   android:endColor="#165CBC"    
+                    android:startColor="#85B0E9" />    
+            </shape>    
+              
+        </clip>    
+    </item>    
+</layer-list>  
+
+          实现步骤三：写java文件，定义进度条上显示的文字。
+[java] view plaincopy
+public class MyProgressBar extends ProgressBar {  
+    private String text_progress;  
+    private Paint mPaint;//画笔  
+  
+    public MyProgressBar(Context context) {  
+        super(context);  
+        initPaint();  
+    }  
+    public MyProgressBar(Context context, AttributeSet attrs) {  
+        super(context, attrs);  
+        initPaint();  
+    }  
+    public MyProgressBar(Context context, AttributeSet attrs, int defStyle) {  
+        super(context, attrs, defStyle);  
+        initPaint();  
+    }  
+      
+    @Override  
+    public synchronized void setProgress(int progress) {  
+        super.setProgress(progress);  
+        setTextProgress(progress);  
+    }  
+    @Override  
+    protected synchronized void onDraw(Canvas canvas) {  
+        // TODO Auto-generated method stub  
+        super.onDraw(canvas);  
+        Rect rect=new Rect();  
+        this.mPaint.getTextBounds(this.text_progress, 0, this.text_progress.length(), rect);  
+        int x = (getWidth() / 2) - rect.centerX();  
+        int y = (getHeight() / 2) - rect.centerY();  
+        canvas.drawText(this.text_progress, x, y, this.mPaint);  
+    }  
+    /** 
+     *  
+     *description: 初始化画笔 
+     *Create by lll on 2013-8-13 下午1:41:49 
+     */  
+    private void initPaint(){  
+        this.mPaint=new Paint();  
+        this.mPaint.setAntiAlias(true);  
+        this.mPaint.setColor(Color.WHITE);  
+    }  
+    private void setTextProgress(int progress){   
+        int i = (int) ((progress * 1.0f / this.getMax()) * 100);  
+        this.text_progress = String.valueOf(i) + "%";  
+    }  
+  
+  
+  
+}  
+
+       最后一步：xml文件中引用自定义的进度条：
+     
+[html] view plaincopy
+<com.example.widgetshop.MyProgressBar  
+       android:id="@+id/progressBar1"  
+       style="@style/ProgressBar_Mini"  
+       android:layout_width="match_parent"  
+       android:layout_height="wrap_content"  
+       android:progress="100"  
+       android:layout_marginTop="24dp" />  
+
+OK,一个简单的更改背景和样式其带文字显示的进度条就完成。

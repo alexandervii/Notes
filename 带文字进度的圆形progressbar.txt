@@ -1,0 +1,318 @@
+很多的时候，系统自带的View满足不了我们功能的需求，那么我们就需要自己来自定义一个能满足我们需求的View,自定义View我们需要先继承View，添加类的构造方法，重写父类View的一些方法，例如onDraw，为了我们自定义的View在一个项目中能够重用，有时候我们需要自定义其属性，举个很简单的例子，我在项目中的多个界面使用我自定义的View，每个界面该自定义View的颜色都不相同，这时候如果没有自定义属性，那我们是不是需要构建不同颜色的View出来呢，这样子我们的代码就会显得很沉厄，所以这时候我们就需要自定义其属性来满足我们不同的需求，自定义属性呢，我们需要在values下建立attrs.xml文件，在其中定义我们需要定义的属性，然后在自定义View中也要做相对应的修改，我们还是用一个小例子来看看自定义View和自定义属性的使用
+
+今天带大家来自己定义一个带进度的圆形进度条，我们还是先看一下效果吧
+
+从上面可以看出，我们可以自定义圆环的颜色，圆环进度的颜色，是否显示进度的百分比，进度百分比的颜色，以及进度是实心还是空心等等，这样子是不是很多元化很方便呢？接下来我们就来教大家怎么来定义
+
+1.在values下面新建一个attrs.xml，现在里面定义我们的属性，不同的属性对应不同的format，属性对应的format可以参考http://blog.csdn.net/pgalxx/article/details/6766677，介绍的还是比较详细，接下来我贴上我在自定义这个进度条所用到的属性
+[html] view plaincopy在CODE上查看代码片派生到我的代码片
+<?xml version="1.0" encoding="UTF-8"?>  
+<resources>  
+    <declare-styleable name="RoundProgressBar">    
+        <attr name="roundColor" format="color"/>  
+        <attr name="roundProgressColor" format="color"/>  
+        <attr name="roundWidth" format="dimension"></attr>  
+        <attr name="textColor" format="color" />    
+        <attr name="textSize" format="dimension" />   
+        <attr name="max" format="integer"></attr>   
+        <attr name="textIsDisplayable" format="boolean"></attr>  
+        <attr name="style">  
+            <enum name="STROKE" value="0"></enum>  
+            <enum name="FILL" value="1"></enum>  
+        </attr>  
+    </declare-styleable>   
+</resources>  
+
+2.自定义View的属性我们算是定义好了，接下来就是怎么获取属性和代码的编写了，我们需要在构造方法中获取我们自己定义的相关属性，我们先调用context.obtainStyledAttributes(attrs,R.styleable.RoundProgressBar)来获取TypedArray，然后从TypedArray获取我们定义的属性，例如
+[java] view plaincopy在CODE上查看代码片派生到我的代码片
+roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.RED);  
+        roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.GREEN);  
+        textColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textColor, Color.GREEN);  
+        textSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 15);  
+        roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);  
+        max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);  
+        textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);  
+        style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);  
+上面的代码中，如roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.RED); getColor方法的第一个参数是我们在XML文件中定义的颜色，如果我们没有给我们自定义的View定义颜色，他就会使用第二个参数中的默认值，即Color.RED
+
+3.为了方便大家理解，我将自定义View的全部代码贴出来，里面的代码我也有详细的注释
+[java] view plaincopy在CODE上查看代码片派生到我的代码片
+package com.example.roundprogressbar;  
+  
+import android.content.Context;  
+import android.content.res.TypedArray;  
+import android.graphics.Canvas;  
+import android.graphics.Color;  
+import android.graphics.Paint;  
+import android.graphics.RectF;  
+import android.graphics.Typeface;  
+import android.util.AttributeSet;  
+import android.util.Log;  
+import android.view.View;  
+  
+import com.example.circlepregress.R;  
+  
+/** 
+ * 仿iphone带进度的进度条，线程安全的View，可直接在线程中更新进度 
+ * @author xiaanming 
+ * 
+ */  
+public class RoundProgressBar extends View {  
+    /** 
+     * 画笔对象的引用 
+     */  
+    private Paint paint;  
+      
+    /** 
+     * 圆环的颜色 
+     */  
+    private int roundColor;  
+      
+    /** 
+     * 圆环进度的颜色 
+     */  
+    private int roundProgressColor;  
+      
+    /** 
+     * 中间进度百分比的字符串的颜色 
+     */  
+    private int textColor;  
+      
+    /** 
+     * 中间进度百分比的字符串的字体 
+     */  
+    private float textSize;  
+      
+    /** 
+     * 圆环的宽度 
+     */  
+    private float roundWidth;  
+      
+    /** 
+     * 最大进度 
+     */  
+    private int max;  
+      
+    /** 
+     * 当前进度 
+     */  
+    private int progress;  
+    /** 
+     * 是否显示中间的进度 
+     */  
+    private boolean textIsDisplayable;  
+      
+    /** 
+     * 进度的风格，实心或者空心 
+     */  
+    private int style;  
+      
+    public static final int STROKE = 0;  
+    public static final int FILL = 1;  
+      
+    public RoundProgressBar(Context context) {  
+        this(context, null);  
+    }  
+  
+    public RoundProgressBar(Context context, AttributeSet attrs) {  
+        this(context, attrs, 0);  
+    }  
+      
+    public RoundProgressBar(Context context, AttributeSet attrs, int defStyle) {  
+        super(context, attrs, defStyle);  
+          
+        paint = new Paint();  
+  
+          
+        TypedArray mTypedArray = context.obtainStyledAttributes(attrs,  
+                R.styleable.RoundProgressBar);  
+          
+        //获取自定义属性和默认值  
+        roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.RED);  
+        roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.GREEN);  
+        textColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textColor, Color.GREEN);  
+        textSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 15);  
+        roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth, 5);  
+        max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);  
+        textIsDisplayable = mTypedArray.getBoolean(R.styleable.RoundProgressBar_textIsDisplayable, true);  
+        style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);  
+          
+        mTypedArray.recycle();  
+    }  
+      
+  
+    @Override  
+    protected void onDraw(Canvas canvas) {  
+        super.onDraw(canvas);  
+          
+        /** 
+         * 画最外层的大圆环 
+         */  
+        int centre = getWidth()/2; //获取圆心的x坐标  
+        int radius = (int) (centre - roundWidth/2); //圆环的半径  
+        paint.setColor(roundColor); //设置圆环的颜色  
+        paint.setStyle(Paint.Style.STROKE); //设置空心  
+        paint.setStrokeWidth(roundWidth); //设置圆环的宽度  
+        paint.setAntiAlias(true);  //消除锯齿   
+        canvas.drawCircle(centre, centre, radius, paint); //画出圆环  
+          
+        Log.e("log", centre + "");  
+          
+        /** 
+         * 画进度百分比 
+         */  
+        paint.setStrokeWidth(0);   
+        paint.setColor(textColor);  
+        paint.setTextSize(textSize);  
+        paint.setTypeface(Typeface.DEFAULT_BOLD); //设置字体  
+        int percent = (int)(((float)progress / (float)max) * 100);  //中间的进度百分比，先转换成float在进行除法运算，不然都为0  
+        float textWidth = paint.measureText(percent + "%");   //测量字体宽度，我们需要根据字体的宽度设置在圆环中间  
+          
+        if(textIsDisplayable && percent != 0 && style == STROKE){  
+            canvas.drawText(percent + "%", centre - textWidth / 2, centre + textSize/2, paint); //画出进度百分比  
+        }  
+          
+          
+        /** 
+         * 画圆弧 ，画圆环的进度 
+         */  
+          
+        //设置进度是实心还是空心  
+        paint.setStrokeWidth(roundWidth); //设置圆环的宽度  
+        paint.setColor(roundProgressColor);  //设置进度的颜色  
+        RectF oval = new RectF(centre - radius, centre - radius, centre  
+                + radius, centre + radius);  //用于定义的圆弧的形状和大小的界限  
+          
+        switch (style) {  
+        case STROKE:{  
+            paint.setStyle(Paint.Style.STROKE);  
+            canvas.drawArc(oval, 0, 360 * progress / max, false, paint);  //根据进度画圆弧  
+            break;  
+        }  
+        case FILL:{  
+            paint.setStyle(Paint.Style.FILL_AND_STROKE);  
+            if(progress !=0)  
+                canvas.drawArc(oval, 0, 360 * progress / max, true, paint);  //根据进度画圆弧  
+            break;  
+        }  
+        }  
+          
+    }  
+      
+      
+    public synchronized int getMax() {  
+        return max;  
+    }  
+  
+    /** 
+     * 设置进度的最大值 
+     * @param max 
+     */  
+    public synchronized void setMax(int max) {  
+        if(max < 0){  
+            throw new IllegalArgumentException("max not less than 0");  
+        }  
+        this.max = max;  
+    }  
+  
+    /** 
+     * 获取进度.需要同步 
+     * @return 
+     */  
+    public synchronized int getProgress() {  
+        return progress;  
+    }  
+  
+    /** 
+     * 设置进度，此为线程安全控件，由于考虑多线的问题，需要同步 
+     * 刷新界面调用postInvalidate()能在非UI线程刷新 
+     * @param progress 
+     */  
+    public synchronized void setProgress(int progress) {  
+        if(progress < 0){  
+            throw new IllegalArgumentException("progress not less than 0");  
+        }  
+        if(progress > max){  
+            progress = max;  
+        }  
+        if(progress <= max){  
+            this.progress = progress;  
+            postInvalidate();  
+        }  
+          
+    }  
+      
+      
+    public int getCricleColor() {  
+        return roundColor;  
+    }  
+  
+    public void setCricleColor(int cricleColor) {  
+        this.roundColor = cricleColor;  
+    }  
+  
+    public int getCricleProgressColor() {  
+        return roundProgressColor;  
+    }  
+  
+    public void setCricleProgressColor(int cricleProgressColor) {  
+        this.roundProgressColor = cricleProgressColor;  
+    }  
+  
+    public int getTextColor() {  
+        return textColor;  
+    }  
+  
+    public void setTextColor(int textColor) {  
+        this.textColor = textColor;  
+    }  
+  
+    public float getTextSize() {  
+        return textSize;  
+    }  
+  
+    public void setTextSize(float textSize) {  
+        this.textSize = textSize;  
+    }  
+  
+    public float getRoundWidth() {  
+        return roundWidth;  
+    }  
+  
+    public void setRoundWidth(float roundWidth) {  
+        this.roundWidth = roundWidth;  
+    }  
+  
+  
+  
+}  
+
+4.通过上面几步我们就实现了自定义View,和自定义View的属性，当然使用过程中还是有一点变化，我们必须在界面布局的最顶层加上
+ xmlns:android_custom="http://schemas.android.com/apk/res/com.example.circlepregress"这个即命名空间，
+红色部分是自定义属性的前缀，什么意思呢？对于android系统控件我们定义其控件属性是用android:XXX="XXXXXXX",而我们自己定义的就用android_custom:XXX = "XXXXXX"
+绿色部分则是我们的包的名字
+通过上面这两步我们就能自己定义属性了,我贴出自定义View在XML中使用情况
+[java] view plaincopy在CODE上查看代码片派生到我的代码片
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    
+    xmlns:android_custom="http://schemas.android.com/apk/res/com.example.circlepregress"  
+    xmlns:tools="http://schemas.android.com/tools"    
+    android:layout_width="match_parent"    
+    android:layout_height="match_parent" >    
+    
+    
+    <com.example.roundprogressbar.RoundProgressBar    
+        android:id="@+id/roundProgressBar2"    
+        android:layout_width="80dip"    
+        android:layout_height="80dip"    
+        android:layout_alignLeft="@+id/roundProgressBar1"    
+        android:layout_alignParentBottom="true"    
+        android:layout_marginBottom="78dp"    
+            
+            
+        android_custom:roundColor="#D1D1D1"    
+        android_custom:roundProgressColor="@android:color/black"    
+        android_custom:textColor="#9A32CD"    
+        android_custom:textIsDisplayable="false"    
+        android_custom:roundWidth="10dip"    
+        android_custom:textSize="18sp"/>    
+</RelativeLayout>   

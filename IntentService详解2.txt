@@ -1,0 +1,117 @@
+在Android开发中，我们或许会碰到这么一种业务需求，一项任务分成几个子任务，子任务按顺序先后执行，子任务全部执行完后，这项任务才算成功。那么，利用几个子线程顺序执行是可以达到这个目的的，但是每个线程必须去手动控制，而且得在一个子线程执行完后，再开启另一个子线程。或者，全部放到一个线程中让其顺序执行。这样都可以做到，但是，如果这是一个后台任务，就得放到Service里面，由于Service和Activity是同级的，所以，要执行耗时任务，就得在Service里面开子线程来执行。那么，有没有一种简单的方法来处理这个过程呢，答案就是IntentService。
+
+什么是IntentService，首先看看官方的解释：
+IntentService is a base class forServices that handle asynchronous requests (expressed asIntents) on demand. Clients send requests throughstartService(Intent) calls; the service is started as needed, handles each Intent in turn using a worker thread, and stops itself when it runs out of work
+
+简单说，IntentService是继承于Service并处理异步请求的一个类，在IntentService内有一个工作线程来处理耗时操作，启动IntentService的方式和启动传统Service一样，同时，当任务执行完后，IntentService会自动停止，而不需要我们去手动控制。另外，可以启动IntentService多次，而每一个耗时操作会以工作队列的方式在IntentService的onHandleIntent回调方法中执行，并且，每次只会执行一个工作线程，执行完第一个再执行第二个，以此类推。
+还有一个说明是：
+All requests are handled on a single worker thread -- they may take as long as necessary (and will not block the application's main loop), but only one request will be processed at a time.
+大致意思是：所有请求都在一个单线程中，不会阻塞应用程序的主线程（UI Thread），同一时间只处理一个请求。
+那么，用IntentService有什么好处呢？首先，我们省去了在Service中手动开线程的麻烦，第二，当操作完成时，我们不用手动停止Service，第三，it's so easy to use！
+
+
+ok，接下来让我们来看看如何使用，我写了一个Demo来模拟两个耗时操作，Operation1与Operation2，先执行1，2必须等1执行完才能执行：
+新建工程，新建一个继承IntentService的类，我这里是IntentServiceDemo.java
+[java] view plaincopy
+public class IntentServiceDemo extends IntentService {  
+  
+    public IntentServiceDemo() {  
+        //必须实现父类的构造方法  
+        super("IntentServiceDemo");  
+    }  
+      
+    @Override  
+    public IBinder onBind(Intent intent) {  
+        System.out.println("onBind");  
+        return super.onBind(intent);  
+    }  
+  
+  
+    @Override  
+    public void onCreate() {  
+        System.out.println("onCreate");  
+        super.onCreate();  
+    }  
+  
+    @Override  
+    public void onStart(Intent intent, int startId) {  
+        System.out.println("onStart");  
+        super.onStart(intent, startId);  
+    }  
+  
+  
+    @Override  
+    public int onStartCommand(Intent intent, int flags, int startId) {  
+        System.out.println("onStartCommand");  
+        return super.onStartCommand(intent, flags, startId);  
+    }  
+  
+  
+    @Override  
+    public void setIntentRedelivery(boolean enabled) {  
+        super.setIntentRedelivery(enabled);  
+        System.out.println("setIntentRedelivery");  
+    }  
+  
+    @Override  
+    protected void onHandleIntent(Intent intent) {  
+        //Intent是从Activity发过来的，携带识别参数，根据参数不同执行不同的任务  
+        String action = intent.getExtras().getString("param");  
+        if (action.equals("oper1")) {  
+            System.out.println("Operation1");  
+        }else if (action.equals("oper2")) {  
+            System.out.println("Operation2");  
+        }  
+          
+        try {  
+            Thread.sleep(2000);  
+        } catch (InterruptedException e) {  
+            e.printStackTrace();  
+        }  
+    }  
+  
+    @Override  
+    public void onDestroy() {  
+        System.out.println("onDestroy");  
+        super.onDestroy();  
+    }  
+  
+}  
+
+我把生命周期方法全打印出来了，待会我们来看看它执行的过程是怎样的。接下来是Activity，在Activity中来启动IntentService：
+[java] view plaincopy
+public class TestActivity extends Activity {  
+    /** Called when the activity is first created. */  
+    @Override  
+    public void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.main);  
+          
+        //可以启动多次，每启动一次，就会新建一个work thread，但IntentService的实例始终只有一个  
+        //Operation 1  
+        Intent startServiceIntent = new Intent("com.test.intentservice");  
+        Bundle bundle = new Bundle();  
+        bundle.putString("param", "oper1");  
+        startServiceIntent.putExtras(bundle);  
+        startService(startServiceIntent);  
+          
+        //Operation 2  
+        Intent startServiceIntent2 = new Intent("com.test.intentservice");  
+        Bundle bundle2 = new Bundle();  
+        bundle2.putString("param", "oper2");  
+        startServiceIntent2.putExtras(bundle2);  
+        startService(startServiceIntent2);  
+    }  
+}  
+
+最后，别忘了配置Service，因为它继承于Service，所以，它还是一个Service，一定要配置，否则是不起作用的，开始我就是忘了，结果半天没反应。
+[html] view plaincopy
+<service android:name=".IntentServiceDemo">  
+            <intent-filter >  
+                <action android:name="com.test.intentservice"/>  
+            </intent-filter>  
+        </service>  
+
+ok,最后来看看执行结果：
+
+从结果可以看到，onCreate方法只执行了一次，而onStartCommand和onStart方法执行了两次，开启了两个Work Thread，这就证实了之前所说的，启动多次，但IntentService的实例只有一个，这跟传统的Service是一样的。Operation1也是先于Operation2打印，并且我让两个操作间停顿了2s，最后是onDestroy销毁了IntentService。

@@ -1,0 +1,337 @@
+Dialog是android开发过程中最常用到的组件之一，它包括以下几种类型：
+
+警告对话框：Alertialog
+进度对话框：ProgressDialog
+日期选择对话框：DatePickerDialog
+时间选择对话框：TimePickerDialog
+自定义对话框：从Dialog继承
+Dialog的创建方式有两种：
+
+一是直接new一个Dialog对象，然后调用Dialog对象的show和dismiss方法来控制对话框的显示和隐藏。
+
+二是在Activity的onCreateDialog(int id)方法中创建Dialog对象并返回，然后调用Activty的showDialog(int id)和dismissDialog(int id)来显示和隐藏对话框。
+
+区别在于通过第二种方式创建的对话框会继承Activity的属性，比如获得Activity的menu事件等。
+
+使用AlertDialog可以创建普通对话框、带列表的对话框以及带单选按钮和多选按钮的对话框。
+
+普通对话框
+
+效果如下：
+
+
+
+代码：
+
+复制代码
+　　　　　　　　　 //创建builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(DialogSampleActivity.this);
+                builder.setTitle("普通对话框")    //标题
+                    .setIcon(R.drawable.ic_launcher)    //icon
+                    .setCancelable(false)    //不响应back按钮
+                    .setMessage("这是一个普通对话框")    //对话框显示内容
+                    //设置按钮
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(DialogSampleActivity.this, "点击了确定按钮", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNeutralButton("中立", new DialogInterface.OnClickListener() {                        
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(DialogSampleActivity.this, "点击了中立按钮", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {                    
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(DialogSampleActivity.this, "点击了取消按钮", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                //创建Dialog对象
+                AlertDialog dlg = builder.create();
+                return dlg;
+复制代码
+带列表的对话框
+效果图：
+
+
+
+代码：
+
+复制代码
+　　　　　　　final CharSequence[] items = { "Item1", "Item2", "Item3" };
+            // 创建builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(
+                    DialogSampleActivity.this);
+            builder.setTitle("列表对话框") // 标题
+                    .setIcon(R.drawable.ic_launcher) // icon
+                    .setCancelable(false) // 不响应back按钮
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(DialogSampleActivity.this,
+                                    "选择了" + items[which], Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+            // 创建Dialog对象
+            AlertDialog dlg = builder.create();
+            return dlg;
+复制代码
+带单选按钮的列表对话框
+只需将setItems替换为：
+
+复制代码
+.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(DialogSampleActivity.this,
+                                    "选择了" + items[which], Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+复制代码
+这里多了一个参数-1，代表默认选中第几项，-1表示默认不选中
+带复选框的列表对话框
+
+只需将setItems替换为：
+
+复制代码
+.setMultiChoiceItems(items, checked, new DialogInterface.OnMultiChoiceClickListener() {        
+                        @Override
+                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                            Toast.makeText(DialogSampleActivity.this,
+                                    "选择了" + items[which], Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+复制代码
+参数checked伟boolean数组，表示默认哪些复选框是被选中的。
+
+另外，如果你想要获取list中哪些项是被选中的，你需要：
+
+//获得ListView
+ListView list = dlg.getListView();
+//判断第i项是否被选中，为真表示被选中，为假表示没有选中
+list.getCheckedItemPositions().get(i)
+日期选择对话框
+
+效果图：
+
+
+
+代码：
+
+复制代码
+　　　　　　　Calendar calendar = Calendar.getInstance();
+            DatePickerDialog.OnDateSetListener dateListener =   
+                new DatePickerDialog.OnDateSetListener() {  
+                    @Override  
+                    public void onDateSet(DatePicker datePicker,   
+                            int year, int month, int dayOfMonth) {  
+                        Toast.makeText(DialogSampleActivity.this,
+                                year + "年" + (month+1) + "月" + dayOfMonth + "日", Toast.LENGTH_SHORT)
+                                .show();  
+                    }
+                };  
+            DatePickerDialog dlg = new DatePickerDialog(
+                    DialogSampleActivity.this,
+                    dateListener,
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH));
+            return dlg;
+复制代码
+时间选择对话框
+效果图：
+
+
+
+代码：
+
+复制代码
+　　　　　　　Calendar calendar = Calendar.getInstance();
+            TimePickerDialog.OnTimeSetListener timeListener =   
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                        Toast.makeText(DialogSampleActivity.this,
+                                hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();  
+                    }  
+                   
+                };  
+            TimePickerDialog dlg = new TimePickerDialog(
+                    DialogSampleActivity.this,
+                    timeListener,
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    true);
+            return dlg;
+复制代码
+自定义对话框
+效果图：
+
+
+
+步骤：
+
+1、创建对话框的布局文件
+
+复制代码
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content">
+      <!-- 标题栏 -->
+      <LinearLayout
+          android:id="@+id/dlg_priority_titlebar"
+          android:orientation="horizontal"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true">
+          <ImageView
+            android:src="@drawable/star_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择任务优先级"
+            android:layout_gravity="center_vertical"/>
+      </LinearLayout>
+      <!-- 任务优先级 -->
+      <ListView
+          android:id="@+id/dlg_priority_lvw"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/dlg_priority_titlebar"
+          android:background="@drawable/layout_home_bg">
+      </ListView>     
+</RelativeLayout>
+复制代码
+2、因为该布局中使用了自定义的ListView，所以再为ListView创建布局文件
+
+复制代码
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <ImageView
+          android:id="@+id/list_priority_img"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          android:layout_margin="5dip"        
+          />
+    <TextView
+         android:id="@+id/list_priority_value"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+         android:textSize="28dip"
+         android:textColor="@drawable/black"/>
+</LinearLayout>
+复制代码
+3、创建自定义Dialog类PriorityDlg继承自Dialog
+
+复制代码
+public class PriorityDlg extends Dialog {
+    
+    private Context context;
+    private ListView dlg_priority_lvw = null;
+
+    public PriorityDlg(Context context) {
+        super(context);
+        this.context = context;
+        // TODO Auto-generated constructor stub
+    }
+    
+    public PriorityDlg(Context context, int theme) {
+        super(context, theme);
+        this.context = context;
+    }
+    
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
+   　　　//设置对话框使用的布局文件
+        this.setContentView(R.layout.dlg_priority);
+
+        dlg_priority_lvw = (ListView) findViewById(R.id.dlg_priority_lvw);
+
+        // 设置ListView的数据源
+        SimpleAdapter adapter = new SimpleAdapter(context, getPriorityList(),
+                R.layout.lvw_priority, new String[] { "list_priority_img",
+                        "list_priority_value" }, new int[] {
+                        R.id.list_priority_img, R.id.list_priority_value });
+        dlg_priority_lvw.setAdapter(adapter);
+
+        // 为ListView设置监听器
+        dlg_priority_lvw
+                .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> arg0, View arg1,
+                            int arg2, long arg3) {
+
+                    }
+                });
+    }
+
+    /**
+     * 得到ListView数据源
+     * 
+     * @return
+     */
+    private List<HashMap<String, Object>> getPriorityList() {
+        List<HashMap<String, Object>> priorityList = new ArrayList<HashMap<String, Object>>();
+        HashMap<String, Object> map1 = new HashMap<String, Object>();
+        map1.put("list_priority_img", R.drawable.priority_not_important);
+        map1.put("list_priority_value", context.getResources().getString(
+                R.string.dlg_priority_not_important));
+        priorityList.add(map1);
+        HashMap<String, Object> map2 = new HashMap<String, Object>();
+        map2.put("list_priority_img", R.drawable.priority_general);
+        map2.put("list_priority_value", context.getResources().getString(
+                R.string.dlg_priority_general));
+        priorityList.add(map2);
+        HashMap<String, Object> map3 = new HashMap<String, Object>();
+        map3.put("list_priority_img", R.drawable.priority_important);
+        map3.put("list_priority_value", context.getResources().getString(
+                R.string.dlg_priority_important));
+        priorityList.add(map3);
+        HashMap<String, Object> map4 = new HashMap<String, Object>();
+        map4.put("list_priority_img", R.drawable.priority_very_important);
+        map4.put("list_priority_value", context.getResources().getString(
+                R.string.dlg_priority_very_important));
+        priorityList.add(map4);
+
+        return priorityList;
+    }
+
+}
+复制代码
+4、创建自定义对话框
+
+PriorityDlg dlg = new PriorityDlg(SimpleTaskActivity.this, R.style.dlg_priority);
+return dlg;
+这里的R.style.dlg_priority设置了对话框使用的样式文件，只是让对话框去掉标题栏，当然你也可以通过代码来完成这种效果：
+
+复制代码
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 对话框样式 -->
+    <style name="dlg_priority" parent="@android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>
+复制代码

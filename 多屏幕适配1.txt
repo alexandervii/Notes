@@ -1,0 +1,137 @@
+----res里面的drawable(ldpi、mdpi、hdpi、xhdpi、xxhdpi)
+分类： Android 2014-03-04 15:24 1599人阅读 评论(0) 收藏 举报
+http://xiaomi4980.blog.163.com/blog/static/215945196201391411840729/
+
+ 
+
+ 
+
+(1)drawable-hdpi里面存放高分辨率的图片,如WVGA (480x800),FWVGA (480x854)
+　　(2)drawable-mdpi里面存放中等分辨率的图片,如HVGA (320x480)
+　　(3)drawable-ldpi里面存放低分辨率的图片,如QVGA (240x320)
+
+ldpi：240x320
+
+mdpi：320x480
+hdpi：480x800、480x854
+xhdpi：至少960*720
+xxhdpi：1280×720
+
+
+android 自适应 多屏幕支持
+1、屏幕相关概念 
+1.1分辨率 
+是指屏幕上有横竖各有多少个像素 
+1.2屏幕尺寸 
+指的是手机实际的物理尺寸，比如常用的2.8英寸，3.2英寸，3.5英寸，3.7英寸 
+android将屏幕大小分为四个级别（small，normal，large，and extra large）。 
+1.3屏幕密度 
+每英寸像素数 
+手机可以有相同的分辨率，但屏幕尺寸可以不相同， 
+Diagonal pixel表示对角线的像素值（=），DPI=933/3.7=252 
+android将实际的屏幕密度分为四个通用尺寸（low，medium，high，and extra high） 
+一般情况下的普通屏幕：ldpi是120dpi，mdpi是160dpi，hdpi是240dpi，xhdpi是320dpi 
+对于屏幕来说，dpi越大，屏幕的精细度越高，屏幕看起来就越清楚 
+1.4密度无关的像素（Density-independent pixel——dip） 
+dip是一种虚拟的像素单位 
+dip和具体像素值的对应公式是dip/pixel=dpi值/160,也就是px = dp * (dpi / 160) 
+当你定义应用的布局的UI时应该使用dp单位，确保UI在不同的屏幕上正确显示。 
+
+手机屏幕分类和像素密度的对应关系如表1所示 
+
+手机尺寸分布情况（http://developer.android.com/resources/dashboard/screens.html）如图所示， 
+
+目前主要是以分辨率为800*480和854*480的手机用户居多 
+从以上的屏幕尺寸分布情况上看，其实手机只要考虑3-4.5寸之间密度为1和1.5的手机 
+
+2、android多屏幕支持机制 
+Android的支持多屏幕机制即用为当前设备屏幕提供一种合适的方式来共同管理并解析应用资源。 
+Android平台中支持一系列你所提供的指定大小（size-specific）,指定密度（density-specific）的合适资源。 
+指定大小（size-specific）的合适资源是指small, normal, large, and xlarge。 
+指定密度（density-specific）的合适资源，是指ldpi (low), mdpi (medium), hdpi (high), and xhdpi (extra high). 
+Android有个自动匹配机制去选择对应的布局和图片资源 
+1）界面布局方面 
+根据物理尺寸的大小准备5套布局: 
+layout(放一些通用布局xml文件，比如界面顶部和底部的布局，不会随着屏幕大小变化，类似windos窗口的title bar), 
+layout-small(屏幕尺寸小于3英寸左右的布局）， 
+layout-normal(屏幕尺寸小于4.5英寸左右）， 
+layout-large(4英寸-7英寸之间）， 
+layout-xlarge(7-10英寸之间） 
+2）图片资源方面 
+需要根据dpi值准备5套图片资源: 
+drawable：主要放置xml配置文件或者对分辨率要求较低的图片 
+drawalbe-ldpi:低分辨率的图片,如QVGA (240x320) 
+drawable-mdpi:中等分辨率的图片,如HVGA (320x480) 
+drawable-hdpi:高分辨率的图片,如WVGA (480x800),FWVGA (480x854) 
+drawable-xhdpi：至少960dp x 720dp 
+Android有个自动匹配机制去选择对应的布局和图片资源。 
+　　系统会根据机器的分辨率来分别到这几个文件夹里面去找对应的图片。 
+　　在开发程序时为了兼容不同平台不同屏幕，建议各自文件夹根据需求均存放不同版本图片。 
+
+3、AndroidManifest.xml 配置 
+android从1.6和更高，Google为了方便开发者对于各种分辨率机型的移植而增加了自动适配的功能 
+<supports-screens 
+android:largeScreens="true" 
+android:normalScreens="true" 
+android:smallScreens="true" 
+android:anyDensity="true"/> 
+3.1是否支持多种不同密度的屏幕 
+android:anyDensity=["true" | "false"] 
+如果android:anyDensity="true" 
+指应用程序支持不同密度，会根据屏幕的分辨率自动去匹配。 
+如果android:anyDensity="false" 
+应用程序支持不同密度，系统自动缩放图片尺寸和这个图片的坐标。具体解释一下系统是如何自动缩放资源的。 
+例如我们在hdpi,mdpi,ldpi文件夹下拥有同一种资源，那么应用也不会自动地去相应文件夹下寻找资源，这种情况都是出现在高密度，以及低密度的手机上，比如说一部240×320像素的手机， 
+如果设置android:anyDensity="false"，Android系统会将240 x 320(低密度)转换为 320×480(中密度)，这样的话，应用就会在小密度手机上加载mdpi文件中的资源。 
+3.2是否支持大屏幕 
+android:largeScreens=["true" | "false"] 
+如果在声明不支持的大屏幕，而这个屏幕尺寸是larger的话，系统使用尺寸为("normal")和密度为("medium)显示， 
+不过会出现一层黑色的背景。 
+3.3是否支持小屏幕 
+android:smallScreens=["true" | "false"] 
+如果在声明不支持的小屏幕，而当前屏幕尺寸是smaller的话，系统也使用尺寸为("normal")和密度为("medium)显示 
+如果应用程序能在小屏幕上正确缩放(最低是small尺寸或最小宽度320dp)，那就不需要用到本属性。否则，就应该为最小屏幕宽度标识符设置本属性 
+来匹配应用程序所需的最小尺寸。 
+
+
+4、Android提供3种方式处理屏幕自适应 
+4.1预缩放的资源(基于尺寸和密度去寻找图片) 
+1）如果找到相应的尺寸和密度，则利用这些图片进行无缩放显示。 
+2）如果没法找到相应的尺寸，而找到密度，则认为该图片尺寸为 "medium"，利用缩放显示这个图片。 
+3）如果都无法匹配，则使用默认图片进行缩放显示。默认图片默认标配 "medium" (160)。 
+4.2自动缩放的像素尺寸和坐标(密度兼容) 
+1）如果应用程序不支持不同密度android:anyDensity="false",系统自动缩放图片尺寸和这个图片的坐标。 
+2）对于预缩放的资源，当android:anyDensity="false"，也不生效。 
+3）android:anyDensity="false"，只对密度兼容起作用，尺寸兼容没效果 
+4.3兼容更大的屏幕和尺寸(尺寸兼容) 
+1）对于你在声明不支持的大屏幕，而这个屏幕尺寸是normal的话，系统使用尺寸为 ("normal")和密度为("medium)显示。 
+2.）对于你在声明不支持的大屏幕，而这个屏幕尺寸是larger的话，系统同样使用尺寸为("normal")和密度为("medium)显示， 
+不过会出现一层黑色的背景。 
+
+5、Android系统自动适配技巧 
+Android系统采用下面两种方法来实现应用的自动适配： 
+1）布局文件中定义长度的时候，最好使用wrap_content,fill_parent, 或者dp 进行描述，这样可以保证在屏幕上面展示的时候有合适的大小 
+2）为不同屏幕密度的手机，提供不同的位图资源，可以使得界面清晰无缩放。 
+对应bitmap 资源来说，自动的缩放有时会造成放大缩小后的图像变得模糊不清，这是就需要应用为不同屏幕密度配置提供不同的资源：为高密度的屏幕提供高清晰度的图像等。 
+3）不要使用AbsoluteLayout 
+4）像素单位都使用DIP，文本单位使用SP 
+
+6、在代码中获取屏幕像素、屏幕密度 
+DisplayMetrics metric = new DisplayMetrics(); 
+getWindowManager().getDefaultDisplay().getMetrics(metric); 
+int width = metric.widthPixels; // 屏幕宽度（像素） 
+int height = metric.heightPixels; // 屏幕高度（像素） 
+float density = metric.density; // 屏幕密度（0.75 / 1.0 / 1.5） 
+int densityDpi = metric.densityDpi; // 屏幕密度DPI（120 / 160 / 240） 
+
+7、 一般多分辨率处理方法及其缺点 
+7.1 图片缩放 
+基于当前屏幕的精度，平台自动加载任何未经缩放的限定尺寸和精度的图片。如果图片不匹配，平台会加载默认资源并且在放大或者缩小之后可以满足当前界面的显示要求。例如，当前为高精度屏幕，平台会加载高精度资源（如HelloAndroid中drawable-hdpi 中的位图资源），如果没有，平台会将中精度资源缩放至高精度，导致图片显示不清晰。 
+7.2 自动定义像素尺寸和位置 
+如果程序不支持多种精度屏幕，平台会自动定义像素绝对位置和尺寸值等，这样就能保证元素能和精度160 的屏幕上一样能显示出同样尺寸的效果。例如，要让WVGA 高精度屏幕和传统的HVGA 屏幕一样显示同样尺寸的图片，当程序不支持时，系统会对程序慌称屏幕分辨率为320×480,在（10,10）到（100,100）的区域内绘制图形完成之后，系统会将图形放大到（15,15）到（150,150）的屏幕显示区域。 
+7.3 兼容更大尺寸的屏幕 
+当前屏幕超过程序所支持屏幕的上限时，定义supportsscreens元素，这样超出显示的基准线时，平台在此显示黑色的背景图。例如，WVGA 中精度屏幕上，如程序不支持这样的大屏幕，系统会谎称是一个320×480 的，多余的显示区域会被填充成黑色。 
+7.4 采用OpenGL 动态绘制图片 
+Android 底层提供了OpenGL 的接口和方法，可以动态绘制图片，但是这种方式对不熟悉计算机图形学的开发者来讲是一个很大的挑战。一般开发游戏，采用OpenGL 方式。 
+7.5 多个apk 文件 
+Symbian 和传统的J2ME 就是采用这种方式，为一款应用提供多个分辨率版本，用户根据自己的需求下载安装相应的可执行文件。针对每一种屏幕单独开发应用程序不失为一种好方法，但是目前Google Market 对一个应用程序多个分辨率版本的支持还不完善，开发者还是需要尽可能使用一个apk 文件适应多个分辨率。 

@@ -1,0 +1,163 @@
+怎样获取Android手机屏幕的大小（分辨率、密度）  此博文包含图片	(2013-08-22 11:27:51)转载▼
+标签： it	
+下面的代码即可获取屏幕的尺寸：
+
+   在一个Activity的onCreate方法中，编写以下代码：
+
+      DisplayMetrics metric = new DisplayMetrics();
+      getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+      int width = metric.widthPixels;  // 宽度（PX）
+      int height = metric.heightPixels;  // 高度（PX）
+
+      float density = metric.density;  // 密度（0.75 / 1.0 / 1.5）
+      int densityDpi = metric.densityDpi;  // 密度DPI（120 / 160 / 240）
+
+   需要注意的是，在一个低密度的小屏手机上，仅靠上面的代码是不能获取正确的尺寸的。
+   比如说，一部240x320像素的低密度手机，如果运行上述代码，获取到的屏幕尺寸是320x427。
+   因此，研究之后发现，若没有设定多分辨率支持的话，
+   Android系统会将240x320的低密度（120）尺寸转换为中等密度（160）对应的尺寸，
+   这样的话就大大影响了程序的编码。
+   所以，需要在工程的AndroidManifest.xml文件中，加入supports-screens节点,如下：
+
+        
+            android:smallScreens="true"
+            android:normalScreens="true"
+            android:largeScreens="true"
+            android:resizeable="true"
+            android:anyDensity="true" />
+
+   这样当前的Android程序就支持了多种分辨率，那么就可以得到正确的物理尺寸了。
+ 
+public static String getDisplayMetrics(Context cx) {
+                String str = "";
+                DisplayMetrics dm = new DisplayMetrics();
+                dm = cx.getApplicationContext().getResources().getDisplayMetrics();
+                int screenWidth = dm.widthPixels;
+                int screenHeight = dm.heightPixels;
+                float density = dm.density;
+                float xdpi = dm.xdpi;
+                float ydpi = dm.ydpi;
+                str += "The absolute width:" + String.valueOf(screenWidth) + "pixels\n";
+                str += "The absolute heightin:" + String.valueOf(screenHeight)
+                                + "pixels\n";
+                str += "The logical density of the display.:" + String.valueOf(density)
+                                + "\n";
+                str += "X dimension :" + String.valueOf(xdpi) + "pixels per inch\n";
+                str += "Y dimension :" + String.valueOf(ydpi) + "pixels per inch\n";
+                return str;
+        }
+ 
+Android 在代码中设置屏幕属性(全屏、无标题)
+getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+WindowManager.LayoutParams.FLAG_FULLSCREEN);  //设置全屏
+this.requestWindowFeature(Window.FEATURE_NO_TITLE); //设置没有标题
+ 
+
+
+一些术语
+Screen Size 屏幕尺寸：
+实际的物理尺寸，以屏幕的对角线为准（包括通知栏？）
+将所有的实际尺寸分为四个广义的尺寸：small(小)，normal(正常)，large(大)，extra large(特大)
+Density 屏幕密度：
+屏幕的屋里面积内的像素数量，通常指dpi(每英寸点数)
+small的屏幕密度比normal或large在一个给定的物理面积内具有较少的像素
+将所有实际密度分为四个广义的密度：low(低)，medium(中等)，high(高)，extra high(超高)
+方向：
+从用户的角度来看，屏幕的方向是横向或纵向，也就是屏幕的比例是高或者宽。
+Resolution 分辨率：
+在屏幕上的像素总数。在支持多个屏幕时，应用程序不直接与分辨率相关，应用程序应该只与屏幕大小和密度相关。
+DP(密度无关的像素) Density-independent pixel：
+在定义UI布局时应该使用的虚拟像素单元，它用一种密度无关的方式来表达布局尺寸或位置。
+Aspect ratio 屏幕长宽比
+长宽比是屏幕的物理宽度与物理高度的比例关系。应用程序可以通过使用限定的资源来为指定的长宽比提供屏幕布局资源。
+设计和编码
+视觉在根据交互原型进行设计的时候，可以考虑以mdpi，也就是320x480为蓝本进行设计，因为Android一般采用dp为单位，而我们设计的时候一般是px为单位的，这个就涉及到一个单位转换的问题，而在mdpi下，px和dp是1：1的关系，这样在标注坐标的时候能够很方便的进行单位转换，例如我们以320x480为蓝本的话，在photoshop测量的间距为10px，我们在给到RD时的坐标可以直接标注为10dp；因为dp的单位是可以程序自己去适配不用dpi屏幕的，所以就算设计三套不同dpi的图，一般也只用对mdpi的设计图进行坐标定位，这个坐标的标注可以用在所有dpi的资源上
+Android资源文件
+drawable-hdpi里面存放高分辨率的图片,如WVGA (480x800),FWVGA (480x854)
+drawable-mdpi里面存放中等分辨率的图片,如HVGA (320x480)
+drawable-ldpi里面存放低分辨率的图片,如QVGA (240x320)
+Android上常见度量单位
+px（像素）：屏幕上的点，绝对长度，与硬件相关。
+in（英寸）：长度单位。
+mm（毫米）：长度单位。
+pt（磅）：1/72英寸，point。
+dp（与密度无关的像素）：一种基于屏幕密度的抽象单位。在每英寸160点的显示器上，1dp = 1px。
+dip：Density-independent pixel,同dp相同。
+sp：在dp的基础上，还与比例无关，个人理解为是一个矢量图形单位。
+在xml中定义大小，建议TextView使用sp，其他使用dp
+对应关系
+                Android手机屏幕标准       对应图标尺寸标准   屏幕密度
+xhdpi               124*600                               96*96             320
+hdpi                 480*800                               72*72             240
+mdpi                480*320                               48*48             160
+ldpi                  320*240                                36*36             120
+以480dip*800dip的WVGA(density=240)为例，详细列出不同density下屏幕分辨率信息：
+当density=120时 屏幕实际分辨率为240px*400px （两个点对应一个分辨率）
+状态栏和标题栏高各19px或者25dip
+横屏是屏幕宽度400px 或者800dip,工作区域高度211px或者480dip
+竖屏时屏幕宽度240px或者480dip,工作区域高度381px或者775dip
+
+ 
+density=160时 屏幕实际分辨率为320px*533px （3个点对应两个分辨率）
+状态栏和标题栏高个25px或者25dip
+横屏是屏幕宽度533px 或者800dip,工作区域高度295px或者480dip
+竖屏时屏幕宽度320px或者480dip,工作区域高度508px或者775dip
+
+ 
+density=240时 屏幕实际分辨率为480px*800px （一个点对于一个分辨率）
+状态栏和标题栏高个38px或者25dip
+横屏是屏幕宽度800px 或者800dip,工作区域高度442px或者480dip
+竖屏时屏幕宽度480px或者480dip,工作区域高度762px或者775dip
+
+模拟器上不同分辨率所有对应的信息： 
+
+QVGA : {density=0.75, width=240, height=320, scaledDensity=0.75, xdpi=120.0, ydpi=120.0}
+HVGA :  {density=1.0, width=320, height=480, scaledDensity=1.0, xdpi=160.0, ydpi=160.0}
+WVGA : {density=1.5, width=480, height=800, scaledDensity=1.5, xdpi=240.0, ydpi=240.0}
+
+
+其中，density为显示的逻辑分辨率；width及height就为屏幕分辨率（为绝对宽度与高度），与fields中的widthPixels及 heightPixels一致；scaleDensity与density一致；xdpi及ydpi为x方向与y方向的像素密度。
+如何计算密度（dpi）
+1.标准是240*320画在1.5*2平方inch上。那么像每平方英寸有240*320/(1.5*2)=25600点，也就是一平方英寸的像素点为25600，所以dpi取为它的平方根160;如果你的dpi是120，那么它的密度就是0.75.
+2. 密度不只是与width有关，还与height有关，所以不管width是1.8还是1.3，它的密度都有可能是1；比如width是1.8，只要它的 height是3/1.8的话，如果pixel为240*320的话，它的密度仍旧是1；同样如果width为1.3，只要它的 height为3/1.3的话，像素点为240*320，则密度也是1.
+3.320*480/(1.5*2)得到单位平方英寸的点为51200，所以单位平方英寸是240*320画在1.5*2屏幕的2倍。但是这是平方英寸啊，算密度的时候要开平方的啊，所以应该是2开平方，是1.414吧，大致密度为1.5。
+px与dip的关系
+Android中，在160dpi (mdpi)中， 1 dip= 1 px;
+以此类推，在120dpi（ldpi）中， 1 dip = 0.75px;
+                  在240dpi (hdpi)中，  1 dip = 1.5px;
+                  在320dpi（xhdpi）中， 1dip = 2px；
+如何做到与密度无关
+　　如果屏幕密度为160，这时dp和sp和px是一样的。1dp=1sp=1px，但如果使用px作单位，如果屏幕大小不变（假设还是3.2 寸），而屏 幕密度变成了320。那么原来TextView的宽度设成160px，在密度为320的3.2 寸屏幕里看要比在密度为160的3.2寸屏幕上看短了一半。但如果设置成160dp或160sp的话。系统会自动将width属性值设置成320px的。也就是160 * 320 / 160。其中320 / 160可称为密度比例因子。也就是说，如果使用dp和sp，系统会根据屏幕密度的变化自动进行转换。官方文档总结的计算公式为：pixels = dps * (density /160).
+使用dip作为View的单位，这样就可以同时兼容各种不同的分辨率，不会造成UI的不可兼容。
+屏幕支持范围（不太明白）
+从Android 1.6（API Level 4）开始，Android提供了对多个屏幕尺寸和密度的支持，以反映出设备可能有的不同的屏幕配置。可以使用Android系统的功能，为每个屏幕配置优化应用程序的用户界面，从而确保应用程序为每个屏幕提供正常并且尽可能最佳的用户体验。
+为了简化为多种屏幕设计用户界面，Android划分了实际的屏幕尺寸和密度范围：
+·广义的尺寸大小集合： small（小）, normal（正常）, large（大）, and xlarge（超大）
+注：从Android 3.2（API Level 13）开始，这种尺寸集合被废弃，取而代之的是一种基于可用屏幕宽度来管理屏幕尺寸的新技术。所以针对Android 3.2以及以上版本的开发，可以参考 为Android 3.2设计平板布局来获取更多信息。
+·广义的密度集合： ldpi (低), mdpi (中), hdpi (高), and xhdpi (超高)
+广义的大小和密度都围绕一个基准配置，即正常的大小和MDPI（中）密度。这个基准配置即第一款Android设备的配置，此设备即拥有一个HVGA屏幕的T-Mobile G1（直到Android 1.6，这是Android支持的唯一的屏幕配置）。
+每个广义的大小和密度跨越了一系列实际的屏幕尺寸和密度。例如，两个设备，这两个设备报告的正常屏幕尺寸和宽高比可能与手工测量时略有不同。同样，两个设备报告的hdpi的屏幕密度可能与真正的像素密度略有不同。 Android抽象了应用程序的这些差异，因此可以提供广义的大小和密度设计的用户界面，让系统需要处理任何最终的调整。图1显示了不同的大小和密度大致分类成不同的大小和密度组。
+怎样获取Android手机屏幕的大小（分辨率、密度）
+
+图1. 解释了Android对实际的尺寸和密度到广义的尺寸和密度（数字是不准确的）的大致映射。
+每一个UI设计需要一个最小的空间，每一个上文提到的广义的屏幕大小都拥有一个由系统定义的最小分辨率。这些空间是以“dp”为单位的，当定义布局时，也应当使用相同的单位，它使系统避免了对屏幕密度变化的顾虑。
+·        xlarge 屏幕至少 960dp x 720dp
+·        large 屏幕至少 640dp x 480dp
+·        normal 屏幕至少 470dp x 320dp
+·        small 屏幕至少 426dp x 320dp
+ 
+为不同屏幕尺寸和密度优化应用程序的用户界面，可以提供任何广义的大小和密度的alternative resources（选择性资源）。通常情况下，应该为不同的屏幕尺寸提供alternative layouts并且为不同的屏幕密度提供alternativebitmap images。在运行时，系统基于当前设备的广义屏幕尺寸或密度为应用程序采用适当的资源，
+不需要为每一个屏幕大小和密度的组合提供选择性资源。系统提供了强大的兼容特性，可以处理在任何设备的屏幕上呈现应用程序的大部分工作，开发者只要实现UI技术，允许它正常调整。
+注: 定义广义屏设备的大小和密度的特点是相互独立的。例如，WVGA的高密度的屏幕被认为是一个正常大小的屏幕，因为它的物理尺寸是相同的T-MobileG1（Android的设备和基线的屏幕配置）。另一方面，WVGA 的屏幕中密度被认为是一个大尺寸屏幕。虽然它提供了相同的分辨率（像素数相同），WVGA的屏幕中密度较低的屏幕密度，这意味着每个像素的物理面积较大，因此，整个屏幕是比基准（正常大小）的屏幕更大。
+
+ 
+默认的控件大小
+当在屏幕为160dpi，也就是density为1的情况下，所得到的控件的宽度和高度为android控件的默认的dip大小。
+比如：Button 的 默认高度为 48dip。
+          状态栏的默认高度为25dip。
+Android屏幕自适应
+一：创建不同的layout文件
+在res目录下创建不同的layout文件夹，比如layout-640x360,layout-800x480，所有的layout文件在编译之后都会写入R.java里，而系统会根据屏幕的大小自己选择合适的layout进行使用。
+二：针对不同屏幕制作不同大小的图标
+注：分辨率与屏幕大小没有关系，屏幕大小是物理外观，而分辨率则是显示能力

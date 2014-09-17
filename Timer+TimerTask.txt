@@ -1,0 +1,85 @@
+Timer和TimerTask是util包中两个与工作排程的类，Timer是计时器，可以设定成特定时间或特定的时间周期产生信号，不过这里只有Timer是没有用的，必须配合TimerTask才有作用。
+Timer一旦与某个TimerTask产生关联，就会在产生信号的同时，连带一起执行TimerTask所定义的工作。
+TimerTask的实现只需要继承TimerTask类就并实现其run()方法就可以了。run()方法是由我们自己来编写的，把你想做的工作放在里面，一旦Timer在特定时间内或周期产生信号，
+run()方法就会执行，我们通会Timer的schdeule()方法来设定特定时间或特定的周期。schdeule()有两种形式，一个是两个参数的，一个是三个参数的。二种参数的第一个参数是TimerTask的对象，
+第二个是时间也可是以Date对象。具有三个参数的schedule方法可以使一个task在某一个时间后，根据一定的间隔时间运行多次，具有周期性。最后，可以使用Timer的cancel()方法来停止Timer，
+调用cancel()之后，两者就会脱离关系。TimerTask本身也有cancel()方法。
+我们看一个例子，在三秒之后执行某些工作：
+import javax.microedition.midlet.*;
+import javax.microedition.lcdui.*;
+import java.util.*;
+public class MyTask1 extends TimerTask
+{
+    public void run()
+    {
+     System.out.println("Task1 Fire Time:") ;
+        System.out.println(System.currentTimeMillis());
+    }
+}
+import javax.microedition.midlet.*;
+import javax.microedition.lcdui.*;
+import java.util.*;
+public class TimerTest1 extends MIDlet
+{ 
+ public TimerTest1()
+ {
+ }
+ public void startApp()
+ {
+  Timer timer = new Timer() ;
+         timer.schedule(new MyTask1(),3000);
+         System.out.println("Task Schedule Time:") ;
+         System.out.println(System.currentTimeMillis());
+ }
+ public void pauseApp()
+ {
+ }
+ public void destroyApp(boolean unconditional)
+ {
+ }
+}
+这里，我们使用两种不同颜色来写书二个类，一个类继承TimerTask类，一个类继承MIDlet，这样编程有利于我们观察和以后的修改，不会出现一大长串代码的情况。
+执行时会出现：
+Task Schedule Time:
+//时间
+ 
+Task1 Fire Time:
+//时间
+ 
+我们可以发现两者之间相差3000毫秒。
+这里schedule()方法除了给定一个long型外，还可以用上面所说的Date类的实体，假设我们在五秒后执行某些动作：
+import javax.microedition.midlet.*;
+import javax.microedition.lcdui.*;
+import java.util.*;
+public class MyTask2 extends TimerTask
+{
+    public void run()
+    {
+     System.out.println("Task2 Fire Time:") ;
+        System.out.println(System.currentTimeMillis());
+    }
+}
+import javax.microedition.midlet.*;
+import javax.microedition.lcdui.*;
+import java.util.*;
+public class TimerTest2 extends MIDlet
+{ 
+ public TimerTest2()
+ {
+ }
+ public void startApp()
+ {
+  Timer timer = new Timer() ;
+  Date after5sec = new Date(System.currentTimeMillis()+5000) ;
+         timer.schedule(new MyTask2(),after5sec);
+         System.out.println("Task Schedule Time:") ;
+         System.out.println(System.currentTimeMillis());
+ }
+ public void pauseApp()
+ {
+ }
+ public void destroyApp(boolean unconditional)
+ {
+ }
+}
+我们可以发现两者之者大约相差为5000毫秒，但没有很精确，因为在调用(timer.schedule(new MyTask2(),after5sec))之前，系统必须先取得目前时间，再产生Date对象，而造成时间差

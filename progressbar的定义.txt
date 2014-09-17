@@ -1,0 +1,70 @@
+一、通过动画实现
+定义res/anim/loading.xml如下：
+[html] view plaincopyprint?
+<?xml version="1.0" encoding="UTF-8"?>  
+<animation-list android:oneshot="false"  
+xmlns:android="http://schemas.android.com/apk/res/android">  
+  <item android:duration="150" android:drawable="@drawable/loading_01" />  
+  <item android:duration="150" android:drawable="@drawable/loading_02" />  
+  <item android:duration="150" android:drawable="@drawable/loading_03" />  
+  <item android:duration="150" android:drawable="@drawable/loading_04" />  
+  <item android:duration="150" android:drawable="@drawable/loading_05" />  
+  <item android:duration="150" android:drawable="@drawable/loading_06" />  
+  <item android:duration="150" android:drawable="@drawable/loading_07" />  
+</animation-list>   
+
+
+二、通过自定义颜色实现
+定义res/drawable/progress_small.xml如下：
+[html] view plaincopyprint?
+<?xml version="1.0" encoding="utf-8"?>  
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:fromDegrees="0"  
+    android:pivotX="50%"  
+    android:pivotY="50%"  
+    android:toDegrees="360" >  
+    <shape  
+        android:innerRadiusRatio="3"  
+        android:shape="ring"  
+        android:thicknessRatio="8"  
+        android:useLevel="false" >  
+        <gradient  
+            android:centerColor="#FFFFFF"  
+            android:centerY="0.50"  
+            android:endColor="#1E90FF"  
+            android:startColor="#000000"  
+            android:type="sweep"  
+            android:useLevel="false" />  
+    </shape>  
+</rotate>  
+
+三、使用一张图片进行自定义
+定义res/drawable/progress_small.xml如下：
+[html] view plaincopyprint?
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:drawable="@drawable/spinner_black_16"  
+    android:pivotX="50%"  
+    android:pivotY="50%"  
+    android:fromDegrees="0"  
+    android:toDegrees="360" />  
+
+
+使用方法都一样, 如下：
+[html] view plaincopyprint?
+<ProgressBar  
+    android:layout_width="wrap_content"  
+    android:layout_height="wrap_content"  
+    android:indeterminateDrawable="@drawable/progress_small"/>  
+
+
+也可以根据需要通过设置style来设置其大小！ 一般只有使用默认的ProgrressBar的时候采用。对于上述三种自定义的方式，建议修改直接修改图片大小，或者shape；
+[html] view plaincopyprint?
+<ProgressBar  
+    android:layout_width="wrap_content"  
+    android:layout_height="wrap_content"  
+    android:layout_centerInParent="true"  
+    style="?android:attr/progressBarStyleSmall"  
+    android:indeterminateDrawable="@drawable/progress_small"/>  
+
+设置成progressBarStyleSmall后，图标变小。　
+设置成progressBarStyleLarge后，图标变大

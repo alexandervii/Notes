@@ -1,0 +1,105 @@
+使用<merge /> 标签来减少视图层级结构 
+在Android layout文件中需要一个顶级容器来容纳其他的组件，而不能直接放置多个组件，
+例如如下的代码： 
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+02.    android:layout_width="fill_parent"  
+03.    android:layout_height="fill_parent">  
+04. 
+05.    <ImageView 
+06.        android:layout_width="fill_parent"  
+07.        android:layout_height="fill_parent"   
+08.        android:scaleType="center"  
+09.        android:src="@drawable/golden_gate" />  
+10.  
+11.    <TextView  
+12.        android:layout_width="wrap_content"  
+13.        android:layout_height="wrap_content"  
+14.        android:text="Golden Gate" />  
+15.  
+16.</FrameLayout>  
+单独将<merge />标签做个介绍，是因为它在优化UI结构时起到很重要的作用。
+目的是通过删减多余或者额外的层级，从而优化整个Android Layout的结构。
+
+3.将通过一个例子来了解这个标签实际所产生的作用，这样可以更直观的了解<merge/>的用法。
+建立一个简单的Layout，其中包含两个Views元素：ImageView和TextView 默认状态下我们将这两个元素放在FrameLayout中。
+其效果是在主视图中全屏显示一张图片，之后将标题显示在图片上，并位于视图的下方。以下是xml代码：
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+02.    android:layout_width="fill_parent"  
+03.    android:layout_height="fill_parent">  
+04.  
+05.    <ImageView  
+06.        android:layout_width="fill_parent"  
+07.        android:layout_height="fill_parent"   
+08.  
+09.        android:scaleType="center"  
+10.        android:src="@drawable/golden_gate" />  
+11.  
+12.    <TextView  
+13.        android:layout_width="wrap_content"  
+14.        android:layout_height="wrap_content"  
+15.        android:layout_marginBottom="20dip"  
+16.        android:layout_gravity="center_horizontal|bottom"  
+17.  
+18.        android:padding="12dip"  
+19.  
+20.        android:background="#AA000000"  
+21.        android:textColor="#ffffffff"  
+22.  
+23.        android:text="Golden Gate" />  
+24.  
+25.</FrameLayout>  
+
+我们可以很明显的看到由红色线框所包含的结构出现了两个framelayout节点，
+很明显这两个完全意义相同的节点造成了资源浪费
+（这里可以提醒大家在开发工程中可以习惯性的通过hierarchyViewer查看当前UI资源的分配情况），
+那么如何才能解决这种问题呢（就当前例子是如何去掉多余的frameLayout节点）？
+这时候就要用到<merge />标签来处理类似的问题了。我们将上边xml代码中的framLayout替换成merge：
+
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">  
+02.  
+03.    <ImageView  
+04.        android:layout_width="fill_parent"  
+05.        android:layout_height="fill_parent"   
+06.  
+07.        android:scaleType="center"  
+08.        android:src="@drawable/golden_gate" />  
+09.  
+10.    <TextView  
+11.        android:layout_width="wrap_content"  
+12.        android:layout_height="wrap_content"  
+13.        android:layout_marginBottom="20dip"  
+14.        android:layout_gravity="center_horizontal|bottom"  
+15.  
+16.        android:padding="12dip"  
+17.  
+18.        android:background="#AA000000"  
+19.        android:textColor="#ffffffff"  
+20.  
+21.        android:text="Golden Gate" />  
+22.  
+23.</merge>  
+   
+
+ 
+
+运行程序后在Emulator中显示的效果是一样的，
+可是通过hierarchyviewer查看的UI结构是有变化的，当初多余的FrameLayout节点被合并在一起了，
+或者可以理解为将merge标签中的子集直接加到Activity的FrameLayout跟节点下
+（这里需要提醒大家注意：所有的Activity视图的根节点都是frameLayout）。
+如果你所创建的Layout并不是用framLayout作为根节点（而是应用LinerLayout等定义root标签），
+就不能应用上边的例子通过merge来优化UI结构。
+
+除了上边的例子外，meger还有另外一个用法
+
+当应用Include或者ViewStub标签从外部导入xml结构时，可以将被导入的xml用merge作为根节点表示，这样当被嵌入父级结构中后可以很好的将它所包含的子集融合到父级结构中，而不会出现冗余的节点。
+
+另外有两点需要特别注意：
+
+?<merge />只可以作为xml layout的根节点。
+?当需要扩充的xml layout本身是由merge作为根节点的话，需要将被导入的xml layout置于 viewGroup中，
+同时需要设置attachToRoot为True。（更多说明请参见inflate()文档）
+
+
+

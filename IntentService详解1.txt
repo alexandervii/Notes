@@ -1,0 +1,72 @@
+什么是IntentService? （本文转自http://blog.csdn.net/gaojie314/archive/2010/11/28/6040701.aspx）
+
+官方的解释是:
+IntentService is a base class for Services that handle asynchronous requests (expressed as Intents) on demand. Clients send requests through android.content.Context.startService(Intent) calls; the service is started as needed, handles each Intent in turn using a worker thread, and stops itself when it runs out of work. 
+This "work queue processor" pattern is commonly used to offload tasks from an application's main thread. The IntentService class exists to simplify this pattern and take care of the mechanics. To use it, extend IntentService and implement onHandleIntent(Intent). IntentService will receive the Intents, launch a worker thread, and stop the service as appropriate. 
+All requests are handled on a single worker thread -- they may take as long as necessary (and will not block the application's main loop), but only one request will be processed at a time.
+
+意思是说:IntentService是一个通过Context.startService(Intent)启动可以处理异步请求的Service,使用时你只需要继承IntentService和重写其中的onHandleIntent(Intent)方法接收一个Intent对象,在适当的时候会停止自己(一般在工作完成的时候). 所有的请求的处理都在一个工作线程中完成,它们会交替执行(但不会阻塞主线程的执行),一次只能执行一个请求.(**本人修改了原文的一些翻译)
+
+下面是要分析的源码:
+public abstract class IntentService extends Service { 
+
+        private volatile Looper mServiceLooper; 
+        private volatile ServiceHandler mServiceHandler; 
+
+        private String mName; 
+        private boolean mRedelivery; 
+    
+
+        private final class ServiceHandler extends Handler { 
+
+                public ServiceHandler(Looper looper) { 
+                        super(looper); 
+                } 
+    
+                @Override 
+                public void handleMessage(Message msg) { 
+                        onHandleIntent((Intent)msg.obj); 
+                        stopSelf(msg.arg1); 
+                } 
+
+        }
+从源码可以分析出:
+IntentService 实际上是Looper,Handler,Service 的集合体,他不仅有服务的功能,还有处理和循环消息的功能.
+
+下面是onCreate()的源码:
+        @Override 
+        public void onCreate() { 
+                super.onCreate(); 
+
+                HandlerThread thread = new HandlerThread("IntentService[" + mName + "]"); 
+                thread.start(); 
+
+                mServiceLooper = thread.getLooper(); 
+                mServiceHandler = new ServiceHandler(mServiceLooper); 
+        }
+分析:IntentService创建时就会创建Handler线程(HandlerThread)并且启动,然后再得到当前线程的Looper对象来初始化IntentService的mServiceLooper,接着创建mServicehandler对象.
+
+下面是onStart()的源码:
+        @Override 
+        public void onStart(Intent intent, int startId) { 
+                Message msg = mServiceHandler.obtainMessage(); 
+                msg.arg1 = startId; 
+                msg.obj = intent; 
+
+                mServiceHandler.sendMessage(msg); 
+        }
+分析:当你启动IntentService的时候,就会产生一条附带startId和Intent的Message并发送到MessageQueue中,接下来Looper发现MessageQueue中有Message的时候,就会停止Handler处理消息,接下来处理的代码如下:
+        @Override 
+        public void handleMessage(Message msg) { 
+                        onHandleIntent((Intent)msg.obj); 
+                        stopSelf(msg.arg1); 
+        }
+接着调用 onHandleIntent((Intent)msg.obj),这是一个抽象的方法,其实就是我们要重写实现的方法,我们可以在这个方法里面处理我们的工作.当任务完成时就会调用stopSelf(msg.arg1)这个方法来结束指定的工作.
+当所有的工作执行完后:就会执行onDestroy方法,源码如下:
+        @Override 
+        public void onDestroy() { 
+                mServiceLooper.quit(); 
+        }
+服务结束后调用这个方法 mServiceLooper.quit()使looper停下来.
+
+通过对源码的分析得出: 这是一个基于消息的服务,每次启动该服务并不是马上处理你的工作,而是首先会创建对应的Looper,Handler并且在MessageQueue中添加的附带客户Intent的Message对象,当Looper发现有Message的时候接着得到Intent对象通过在onHandleIntent((Intent)msg.obj)中调用你的处理程序.处理完后即会停止自己的服务.意思是Intent的生命周期跟你的处理的任务是一致的.所以这个类用下载任务中非常好,下载任务结束后服务自身就会结束退出.

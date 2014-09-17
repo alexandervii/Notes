@@ -1,0 +1,123 @@
+android中给TextView设置属性ellipsize
+
+1，ellipsize等于marquee，跑马灯效果
+
+RelativeLayout xmlnsandroid=httpschemas.android.comapkresandroid 
+    xmlnstools=httpschemas.android.comtools 
+    androidlayout_width=match_parent 
+    androidlayout_height=match_parent 
+    androidbackground=#EEEEEE 
+
+        TextView 
+            androidid=@+idtextview 
+            androidlayout_width=200dp 
+            androidlayout_height=wrap_content 
+            androidlayout_centerInParent=true 
+            androidbackground=#EEEE00 
+            androidellipsize=marquee 
+            androidfocusable=true 
+            androidfocusableInTouchMode=true 
+            androidmarqueeRepeatLimit=marquee_forever 
+            androidscrollHorizontally=true 
+            androidsingleLine=true 
+            androidtext=@stringhello_world 
+            androidtextSize=15dp 
+            androidtextColor=#FF0000 
+
+RelativeLayout
+
+运行效果是：
+
+从右向左循环滚动。
+
+2，ellipsize等于end
+
+TextView 
+    androidid=@+idtextview 
+    androidlayout_width=200dp 
+    androidlayout_height=wrap_content 
+    androidlayout_centerInParent=true 
+    androidbackground=#EEEE00 
+    androidellipsize=end 
+    androidsingleLine=true 
+    androidtext=@stringhello_world 
+    androidtextSize=15dp 
+    androidtextColor=#FF0000  
+
+运行屏幕截图：
+
+)N)~WB79%DH}J3``}3K{%$H
+
+3，ellipsize等于start
+
+TextView 
+    androidid=@+idtextview 
+    androidlayout_width=200dp 
+    androidlayout_height=wrap_content 
+    androidlayout_centerInParent=true 
+    androidbackground=#EEEE00 
+    androidellipsize=start 
+    androidsingleLine=true 
+    androidtext=@stringhello_world 
+    androidtextSize=15dp 
+    androidtextColor=#FF0000 
+
+运行屏幕截图：
+
+PF{5Q%3W(6`Y$VDP8W%$0LW
+
+4，ellipsize等于middle
+
+TextView 
+    androidid=@+idtextview 
+    androidlayout_width=200dp 
+    androidlayout_height=wrap_content 
+    androidlayout_centerInParent=true 
+    androidbackground=#EEEE00 
+    androidellipsize=middle 
+    androidsingleLine=true 
+    androidtext=@stringhello_world 
+    androidtextSize=15dp 
+    androidtextColor=#FF0000  
+
+运行屏幕截图：
+
+W6){B@45BQ{O(_0A0{4XI3V
+
+5，ellipsize等于none
+
+TextView 
+androidid=@+idtextview 
+androidlayout_width=200dp 
+androidlayout_height=wrap_content 
+androidlayout_centerInParent=true 
+androidbackground=#EEEE00 
+androidellipsize=none 
+androidsingleLine=true 
+androidtext=@stringhello_world 
+androidtextSize=15dp 
+androidtextColor=#FF0000  
+
+运行屏幕截图：
+
+RKA7E7Z[~PMOXMTZFG(MK)G
+
+6，上述5种用法在代码中设置也可以达到效果
+
+textView.setEllipsize(TruncateAt.MARQUEE);
+
+textView.setEllipsize(TruncateAt.END);
+
+textView.setEllipsize(TruncateAt.START);
+
+textView.setEllipsize(TruncateAt.MIDDLE);
+
+或者，
+
+tv.setEllipsize(TruncateAt.valueOf(END));
+
+tv.setEllipsize(TruncateAt.valueOf(START));
+
+tv.setEllipsize(TruncateAt.valueOf(MIDDLE));
+
+tv.setEllipsize(TruncateAt.valueOf(MARQUEE));

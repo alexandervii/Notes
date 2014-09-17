@@ -1,0 +1,5 @@
+Android的ProgressBar样式：
+style="?android:attr/progressBarStyleHorizontal"  长形进度条
+style="?android:attr/progressBarStyleLarge"   超大号圆形
+ProgressBarstyle="?android:attr/progressBarStyleSmall" 小号圆形
+ProgressBarstyle="?android:attr/progressBarStyleSmallTitle" 标题型圆形ProgressBar

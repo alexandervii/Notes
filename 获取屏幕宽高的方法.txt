@@ -1,0 +1,75 @@
+// 获取屏幕宽高（方法1）  
+int screenWidth = getWindowManager().getDefaultDisplay().getWidth(); // 屏幕宽（像素，如：480px）  
+int screenHeight = getWindowManager().getDefaultDisplay().getHeight(); // 屏幕高（像素，如：800p）  
+Log.e(TAG + " getDefaultDisplay", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);  
+// 获取屏幕密度（方法2）  
+DisplayMetrics dm = new DisplayMetrics();  
+dm = getResources().getDisplayMetrics();  
+float density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）  
+int densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）  
+float xdpi = dm.xdpi;  
+float ydpi = dm.ydpi;  
+Log.e(TAG + " DisplayMetrics", "xdpi=" + xdpi + "; ydpi=" + ydpi);  
+Log.e(TAG + " DisplayMetrics", "density=" + density + "; densityDPI=" + densityDPI);  
+screenWidth = dm.widthPixels; // 屏幕宽（像素，如：480px）  
+screenHeight = dm.heightPixels; // 屏幕高（像素，如：800px）  
+Log.e(TAG + " DisplayMetrics(111)", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);  
+// 获取屏幕密度（方法3）  
+dm = new DisplayMetrics();  
+getWindowManager().getDefaultDisplay().getMetrics(dm);  
+density = dm.density; // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）  
+densityDPI = dm.densityDpi; // 屏幕密度（每寸像素：120/160/240/320）  
+xdpi = dm.xdpi;  
+ydpi = dm.ydpi;  
+Log.e(TAG + " DisplayMetrics", "xdpi=" + xdpi + "; ydpi=" + ydpi);  
+Log.e(TAG + " DisplayMetrics", "density=" + density + "; densityDPI=" + densityDPI);  
+int screenWidthDip = dm.widthPixels; // 屏幕宽（dip，如：320dip）  
+int screenHeightDip = dm.heightPixels; // 屏幕宽（dip，如：533dip）  
+Log.e(TAG + " DisplayMetrics(222)", "screenWidthDip=" + screenWidthDip + "; screenHeightDip=" + screenHeightDip);  
+screenWidth = (int)(dm.widthPixels * density + 0.5f); // 屏幕宽（px，如：480px）  
+screenHeight = (int)(dm.heightPixels * density + 0.5f); // 屏幕高（px，如：800px）  
+Log.e(TAG + " DisplayMetrics(222)", "screenWidth=" + screenWidth + "; screenHeight=" + screenHeight);   
+
+获取控件的宽高，一般来说，我们在onCreate里面得到的控件的宽高全是０.采用下面的方法，可以得到真实的宽高
+
+[csharp] view plaincopy
+        //------------------------------------------------方法一  
+        int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);  
+        int h = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);  
+        imageView.measure(w, h);  
+        int height =imageView.getMeasuredHeight();  
+        int width =imageView.getMeasuredWidth();  
+        textView.append("\n"+height+","+width);  
+          
+　　　　此方法会加载onMeasure三次  
+          
+          
+  
+        //-----------------------------------------------方法二  
+        ViewTreeObserver vto = imageView.getViewTreeObserver();  
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {  
+            public boolean onPreDraw() {  
+                int height = imageView.getMeasuredHeight();  
+                int width = imageView.getMeasuredWidth();  
+                textView.append("\n"+height+","+width);  
+                return true;  
+            }  
+        });  
+  
+　　　　此方法会加载onMeasure二次，但是回调函数会回调很多次  
+  
+　　　　 //-----------------------------------------------方法三     
+        ViewTreeObserver vto2 = imageView.getViewTreeObserver();    
+        vto2.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {  
+            @Override    
+            public void onGlobalLayout() {  
+                imageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);    
+                textView.append("\n\n"+imageView.getHeight()+","+imageView.getWidth());  
+            }    
+        });    
+  
+　　　　<pre name="code" class="csharp">　　　此方法会加载onMeasure二次，但是回调函数只回调一次</pre><p></p>  
+<pre></pre>  
+<br>  
+<br>  
+<p></p>  

@@ -1,0 +1,81 @@
+1.AndroidManifest.xml中必须使用许可"android.permission.INTERNET",否则会出 Web page not available 错误。
+
+2.如果访问的页面中有JavaSrcipt,则webview必须设置支持JavaScriptWebSettings webSetting = webview.getSettings() ;webSetting.setJavaScriptEnabled(true) ;
+
+3.如果页面中连接，如果希望点击连接继续在当前browser中相应，而不是新开Android的系统browser中应该连接，必须覆盖webview的WebViewClient对象。mWebView.setWebViewClient(new WebViewClient(){    public boolean shouldOverrideUrlLoading(WebView view,String url){        view.loadUrl(url) ;        return true ;    }})
+
+4.如果不做任何处理，浏览网页，点击系统"Back"键，整个Browser会调用finish()而结束自身，如果希望浏览的网页回退而不是推出浏览器，需要在当前Activity中处理并消费掉该Back事件。public boolean onKeyDown(int keyCode, KeyEvent event){    if((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()){        mWebView.goBack() ;        return true ;    }    return super.onKeyDown(keyCode, event) ;}5.如果webView中需要用户手动输入用户名，密码或其他，则webview必须设置支持获取手势焦点。    webview.requestFocusFromTouch() ;
+
+6.WebView加载界面主要调用三个方法：LoadUrl、LoadData、LoadDataWithBaseURL
+
+1.LoadUrl 直接加载网页，图片并显示
+
+2.LoadData 显示文字与图片内容
+
+3.LoadDataWithBase 显示文字与图片内容webSettings的常用方法setJavaScriptEnabled(true) ;//支持js脚本
+setPluginsEnabled(true) ;//支持插件
+setUserWideViewPort(false) ;//将图片调整到适合webview的大小
+setSupportZoom(true) ;//支持缩放
+setLayoutAlgorithm(LayoutAlgrithm.SINGLE_COLUMN) ;//支持内容从新布局
+supportMultipleWindows() ;//多窗口
+setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK) ;//关闭webview中缓存
+setAllowFileAccess(true) ;//设置可以访问文件
+setNeedInitialFocus(true) ;//当webview调用requestFocus时为webview设置节点
+setjavaScriptCanOpenWindowsAutomatically(true) ;//支持通过JS打开新窗口
+setLoadsImagesAutomatically(true) ;//支持自动加载图片
+setBuiltInZoomControls(true);
+//支持缩放
+webView.setInitialScale(35);
+//设置缩放比例
+webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+//设置滚动条隐藏 
+webView.getSettings().setGeolocationEnabled(true);
+//启用地理定位
+webView.getSettings().setRenderPriority(RenderPriority.HIGH);
+//设置渲染优先级
+String dir = "/sdcard/temp";//设置定位的数据库路径 
+webView.getSettings().setGeolocationDatabasePath(dir);
+这里是使用webview以及webview的相关设置，课根据实际情况进行设置.
+WebViewClient的方法全解
+doUpdateVisitedHistory(WebView view, String url ,boolean isReload)
+更新历史记录
+onFormResubmission(WebView view, Message dontResend, Message resend)
+应用程序重新请求页面数据
+onLoadResource(WebView view, String url)
+在加载页面资源时会调用，每一个资源（比如图片）的加载都会调用一次
+onPageStarted(WebView view, String url, Bitmap favicon)
+这个事件就是开始载入页面调用的，通常我们可以在这个设定一个loading的页面，告诉用户程序在等待网络相应。
+onPageFinished(WebView view, String url)
+在页面加载结束时调用，同样道理，我们知道一个页面载入完成，于是我们可以关闭loading条，切换程序动作。
+onReceivedError(WebView view, int errorCode, String description, String failingUrl)
+报告错误信息onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host,Stirng realm)
+获取返回信息授权请求onScaleChanged(WebView view, float oldScale, float newScale)WebView 发生改变时调用onUnhandledKeyEvent(WebView view, KeyEvent event)key事件未被加载时调用
+shouldOverrideUrlLoading
+并不是每次都在onPageStarted之前开始调用的，就是说一个新的URL不是每次都经过
+shouldOverrideUrlLoading的，只有在调用webview.loadURL的时候才会调用。
+//设置在同一个webview中打开新的网页
+webView.setWebViewClient(new WebViewClient(){ public boolean shouldOverrideUrlLoading(WebView view, String url) { view.loadUrl(url); return true; } });
+//设置WebChromeClientwebView.setWebChromeClient(new WebChromeClient(){//配置权限
+public void onGeolocationPermissionsShowPrompt(String origin,GeolocationPermissions.Callback callback){callback.invoke(origin, true, false);
+super.onGeolocationPermissionsShowPrompt(origin, callback);}
+//处理javascript中的alertpublic boolean onJsAlert(WebView view, String url, String message, final JsResult result) {//构建一个Builder来显示网页中的对话框
+Builder builder = new Builder(MainAcitivity.this);
+builder.setTitle("提示");
+builder.setMessage(message);
+builder.setPositiveButton(android.R.string.ok,new AlertDialog.OnClickListener() {public void onClick(DialogInterface dialog, int which) {result.confirm();}});
+builder.setCancelable(false);
+builder.create();
+builder.show();
+return true;
+@Override//设置网页加载的进度条
+public void onProgressChanged(WebView view, int newProgress) {MainAcitivity.this.getWindow().setFeatureInt(Window.FEATURE_PROGRESS, newProgress * 100);
+super.onProgressChanged(view, newProgress);}
+//设置应用程序的标题
+titlepublic void onReceivedTitle(WebView view, String title) {MainAcitivity.this.setTitle(title);
+super.onReceivedTitle(view, title);}});
+//判断是否联网
+ConnectivityManager cm;
+cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+boolean isWifiConnected=cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
+if(!isWifiConnected){boolean isGprsConnected=cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED;
+if(!isGprsConnected){new AlertDialog.Builder(this) .setTitle("提示" ) .setMessage("离线状态，启用离线模式" ) .setPositiveButton("确定" , null ) .show(); }else{result = CallWCF();}}

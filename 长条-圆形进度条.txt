@@ -1,0 +1,273 @@
+Android自定义进度条
+2012-05-10 14:12:00     我来说两句       收藏     我要投稿
+ Android原生控件只有横向进度条一种，而且没法变换样式，比如原生rom的样子
+
+很丑是吧，当伟大的产品设计要求更换前背景，甚至纵向，甚至圆弧状的，咋办，比如
+
+ok，我们开始吧：
+ 
+一）变换前背景
+ 
+先来看看progressbar的属性：
+1. <ProgressBar
+2.             android:id="@+id/progressBar"
+3.             style="?android:attr/progressBarStyleHorizontal"
+4.             android:layout_width="match_parent"
+5.             android:layout_height="wrap_content"
+6.             android:layout_margin="5dip"
+7.             android:layout_toRightOf="@+id/progressBarV"
+8.             android:indeterminate="false"
+9.             android:padding="2dip"
+10.             android:progress="50" />
+根据style="?android:attr/progressBarStyleHorizontal"，我们找到源码中的style.xml
+1. <style name="Widget.ProgressBar.Horizontal">
+2.         <item name="android:indeterminateOnly">false</item>
+3.         <item name="android:progressDrawable">@android:drawable/progress_horizontal</item>
+4.         <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+5.         <item name="android:minHeight">20dip</item>
+6.         <item name="android:maxHeight">20dip</item>
+7.     </style>
+看到
+<item name="android:progressDrawable">@android:drawable/progress_horizontal</item>
+木有，继续发掘源码，找到drawable下面的progress_horizontal.xml，这就是我们今天的主角了：
+
+1. <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+2.     
+3.     <item android:id="@android:id/background">
+4.         <shape>
+5.             <corners android:radius="5dip" />
+6.             <gradient
+7.                     android:startColor="#ff9d9e9d"
+8.                     android:centerColor="#ff5a5d5a"
+9.                     android:centerY="0.75"
+10.                     android:endColor="#ff747674"
+11.                     android:angle="270"
+12.             />
+13.         </shape>
+14.     </item>
+15.     
+16.     <item android:id="@android:id/secondaryProgress">
+17.         <clip>
+18.             <shape>
+19.                 <corners android:radius="5dip" />
+20.                 <gradient
+21.                         android:startColor="#80ffd300"
+22.                         android:centerColor="#80ffb600"
+23.                         android:centerY="0.75"
+24.                         android:endColor="#a0ffcb00"
+25.                         android:angle="270"
+26.                 />
+27.             </shape>
+28.         </clip>
+29.     </item>
+30.     
+31.     <item android:id="@android:id/progress">
+32.         <clip>
+33.             <shape>
+34.                 <corners android:radius="5dip" />
+35.                 <gradient
+36.                         android:startColor="#ffffd300"
+37.                         android:centerColor="#ffffb600"
+38.                         android:centerY="0.75"
+39.                         android:endColor="#ffffcb00"
+40.                         android:angle="270"
+41.                 />
+42.             </shape>
+43.         </clip>
+44.     </item>
+45.     
+46. </layer-list>
+ 看到android:id="@android:id/progress"木有，看到android:id="@android:id/secondaryProgress"木有
+把这个文件复制到自己工程下的drawable，就可以随心所欲的修改shape的属性，渐变，圆角等等
+那么怎么放一个图片进去呢，ok，新建progress_horizontal1.xml：
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+3.     
+4.     <item android:id="@android:id/progress" android:drawable="@drawable/progressbar" />
+5.     
+6. </layer-list>
+在android:drawable中指定你处理好的图片
+然后回到布局中
+1. <ProgressBar
+2.             android:id="@+id/progressBar1"
+3.             android:layout_width="match_parent"
+4.             android:layout_height="wrap_content"
+5.             android:layout_below="@+id/progressBar"
+6.             android:layout_margin="5dip"
+7.             android:layout_toRightOf="@+id/progressBarV"
+8.             android:background="@drawable/progress_bg"
+9.             android:indeterminate="false"
+10.             android:indeterminateOnly="false"
+11.             android:maxHeight="20dip"
+12.             android:minHeight="20dip"
+13.             android:padding="2dip"
+14.             android:progress="50"
+15.             android:progressDrawable="@drawable/progress_horizontal1" />
+android:background="@drawable/progress_bg"指定背景
+
+  android:progressDrawable="@drawable/progress_horizontal1"前景使用上面的progress_horizontal1
+ok，搞定
+
+ 注意看，四角还是有圆倒角的，貌似是系统自己加上去的，总之我的图片里面是没有做这个倒角处理的
+ 
+二）纵向进度条
+ 
+ 
+
+还是得从源码入手，看回progress_horizontal.xml
+1. <item android:id="@android:id/progress">
+2.         <clip>
+3.             <shape>
+4.                 <corners android:radius="5dip" />
+5.                 <gradient
+6.                         android:startColor="#ffffd300"
+7.                         android:centerColor="#ffffb600"
+8.                         android:centerY="0.75"
+9.                         android:endColor="#ffffcb00"
+10.                         android:angle="270"
+11.                 />
+12.             </shape>
+13.         </clip>
+14.     </item>
+为什么shape外面要包一层clip呢，官方文档解释是clipdrawable是可以自我复制的，来看看定义
+1. <?xml version="1.0" encoding="utf-8"?>
+2. <clip
+3.     xmlns:android="http://schemas.android.com/apk/res/android"
+4.     android:drawable="@drawable/drawable_resource"
+5.     android:clipOrientation=["horizontal" | "vertical"]
+6.     android:gravity=["top" | "bottom" | "left" | "right" | "center_vertical" |
+7.                      "fill_vertical" | "center_horizontal" | "fill_horizontal" |
+8.                      "center" | "fill" | "clip_vertical" | "clip_horizontal"] />
+android:clipOrientation有两个属性，默认为horizontal
+android:gravity有两个属性，默认为left
+那我们试试改成vertical和bottom会有什么效果，新建一个progress_vertical.xml，把源码progress_horizontal.xml的内容复制过来，这里去掉了secondaryProgress，修改了clip，shape的渐变中心centerY改为centerX
+1. <item android:id="@android:id/progress">
+2.         <clip
+3.             android:clipOrientation="vertical"
+4.             android:gravity = "bottom">
+5.             <shape>
+6.                 <corners android:radius="5dip" />
+7.                 <gradient
+8.                         android:startColor="#ffffd300"
+9.                         android:centerColor="#ffffb600"
+10.                         android:centerX="0.75"
+11.                         android:endColor="#ffffcb00"
+12.                         android:angle="90"
+13.                 />
+14.             </shape>
+15.         </clip>
+16.     </item>
+布局中android:progressDrawable="@drawable/progress_vertical"
+
+  ok，搞定，就是这么简单：
+
+ 
+ 
+三）弧形bar
+ 
+ 
+
+这个也许算不上是进度条，用的也不多，最多也就仪表盘用用，不然谁会把进度条整成圆弧的呢。好吧这个可不是改改源码就能搞定的，看代码
+1. public class Arcs extends View {  
+2.     private Paint mArcPaint;  
+3.     private Paint mArcBGPaint;  
+4.   
+5.     private RectF mOval;  
+6.     private float mSweep = 0;  
+7.     private int mSpeedMax = 200;
+8.     private int mThreshold = 100;
+9.     private int mIncSpeedValue = 0;
+10.     private int mCurrentSpeedValue = 0; 
+11.     private float mCenterX;  
+12.     private float mCenterY;  
+13.     private float mSpeedArcWidth;  
+14.  
+15.     private final float SPEED_VALUE_INC = 2; 
+16.  
+17.     .......... 
+18.  
+19. } 
+首先是一堆成员变量，两个Paint用来画圆弧一个前景一个背景，一个RectF圆弧就画在上面，然后是一些控制参数比如sweep圆弧扫过的角度，xy坐标等等
+ 
+1. mArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+2.         mArcPaint.setStyle(Paint.Style.STROKE);
+3.         mArcPaint.setStrokeWidth(mSpeedArcWidth);
+4. //        mPaint.setStrokeCap(Paint.Cap.ROUND);
+5.         mArcPaint.setColor(0xff81ccd6);
+6.         BlurMaskFilter mBlur = new BlurMaskFilter(8, BlurMaskFilter.Blur.INNER);
+7.         mArcPaint.setMaskFilter(mBlur);
+8.         
+9.         mArcBGPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+10.         mArcBGPaint.setStyle(Paint.Style.STROKE);
+11.         mArcBGPaint.setStrokeWidth(mSpeedArcWidth+8);
+12.         mArcBGPaint.setColor(0xff171717);
+13.         
+14.         BlurMaskFilter mBGBlur = new BlurMaskFilter(8, BlurMaskFilter.Blur.INNER);
+15.       mArcBGPaint.setMaskFilter(mBGBlur);
+设置两个画笔，颜色，宽度，样式等等，BlurMaskFilter笔是边缘模糊效果，有几种，可以自己尝试
+ 
+1. @Override
+2. protected void onSizeChanged(int w, int h, int ow, int oh) {
+3.         super.onSizeChanged(w, h, ow, oh);
+4.         Log.i("onSizeChanged w", w+"");
+5.         Log.i("onSizeChanged h", h+"");
+6.         mCenterX = w * 0.5f;  // remember the center of the screen
+7.         mCenterY = h - mSpeedArcWidth;
+8.         mOval = new RectF(mCenterX - mCenterY, mSpeedArcWidth, mCenterX + mCenterY, mCenterY * 2);
+9.     }
+重写父类View的onSizeChanged，为的是自己根据布局中的大小做居中处理
+ 
+1. @Override  
+2.     protected void onDraw(Canvas canvas) { 
+3.         drawSpeed(canvas); 
+4.         calcSpeed(); 
+5.     } 
+6.  
+7. private void drawSpeed(Canvas canvas) { 
+8.         canvas.drawArc(mOval, 179, 181, false, mArcBGPaint); 
+9.  
+10.         mSweep = (float) mIncSpeedValue / mSpeedMax * 180; 
+11.         if (mIncSpeedValue > mThreshold) { 
+12.             mArcPaint.setColor(0xFFFF0000); 
+13.         } 
+14.         else { 
+15.             mArcPaint.setColor(0xFF00B0F0); 
+16.         } 
+17.          
+18.         canvas.drawArc(mOval, 180, mSweep, false, mArcPaint);         
+19.     } 
+20.  
+21. private void calcSpeed() { 
+22.         if (mIncSpeedValue < mCurrentSpeedValue) { 
+23.             mIncSpeedValue += SPEED_VALUE_INC; 
+24.             if (mIncSpeedValue > mCurrentSpeedValue) { 
+25.                 mIncSpeedValue = mCurrentSpeedValue; 
+26.             } 
+27.             invalidate(); 
+28.         } 
+29.         else if (mIncSpeedValue > mCurrentSpeedValue) { 
+30.             mIncSpeedValue -= SPEED_VALUE_INC; 
+31.             if (mIncSpeedValue < mCurrentSpeedValue) { 
+32.                 mIncSpeedValue = mCurrentSpeedValue; 
+33.             } 
+34.             invalidate(); 
+35.         } 
+36.     } 
+重写onDraw以便重绘canvas
+drawSpeed里面
+通过计算mSweep = (float) mIncSpeedValue / mSpeedMax * 180;
+然后canvas.drawArc(mOval, 180, mSweep, false, mArcPaint);
+会根据mSweep的变化，画出相应长度的弧度来
+根据与阈值的对比，还可以设定不同的 颜色：
+ 
+if (mIncSpeedValue > mThreshold) {
+   mArcPaint.setColor(0xFFFF0000);
+  }
+  else {
+   mArcPaint.setColor(0xFF00B0F0);
+  }
+ 
+ 
+calcSpeed通过一个步进来控制增量或减量，以使弧度自然过渡，减少跳跃
+ok，大功告成
+ 
