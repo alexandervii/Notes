@@ -1,0 +1,252 @@
+WebView的缓存可以分为页面缓存和数据缓存。
+
+           页面缓存是指加载一个网页时的html、JS、CSS等页面或者资源数据。这些缓存资源是由于浏览器的行为而产生，开发者只能通过配置HTTP响应头影响浏览器的行为才能间接地影响到这些缓存数据。
+
+         他们的索引存放在/data/data/package_name/databases下。他们的文件存放在/data/data/package_name/cache/xxxwebviewcachexxx下。文件夹的名字在2.x和4.x上有所不同，但都文件夹名字中都包含webviewcache。
+
+
+            数据缓存分为两种：AppCache和DOM Storage（Web Storage）。他们是因为页面开发者的直接行为而产生。所有的缓存数据都由开发者直接完全地掌控。
+AppCache使我们能够有选择的缓冲web浏览器中所有的东西，从页面、图片到脚本、css等等。尤其在涉及到应用于网站的多个页面上的CSS和JavaScript文件的时候非常有用。其大小目前通常是5M。
+            在Android上需要手动开启（setAppCacheEnabled），并设置路径（setAppCachePath）和容量（setAppCacheMaxSize）
+
+Android中Webkit使用一个db文件来保存AppCache数据（my_path/ApplicationCache.db）
+
+
+          如果需要存储一些简单的用key/value对即可解决的数据，DOM Storage是非常完美的方案。根据作用范围的不同，有Session Storage和Local Storage两种，分别用于会话级别的存储（页面关闭即消失）和本地化存储（除非主动删除，否则数据永远不会过期）。
+在Android中可以手动开启DOM Storage（setDomStorageEnabled），设置存储路径（setDatabasePath）
+Android中Webkit会为DOM Storage产生两个文件（my_path/localstorage/http_h5.m.taobao.com_0.localstorage和my_path/localstorage/Databases.db）
+
+           另外，在Android中清除缓存时，如果需要清除Local Storage的话，仅仅删除Local Storage的本地存储文件是不够的，内存里面有缓存数据。如果再次进入页面，Local Storage中的缓存数据同样存在。需要杀死程序运行的当前进程再重新启动才可以。
+
+          
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+HTML5的离线应用功能可以使得WebApp即使在网络断开的情况下仍能正常使用，这是个非常有用的功能。近来工作中也要用到HTML5离线应用功能，由于是在Android平台上做，所以自然而然的选择Webview来解析网页。但如何使Webivew支持HTML5离线应用功能呢，经过反复摸索和上网查找资料，反复做试验终于成功了。
+
+首先需配置webview的的一些属性，假设activity中已经有了一个Webview的实例对象，名为m_webview，然后增加以下代码：
+[html] view plaincopy
+
+    WebSettings webseting = m_webview.getSettings();  
+        webseting.setDomStorageEnabled(true);             
+            webseting.setAppCacheMaxSize(1024*1024*8);//设置缓冲大小，我设的是8M  
+        String appCacheDir = this.getApplicationContext().getDir("cache", Context.MODE_PRIVATE).getPath();      
+            webseting.setAppCachePath(appCacheDir);  
+            webseting.setAllowFileAccess(true);  
+            webseting.setAppCacheEnabled(true);  
+            webseting.setCacheMode(WebSettings.LOAD_DEFAULT);   
+
+webview可以设置一个WebChromeClient对象，在其onReachedMaxAppCacheSize函数对扩充缓冲做出响应。代码如下：
+[html] view plaincopy
+
+    m_webview.setWebChromeClient(m_chromeClient);  
+        private WebChromeClient m_chromeClient = new WebChromeClient(){  
+            //扩充缓存的容量    
+        @Override  
+        public void onReachedMaxAppCacheSize(long spaceNeeded,    
+                    long totalUsedQuota, WebStorage.QuotaUpdater quotaUpdater) {    
+                quotaUpdater.updateQuota(spaceNeeded * 2);    
+            }         
+        };  
+
+
+ 
+
+其次要修改http服务器中的配置，使其支持text/cache-manifest，我使用的是apache服务器，是windows版本的，在apache的conf文件夹中找到mime.types文件，打开后在文件的最后加上
+“text/cache-manifest              mf  manifest”，重启服务器即可。这一步很重要，我就是因为服务器端没有配置这个，所以失败了好多次，最后是在附录链接1的回复中找到的线索。
+
+经过以上设置Webview就可以支持HTML5的离线应用了。
+
+附录链接1中说缓冲目录应该是getApplicationContext().getCacheDir().getAbsolutePath();但我经过试验后发现设置那个目录不起作用，可能是Android版本不同吧，我的是Android4.0.3，而他的可能是以前的Android版本吧。
+
+缓冲目录使用getApplicationContext().getDir("cache", Context.MODE_PRIVATE).getPath()是从附录链接2中找到的线索。
+
+附录链接：
+1.http://alex.tapmania.org/2010/11/html5-cache-android-webview.html
+2.http://johncookie.iteye.com/blog/1182459
+3.HTML5 Offline官方文档：http://www.w3.org/TR/html5/offline.html#manifests
+
+原因：
+webview加载 服务端的网页，为了减少访问压力，用html5缓存技术，本地建了数据库，在手机浏览器里  可以显示页面，换成webView就不行了。
+
+
+解决范例：
+Activity code：
+[java] view plaincopyprint?在CODE上查看代码片派生到我的代码片
+
+    public class efan_NewsReader extendsActivity {  
+            /** Called when the activity is first created. */  
+            @Override  
+            publicvoidonCreate(Bundle savedInstanceState)  
+            {     
+                    super.onCreate(savedInstanceState);     
+                    setContentView(R.layout.main);              
+                    WebView myWebView=(WebView)findViewById(R.id.my_webview);     
+                    myWebView.setWebViewClient(newWebViewClient());     
+                    WebSettings settings = myWebView.getSettings();  
+                   // 开启javascript设置  
+                   settings.setJavaScriptEnabled(true);    
+                   // 设置可以使用localStorage  
+                   settings.setDomStorageEnabled(true);  
+                   // 应用可以有数据库  
+                   settings.setDatabaseEnabled(true);     
+                   String dbPath =this.getApplicationContest().getDir("database", Context.MODE_PRIVATE).getPath();  
+                   settings.setDatabasePath(dbPath);  
+                   // 应用可以有缓存  
+                   settings.setAppCacheEnabled(true);              
+                   String appCaceDir =this.getApplicationContext().getDir("cache", Context.MODE_PRIVATE).getPath();  
+                   settings.setAppCachePath(appCaceDir);  
+                      
+                   myWebView.loadUrl("http://10.10.35.47:8080/html5test/test.htm");  
+            }  
+    }  
+
+
+
+  	 
+
+HTML5 page source code：
+[html] view plaincopyprint?在CODE上查看代码片派生到我的代码片
+
+    <htmlmanifesthtmlmanifest="mymanifest.manifest">  
+        <head>  
+    <metahttp-equivmetahttp-equiv="Content-Type"content="text/html; content="no-cache"charset=utf-8" />  
+    <scripttypescripttype="text/javascript"src="js/jquery-1.6.1.min.js"></script>  
+       
+    <script>  
+    $(document).ready(function(){        
+       
+        databaseTest();  
+    });  
+       
+    function databaseTest(){  
+       
+       
+        //open database  
+         var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);    
+       
+          db.transaction(function (tx) {              
+          tx.executeSql('CREATE TABLE IF NOT EXISTS testHtml (id unique, contentText)');  
+          tx.executeSql('INSERT INTO testHtml (contentText) VALUES ("insert data test!")');    
+           });    
+       
+         db.transaction(function(tx){             
+         tx.executeSql('SELECT * FROM testHtml',[],function(tx,result){  
+                var len=result.rows.length;  
+                var msg = "<p>Found rows: " + len + "</p>";    
+                 $("#testinfo").append(msg);  
+            },null);  
+         });     
+       
+       
+    }  
+       
+    </script>  
+       
+       
+    </head>  
+    <body>  
+        <div>here is test info:</div>  
+        <dividdivid="testinfo"></div>  
+    </body>  
+
+
+
+
+  	 
+
+
+
+
+其他设置还有：
+settings.setCacheMode(WebSettings.LOAD_DEFAULT);   // 默认使用缓存
+settings.setAppCacheMaxSize(8*1024*1024);   //缓存最多可以有8M
+settings.setAllowFileAccess(true);   // 可以读取文件缓存(manifest生效)
+
+
+in WebChromeClient :
+?
+[java] view plaincopyprint?在CODE上查看代码片派生到我的代码片
+
+    myWebView.setWebChromeClient(newWebChromeClient()  
+    {     
+            @Override     
+            publicvoidonExceededDatabaseQuota(String url, String databaseIdentifier,  
+                           longcurrentQuota,longestimatedSize,longtotalUsedQuota,  
+                           WebStorage.QuotaUpdater quotaUpdater)     
+            {          
+                    quotaUpdater.updateQuota(estimatedSize * 2);     
+            }  
+    }  
+
+
+  	 
+
+
+or:
+[java] view plaincopyprint?在CODE上查看代码片派生到我的代码片
+
+    myWebView.setWebChromeClient(newWebChromeClient()  
+    {  
+        // 扩充缓存的容量     
+            @Override     
+            publicvoidonReachedMaxAppCacheSize(longspaceNeeded,longtotalUsedQuota,  
+                           WebStorage.QuotaUpdater quotaUpdater)     
+            {          
+                    quotaUpdater.updateQuota(spaceNeeded * 2);  
+        }  
+    }  
+
+
+
+  	 
+
+按照范例，我成功的解决了我的问题，而且之前弹出框所出现的找不到数据（提示：underfine）也解决了，这个应该是当初数据库没设所引起的。
+
+
+WebView中存在着两种缓存：网页数据缓存（存储打开过的页面及资源）、H5缓存（即appcache）。
+
+一、网页缓存
+
+1、缓存构成
+/data/data/package_name/cache/
+/data/data/package_name/database/webview.db
+/data/data/package_name/database/webviewCache.db
+
+2、缓存模式
+较难理解的是以下两个模式：
+LOAD_DEFAULT，根据cache-control决定是否从网络上取数据。
+LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
+如：m.taobao.com的cache-control为no-cache，在模式LOAD_DEFAULT下，无论如何都会从网络上取数据，如果没有网络，就会出现错误页面；在LOAD_CACHE_ELSE_NETWORK模式下，无论是否有网络，只要本地有缓存，都使用缓存。本地没有缓存时才从网络上获取。
+m.sina.com.cn的cache-control为max-age=60，在两种模式下都使用本地缓存数据。
+
+
+总结：根据以上两种模式，建议缓存策略为，判断是否有网络，有的话，使用LOAD_DEFAULT，无网络时，使用LOAD_CACHE_ELSE_NETWORK。
+
+3、清除缓存
+clearCache(boolean)。
+CacheManager.clear。高版本中需要调用隐藏API。
+
+4、控制大小
+无系统API支持。
+可选方式：定时统计缓存大小、按时间顺序删除缓存。
+
+二、H5缓存
+
+1、缓存构成
+根据setAppCachePath(String appCachePath)提供的路径，在H5使用缓存过程中生成的缓存文件。
+
+2、缓存模式
+无模式选择，通过setAppCacheEnabled(boolean flag)设置是否打开。默认关闭，即，H5的缓存无法使用。
+
+3、清除缓存
+找到调用setAppCachePath(String appCachePath)设置缓存的路径，把它下面的文件全部删除就OK了。
+
+4、控制大小
+通过setAppCacheMaxSize(long appCacheMaxSize)设置缓存最大容量，默认为Max Integer。
+同时，可能通过覆盖WebChromeClient.onReachedMaxAppCacheSize(long requiredStorage, long quota, WebStorage.QuotaUpdater quotaUpdater)来设置缓存超过先前设置的最大容量时的策略。
+
+三、参考网址
+
+以下地址有关于H5缓存的一些内幕，如每个Application只调用一次WebSettings.setAppCachePath()，WebSettings.setAppCacheMaxSize()被忽略等一系列问题，需要仔细阅读和实验。
+http://code.google.com/p/android/issues/detail?id=24180
