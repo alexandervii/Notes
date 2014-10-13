@@ -1,0 +1,50 @@
+做dialog的全透明无边框背景，网上找了n久，都有问题，其实很简单，就两句搞定。
+
+<style name="waitDialog" parent="@android:style/Theme.Dialog">
+         <item name="android:windowFrame">@null</item>
+         <item name="android:windowNoTitle">true</item> 
+         <item name="android:windowBackground">@android:color/transparent</item>
+         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item> 
+         <item name="android:windowIsFloating">true</item>
+         <item name="android:windowContentOverlay">@null</item>
+</style>
+
+
+
+
+<style name="Translucent_NoTitle" parent="android:style/Theme.Dialog">
+
+<item name="android:background">#00000000</item> <!-- 设置自定义布局的背景透明 -->
+<item name="android:windowBackground">@android:color/transparent</item>  <!-- 设置window背景透明，也就是去边框 -->
+</style>
+ 
+
+其他的都可以不用设置，有些属性会继承下来，唯一一个没被继承的是 <item name="android:windowIsTranslucent">true</item>，这个不设置也没影响
+ 
+此方法同样可以用于activity，设置activity半透明
+复制代码
+res/values/styles.xml
+
+<resources>  
+  <style name="Transparent  ">  
+    <item name="android:windowBackground">@color/transparent_background</item>  
+    <item name="android:windowNoTitle">true</item>  
+    <item name="android:windowIsTranslucent">true</item>    
+    <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>  
+  </style>  
+</resources>  
+复制代码
+复制代码
+ res/values/color.xml
+
+<?xml version="1.0" encoding="utf-8"?>  
+<resources>  
+  <color name="transparent_background">#50000000</color>  
+</resources>  
+复制代码
+注意：color.xml的#5000000前两位是透明的效果参数从00--99（透明--不怎么透明），后6位是颜色的设置 
+
+manifest.xml
+
+<activity android:name=".TransparentActivity" android:theme="@style/Transparent">  
+</activity>  
