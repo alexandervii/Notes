@@ -1,0 +1,56 @@
+Java代码  收藏代码
+Gallery gallery = (Gallery) findViewById(R.id.gallery);  
+ 一般情况下，我们在Android中要用到类似这种图片容器的控件，都需要为它指定一个适配器，让它可以把内容按照我们定义的方式来显示，因此我们来给它加一个适配器，至于这个适配器如何实现，后面接着来操作，这里只需知道这个适配器的类叫ImageAdapter。 gallery.setAdapter(new ImageAdapter(this));
+ 
+复制代码接下来就是重头戏了，适配器可以说是最重要的，我们来看看如何做？到这里似乎还缺少一些很重要的东西？什么东西呢？我们需要显示的是图片，那么图片我们当然首先要准备好，这里我们准备了5张图片(存放drawable文件夹中)，我们用其IDs做索引，以便在适配器中使用。
+Java代码  收藏代码
+private Integer[] mps = {  
+        R.drawable.icon1,  
+        R.drawable.icon2,  
+        R.drawable.icon3,  
+        R.drawable.icon4,  
+        R.drawable.icon5  
+};  
+OK，这里将开始定义适配器了，通过继承BaseAdapter用以实现的适配器。  
+ 
+Java代码  收藏代码
+public class ImageAdapter extends BaseAdapter {  
+    private Context mContext;  
+        public ImageAdapter(Context context) {  
+        mContext = context;  
+    }  
+  
+    public int getCount() {   
+        return mps.length;  
+    }  
+  
+    public Object getItem(int position) {  
+        return position;  
+    }  
+  
+    public long getItemId(int position) {  
+        return position;  
+    }  
+  
+    public View getView(int position, View convertView, ViewGroup parent) {  
+        ImageView image = new ImageView(mContext);  
+        image.setImageResource(mps[position]);  
+        image.setAdjustViewBounds(true);  
+        image.setLayoutParams(new Gallery.LayoutParams(  
+            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));  
+        return image;  
+    }  
+}  
+至此，整个Gallery基本都是先完成了，我们还需要为它添加一个监听器，否则这个缩略图浏览器就仅仅只可以看不能用了。
+ 
+Java代码  收藏代码
+gallery.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {  
+    @Override  
+    public void onItemSelected(AdapterView<?> parent, View v,int position, long id) {  
+    }  
+  
+    @Override  
+    public void onNothingSelected(AdapterView<?> arg0) {  
+    //这里不做响应  
+    }  
+});  
