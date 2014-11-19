@@ -1,3 +1,32 @@
 不明确(false)就是滚动条的当前值自动在最小到最大值之间来回移动，形成这样一个动画效果，
 这个只是告诉别人“我正在工作”，但不能提示工作进度到哪个阶段。主要是在进行一些无法确定操作时间的任务时作为提示。
 而“明确”(true)就是根据你的进度可以设置现在的进度值
+
+
+注意：如果直接将图片设置到indeterminateDrawable属性上，会出现ProgressBar不转动了，应该按照下面的方法设置
+
+用图片实现滚动效果：
+1.添加图片到drawable下
+2.自定义图片资源文件iamge_progress.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<animated-rotate
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/image_progress"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    />
+	
+3.定义布局文件，progress.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:gravity="center">
+<ProgressBar
+        android:indeterminateDrawable="@drawable/drawable_progress"
+        android:layout_height="100dp"
+        android:layout_width="100dp"/>
+</LinearLayout>
