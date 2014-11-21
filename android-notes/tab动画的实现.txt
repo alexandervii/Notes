@@ -1,0 +1,36 @@
+    private void initImageView() {
+        imgAnimation = (ImageView) findViewById(R.id.imageview_cursor_id);
+        // 获取图片宽度
+        mPicWidth = BitmapFactory.decodeResource(getResources(), R.drawable.beside_my_help_title_underline).getWidth();
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int screenW = dm.widthPixels;// 获取分辨率宽度
+        mOffset = (screenW / 2 - mPicWidth) / 2;// 计算偏移量
+        Matrix matrix = new Matrix();
+        matrix.postTranslate(mOffset, 0);
+        imgAnimation.setImageMatrix(matrix);// 设置动画初始位置
+    }
+
+
+    private class MyHelpOnPageChangedListener implements OnPageChangeListener {
+        int one = mOffset * 2 + mPicWidth;// 页卡1 -> 页卡2 偏移量
+
+        @Override
+        public void onPageScrollStateChanged(int arg0) {
+        }
+
+        @Override
+        public void onPageScrolled(int arg0, float arg1, int arg2) {
+        }
+
+        @Override
+        public void onPageSelected(int arg0) {
+			//替换tab文字的颜色
+
+            Animation animation = new TranslateAnimation(one * mPreIndex, one * arg0, 0, 0);
+            mPreIndex = arg0;
+            animation.setFillAfter(true);// True:图片停在动画结束位置
+            animation.setDuration(300);
+            imgAnimation.startAnimation(animation);
+        }
+    }
