@@ -1,0 +1,13 @@
+ listview android:cacheColorHint,android:listSelector属性作用
+
+ListView是常用的显示控件，默认背景是和系统窗口一样的透明色，如果给ListView加上背景图片，或者背景颜色时，滚动时listView会黑掉，
+原因是，滚动时，列表里面的view重绘时，用的依旧是系统默认的透明色，颜色值为#FF191919，
+要改变这种情况，只需要调用listView的setCacheColorHint(0)，颜色值设置为0
+或者xml文件中listView的属性 Android:cacheColorHint="#00000000"即可，
+滚动时，重绘View的时候就不会有背景颜色。
+android:listSelector="#00000000"
+进行上面的设置之后，ListView点击item时就没有任何现象了，
+android:listSelector="@null"不可以实现。
+自定义listview的时候，当你不使用android:cacheColorHint=“#00000000”会出现下面选中一个空间黑色底色的情况，破坏整体美观度：
+
+当你不使用android:listSelector属性，默认会显示选中的item为橙黄底色，有时候我们需要去掉这种效果：
