@@ -1,0 +1,81 @@
+        AsyncTask 能够让你恰当容易地使用UI线程。AsyncTask其实是Android给开发者提供的一个简单轻量级的多线程类，通过它我们可以很容易新建一个线程做一些耗时的操作，并在这个过程中更新UI。之所以说它轻量级，是因为缺少了直接使用Thread的灵活性。这个类允许执行后台操作，在UI线程上发布的结果而无需操纵线程或Handler。AsyncTask设计出来的目的就是作为Thread和Handler的一个辅助类，并不构成一个通用线程框架。asynctasks应用于短作业（最多几秒钟）。如果你需要保持线程运行很长一段时间，那么强烈建议你使用javaAPIjava.util.concurrent包里面的类，例如Executor, ThreadPoolExecutor and FutureTask。一个AsyncTask任务由计算运行在后台线程上，其结果发表在UI线程上。它有三种参数类型， Params, Progress and Result和四个步骤：onPreExecute, doInBackground, onProgressUpdate and onPostExecute。
+
+         AsyncTask必须使用子类，也就是必须继承  AsyncTask才能使用它。子类会覆盖至少一个方法(doInBackground(Params…)),通常将覆盖第二个(onPostExecute(Result))。
+        下面看一个例子：
+
+
+[java]
+private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> { 
+    protected Long doInBackground(URL... urls) { 
+        int count = urls.length; 
+        long totalSize = 0; 
+        for (int i = 0; i < count; i++) { 
+            totalSize += Downloader.downloadFile(urls[i]); 
+            publishProgress((int) ((i / (float) count) * 100)); 
+            // Escape early if cancel() is called  
+            if (isCancelled()) break; 
+        } 
+        return totalSize; 
+    } 
+ 
+    protected void onProgressUpdate(Integer... progress) { 
+        setProgressPercent(progress[0]); 
+    } 
+ 
+    protected void onPostExecute(Long result) { 
+        showDialog("Downloaded " + result + " bytes"); 
+    } 
+} 
+
+ private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
+     protected Long doInBackground(URL... urls) {
+         int count = urls.length;
+         long totalSize = 0;
+         for (int i = 0; i < count; i++) {
+             totalSize += Downloader.downloadFile(urls[i]);
+             publishProgress((int) ((i / (float) count) * 100));
+             // Escape early if cancel() is called
+             if (isCancelled()) break;
+         }
+         return totalSize;
+     }
+
+     protected void onProgressUpdate(Integer... progress) {
+         setProgressPercent(progress[0]);
+     }
+
+     protected void onPostExecute(Long result) {
+         showDialog("Downloaded " + result + " bytes");
+     }
+ }
+            一旦创建,执行一个任务非常简单:
+[java]
+new DownloadFilesTask().execute(url1, url2, url3); 
+
+new DownloadFilesTask().execute(url1, url2, url3);           android的类AsyncTask对线程间通讯进行了包装，提供了简易的编程方式来使后台线程和UI线程进行通讯：后台线程执行异步任务，并把操作结果通知UI线程。
+     AsyncTask是抽象类.AsyncTask定义了三种泛型类型 Params，Progress和Result。
+     Params 启动任务执行的输入参数，比如HTTP请求的URL。
+     Progress 后台任务执行的百分比。
+     Result 后台执行任务最终返回的结果，比如String,Integer。
+
+
+                                                                                      
+
+              AsyncTask的执行分为四个步骤，每一步都对应一个回调方法，开发者需要实现这些方法。
+                1) 继承AsyncTask
+                2) 实现AsyncTask中定义的下面一个或几个方法
+                     onPreExecute(), 该方法将在执行实际的后台操作前被UI 线程调用。可以在该方法中做一些准备工作，如在界面上显示一个进度条，或者一些控件的实例化，这个方法可以不用实现。
+                    doInBackground(Params...), 将在onPreExecute 方法执行后马上执行，该方法运行在后台线程中。这里将主要负责执行那些很耗时的后台处理工作。可以调用 publishProgress方法来更新实时的任务进度。该方法是抽象方法，子类必须实现。
+                    onProgressUpdate(Progress...),在publishProgress方法被调用后，UI 线程将调用这个方法从而在界面上展示任务的进展情况，例如通过一个进度条进行展示。
+                    onPostExecute(Result), 在doInBackground 执行完成后，onPostExecute 方法将被UI 线程调用，后台的计算结果将通过该方法传递到UI 线程，并且在界面上展示给用户.
+                   onCancelled(),在用户取消线程操作的时候调用。在主线程中调用onCancelled()的时候调用。
+           为了正确的使用AsyncTask类，以下是几条必须遵守的准则：
+    　      　1) Task的实例必须在UI 线程中创建
+    　      　2) execute方法必须在UI 线程中调用
+          　　3) 不要手动的调用onPreExecute(), onPostExecute(Result)，doInBackground(Params...), onProgressUpdate(Progress...)这几个方法，需要在UI线程中实例化这个task来调用。
+    　     　4) 该task只能被执行一次，否则多次调用时将会出现异常
+
+
+                                                                   
+
+                 doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第第三个为doInBackground返回和onPostExecute传入的参数。阅读AsyncTask的源码可知，AsyncTask是使用java.util.concurrent 框架来管理线程以及任务的执行的。
