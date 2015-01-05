@@ -1,0 +1,37 @@
+android监听home键的方法
+       大致方法是通过对Intent.ACTION_CLOSE_SYSTEM_DIALOGS这个action进行监听，然后通过intent获取的string关键字判断单按和长按事件，具体方法如下：
+1.在onCrate()方法中注册一个广播，代码如下：
+private IntentFilter mIntentFilter;
+private HomeKeyReceiver mHomeKeyReceiver = new HomeKeyReceiver();
+
+if(mIntentFilter == null){
+      mIntentFilter = new IntentFilter();
+      mIntentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+}
+registerReceiver(mHomeKeyReceiver,  mIntentFilter);
+2.有了注册，当然需要在onDestroy方法中取消注册，代码如下：
+unregisterReceiver(mHomeKeyReceiver);
+3.监听广播的主要方法，代码如下：
+public class HomeKeyReceiver  extends BroadcastReceiver{
+      final String SYSTEM_DIALOGS_REASON_KEY = "reason";
+      final String SYSTEM_DIALOGS_REASON_HOME_KEY = "homekey";
+      final String SYSTEM_DIALOGS_REASON_RECENT_APPS = "reasonapps";
+
+     @Override
+     public void onReceive(Context context, Intent intent){
+            String action = intent.getAction();
+            String reason = intent.getStringExtra(SYSTEM_DIALOGS_REASON_KEY);
+            if(action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)){
+                    if(reason != null){
+                           if(reason.equals(SYSTEM_DIALOGS_REASON_HOME_KEY)){
+                                  //click home key
+                                  //you do
+                           }else if(reason.equals(SYSTEM_DIALOGS_REASON_RECENT_APPS)){
+                                  //long click home key
+                                  //you do
+
+                           }
+                    }
+            }
+     }
+}
