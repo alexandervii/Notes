@@ -1,0 +1,33 @@
+ android检查应用程序是否安装和检查服务是否启动的方法
+
+检查应用程序是否安装：
+private boolean checkAppExist(Context context, String packageName){
+        if(packageName == null || "".equals(packageName)){
+               return false;
+         }
+  
+         try{
+                ApplicationInfo info = context.getPackageManager().getApplicationInfo(packageName
+                       , PackageManager.GET_UNINSTALLED_PACKAGES);
+                 return true;
+          }catc(NameNotFoundException e){
+                 return false;
+          }
+}
+
+检查服务是否启动:
+private boolean isBaseServiceStart(List<ActivityManager.RunningServiceInfo> mServiceList, String serviceName){
+     for(int i = 0; i < mServiceList.size(); i++){
+                if(serviceName.equals(mServiceList.get(i).service.getClassName())){
+                       return true;
+                }
+             return false;
+      }
+}
+
+ private boolean checkServiceStart(Context context, String serviceName){
+          ActivityManager mActivityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+          List<ActivityManager.RunningServiceInfo> currentService = mActivityManager.getRunningServices(100);
+          boolean result =    isBaseServiceStart(currentService, serviceName);    
+          return result;  
+}
