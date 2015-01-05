@@ -1,3 +1,9 @@
-android动画效果,视觉设计：http://blog.csdn.net/sziicool?viewmode=contents;
+android动画效果,视觉设计：
+			  http://blog.csdn.net/sziicool?viewmode=contents;
 			  http://blog.csdn.net/guolin_blog?viewmode=contents
+	
+android小技巧：
+			  http://blog.csdn.net/xiaoyaovsxin?viewmode=contents	
+android学习视屏：			 
 			  http://www.imooc.com/learn/223
+
