@@ -6,4 +6,7 @@ android小技巧：
 			  http://blog.csdn.net/xiaoyaovsxin?viewmode=contents	
 android学习视屏：			 
 			  http://www.imooc.com/learn/223
+			  
+算法：
+			  http://blog.csdn.net/beiyeqingteng?viewmode=contents
 
