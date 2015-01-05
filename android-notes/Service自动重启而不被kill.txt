@@ -1,0 +1,35 @@
+ android--Service自动重启而不被kill掉的一些方法
+
+android server
+1.最好的方法是重写service的onStartCommand方法：
+@Override   
+public int onStartCommand(Intent intent, int flags, int startId) {
+
+        return START_STICKY;   
+}
+
+简单介绍下这个方法，在Android开发的过程中，每次调用startService(Intent)的时候，都会调用该Service对象的onStartCommand(Intent,int,int)方法，然后在onStartCommand方法中做一些处理。然后我们注意到这个函数有一个int的返回值，现在讲讲int返回值的作用。从Android官方文档中，我们知道onStartCommand有4种返回值：
+START_STICKY：如果service进程被kill掉，保留service的状态为开始状态，但不保留递送的intent对象。随后系统会尝试重新创建service，由于服务状态为开始状态，所以创建服务后一定会调用onStartCommand(Intent,int,int)方法。如果在此期间没有任何启动命令被传递到service，那么参数Intent将为null。
+
+START_NOT_STICKY：“非粘性的”。使用这个返回值时，如果在执行完onStartCommand后，服务被异常kill掉，系统不会自动重启该服务。
+
+START_REDELIVER_INTENT：重传Intent。使用这个返回值时，如果在执行完onStartCommand后，服务被异常kill掉，系统会自动重启该服务，并将Intent的值传入。
+
+START_STICKY_COMPATIBILITY：START_STICKY的兼容版本，但不保证服务被kill后一定能重启。
+
+
+下面的方法或多或少都会出现一些弊端或者相对来说比较麻烦，如：
+
+2.在onDestory方法中重启Service服务（startService），一般来说，这样做是可以的。但是如果这样----》设置-->下载-->强制停止。则不会执行ondestory方法，或者通过别人应用，如360直接kill掉我的应用时，也是不会调用Service的ondestory方法的。
+
+3.修改AndroidManifest.xml
+<manifest  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:sharedUserId="android.uid.system">     
+<application android:icon="@drawable/icon"
+                     android:label="@string/app_name" 
+                     android:allowClearUserData="false"
+                     android:process="system"  
+                     android:killAfterRestore="false">
+如果在加入了此部分代码，表示该程序运行在system进程组中，system进程组是没有权限访问sd卡的，而且service是不会自动重启的。
+
+4.提高service的优先级别，但是不管你service的优先级别有多高，用户都是可以手动杀死的。
