@@ -56,10 +56,7 @@ new DownloadFilesTask().execute(url1, url2, url3);           android的类AsyncTas
      AsyncTask是抽象类.AsyncTask定义了三种泛型类型 Params，Progress和Result。
      Params 启动任务执行的输入参数，比如HTTP请求的URL。
      Progress 后台任务执行的百分比。
-     Result 后台执行任务最终返回的结果，比如String,Integer。
-
-
-                                                                                      
+     Result 后台执行任务最终返回的结果，比如String,Integer。                                                                             
 
               AsyncTask的执行分为四个步骤，每一步都对应一个回调方法，开发者需要实现这些方法。
                 1) 继承AsyncTask
@@ -74,8 +71,4 @@ new DownloadFilesTask().execute(url1, url2, url3);           android的类AsyncTas
     　      　2) execute方法必须在UI 线程中调用
           　　3) 不要手动的调用onPreExecute(), onPostExecute(Result)，doInBackground(Params...), onProgressUpdate(Progress...)这几个方法，需要在UI线程中实例化这个task来调用。
     　     　4) 该task只能被执行一次，否则多次调用时将会出现异常
-
-
-                                                                   
-
-                 doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第第三个为doInBackground返回和onPostExecute传入的参数。阅读AsyncTask的源码可知，AsyncTask是使用java.util.concurrent 框架来管理线程以及任务的执行的。
+          doInBackground方法和onPostExecute的参数必须对应，这两个参数在AsyncTask声明的泛型参数列表中指定，第一个为doInBackground接受的参数，第二个为显示进度的参数，第第三个为doInBackground返回和onPostExecute传入的参数。阅读AsyncTask的源码可知，AsyncTask是使用java.util.concurrent 框架来管理线程以及任务的执行的。
