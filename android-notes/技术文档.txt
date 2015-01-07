@@ -7,6 +7,9 @@ android小技巧：
 android学习视屏：			 
 			  http://www.imooc.com/learn/223
 			  
+android知识：http://blog.csdn.net/lmj623565791
+			 http://blog.csdn.net/xiaanming
+			  
 算法：
 			  http://blog.csdn.net/beiyeqingteng?viewmode=contents
 
