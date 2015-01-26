@@ -1,0 +1,61 @@
+如何扫描出android系统媒体库中视频文件
+
+Android系统启动时会去扫描系统文件，并将系统支持的视频文件（mp4,3gp,wmv）扫描到媒体库（MediaStore）中，下面代码演示如何获得这些文件的信息：
+
+public static List<VideoInfo> sysVideoList = null;// 视频信息集合  
+sysVideoList = new ArrayList<VideoInfo>();  
+setVideoList();  
+  
+    private void setVideoList() {  
+        // MediaStore.Video.Thumbnails.DATA:视频缩略图的文件路径  
+        String[] thumbColumns = { MediaStore.Video.Thumbnails.DATA,  
+                MediaStore.Video.Thumbnails.VIDEO_ID };  
+  
+        // MediaStore.Video.Media.DATA：视频文件路径；  
+        // MediaStore.Video.Media.DISPLAY_NAME : 视频文件名，如 testVideo.mp4  
+        // MediaStore.Video.Media.TITLE: 视频标题 : testVideo  
+        String[] mediaColumns = { MediaStore.Video.Media._ID,  
+                MediaStore.Video.Media.DATA, MediaStore.Video.Media.TITLE,  
+                MediaStore.Video.Media.MIME_TYPE,  
+                MediaStore.Video.Media.DISPLAY_NAME };  
+  
+        cursor = managedQuery(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,  
+                mediaColumns, null, null, null);  
+          
+        if(cursor==null){  
+            Toast.makeText(SystemVideoChooseActivity.this, "没有找到可播放视频文件", 1).show();  
+            return;  
+        }  
+        if (cursor.moveToFirst()) {  
+            do {  
+                VideoInfo info = new VideoInfo();  
+                int id = cursor.getInt(cursor  
+                        .getColumnIndex(MediaStore.Video.Media._ID));  
+                Cursor thumbCursor = managedQuery(  
+                        MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,  
+                        thumbColumns, MediaStore.Video.Thumbnails.VIDEO_ID  
+                                + "=" + id, null, null);  
+                if (thumbCursor.moveToFirst()) {  
+                    info.setThumbPath(thumbCursor.getString(thumbCursor  
+                            .getColumnIndex(MediaStore.Video.Thumbnails.DATA)));  
+                }  
+                info.setPath(cursor.getString(cursor  
+                        .getColumnIndexOrThrow(MediaStore.Video.Media.DATA)));  
+                info.setTitle(cursor.getString(cursor  
+                        .getColumnIndexOrThrow(MediaStore.Video.Media.TITLE)));  
+                  
+                info.setDisplayName(cursor.getString(cursor  
+                        .getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)));  
+                LogUtil.log(TAG, "DisplayName:"+info.getDisplayName());  
+                info.setMimeType(cursor  
+                        .getString(cursor  
+                                .getColumnIndexOrThrow(MediaStore.Video.Media.MIME_TYPE)));  
+                  
+                sysVideoList.add(info);  
+            } while (cursor.moveToNext());  
+        }  
+    }  
+
+有一点需要注意的是：系统的媒体库并不会在我们添加视频文件后自动更新，我们如何去手动扫描媒体库，或者重启系统才能从媒体库中得到更新的视频文件：
+sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"  
+                + Environment.getExternalStorageDirectory())));   
