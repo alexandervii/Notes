@@ -1,0 +1,94 @@
+Android多媒体访问
+Android的多媒体文件主要存储在/data/data/com.android.providers.media/databases目录下，该目录下有两个db文件，一个是内部存储数据库文件(internal.db)，一个是存储卡数据库(external-XXXX.db)。
+媒体文件的操作主要是围绕着这两个数据库来进行。这两个数据库的结构是完全一模一样的。
+
+Android提供了MediaStore类，该类是一个ContentProvider，管理着设备上自带的和外部的多媒体文件，同时包含着每一个多媒体文件的数据信息。
+
+通过Uri我们可以获取到媒体信息的完整路径，类型等信息，同样，我们也可以通过文件路径创建Uri
+
+由文件路径得到URI
+
+复制代码
+    Uri mUri = Uri.parse("content://media/external/images/media"); 
+    Uri mImageUri = null;
+
+    Cursor cursor = mContext.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null,
+                    null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+    cursor.moveToFirst();
+
+    while (!cursor.isAfterLast()) {
+        String data = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+        if (picPath.equals(data)) {
+            int ringtoneID = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            mImageUri = Uri.withAppendedPath(mUri, ""+ ringtoneID);
+            break;
+        }
+            
+        cursor.moveToNext();
+    }
+复制代码
+
+由Uri获取文件路径
+
+复制代码
+    string  myImageUrl = "content://media/external/images/media/***";
+    Uri uri = Uri.parse(myImageUrl);
+    
+    String[] proj = { MediaStore.Images.Media.DATA };   
+    Cursor actualimagecursor = mContext.getContentResolver().query(uri,proj,null,null,null);  
+    int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);   
+    actualimagecursor.moveToFirst();   
+    
+    String img_path = actualimagecursor.getString(actual_image_column_index);  
+    File file = new File(img_path);
+    Uri fileUri = Uri.fromFile(file);
+复制代码
+
+获取本地媒体数据库中的video相关信息
+
+复制代码
+    private void testScanVideoUri(){
+        Log.w(TAG,"testScanVideoUri come in=="+MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        Cursor cursor = mContext.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, 
+                        null, null,null, null);
+        int totalCount =cursor.getCount();
+        Log.w(TAG,"totalCount = "+totalCount);
+        cursor.moveToFirst();
+        
+        for( int i = 0;i < totalCount;i++){
+            String data = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+            String data1 = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+            String title = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE));
+            String type = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.MIME_TYPE));
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Video.Media._ID));
+            Log.i(TAG,"data="+data);
+            Log.i(TAG,"data1="+data1);
+            Log.i(TAG,"title="+title);
+            Log.i(TAG,"type="+type);
+            Log.i(TAG,"id="+id);
+            
+            cursor.moveToNext();
+        }
+        Log.w(TAG,"testScanVideoUri come out");
+    }
+复制代码
+ 
+
+参考:
+Android媒体的一些使用总结 
+http://blog.csdn.net/xingtian713/article/details/6458150
+
+Android媒体的一些使用总结（2） 
+http://blog.csdn.net/xingtian713/article/details/6525411
+
+Android多媒体学习一：Android中Image的简单实例。 
+http://blog.csdn.net/chenjie19891104/article/details/6320323
+
+Android开发之旅: Intents和Intent Filters（理论部分）
+http://www.cnblogs.com/skynet/archive/2010/07/20/1781644.html
+
+Android学习笔记——文件路径(/mnt/sdcard/...)、Uri(content://media/external/...)学习   (比较透彻)
+http://www.cnblogs.com/lingyun1120/archive/2012/04/18/2455212.html
+
+Android 4.4从图库选择图片,获取图片路径并裁剪 
+http://blog.csdn.net/tempersitu/article/details/20557383
