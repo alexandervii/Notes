@@ -1,0 +1,14 @@
+ADB server didn't ACK 这个问题会困恼很多的新手朋友，我以前刚开始做Android的时候也遇到过这个问题，不过自己百度，google啥的，也不知道怎么就给解决了，看到群里很多新手朋友都会问这个问题，说实话我也没有一个解决这个问题的终极方法（百试百灵的那种，哈哈），自己没遇到也没有认真的去对待他，今天，就是在今天，我打开Eclipse连上手机，准备调试程序，出现如下的信息
+[plain] view plaincopy在CODE上查看代码片派生到我的代码片
+The connection to adb is down, and a severe error has occured.   
+You must restart adb and Eclipse.   
+Please ensure that adb is correctly located at 'D:\android-2.2-windows\platform-tools\adb.exe' and can be executed.  
+然后我就按照他的要求来做，重启Eclipse和adb，然后确认adb的路径是否正确，然后当我再次运行程序的时候，依旧不行，之后我就开始百度了，有朋友说先在DOS下运行adb kill-server（你必须在环境变量中配好你adb的路径或者进入到adb.exe的目录下），然后在adb start-server,当我运行adb start-server的时候，DOS出现如下信息
+[plain] view plaincopy在CODE上查看代码片派生到我的代码片
+* daemon not running. starting it now *   
+ADB server didn't ACK   
+* failed to start daemon *   
+然后在运行程序还是不行，重复搞了很多次老不行，还有朋友说在任务管理器找到adb.exe，然后关闭，重启Eclipse，我打开任务管理器，发现根本没有找到adb.exe,这时候我流泪满面了，然后我冷静下来，知道有些朋友遇到这个错误是因为豌豆荚啥的软件占用了adb.exe的端口，我的电脑里面根本没有安装豌豆荚，然后我想看看是谁占用adb的端口，我从网上查到adb.exe使用的端口是5037，接下来我给大家介绍解决方法
+查看5037端口被谁占用了，开始--运行--CMD 到命令提示符，输入 netstat -aon|findstr "5037"，如下图                                                                          
+我们从上面根本就看不出5037端口被谁占用，我们需要根据后面的PID（2748）来查找占用该端口的应用程序，输入 tasklist|findstr "2748" ,如下图                                                                                                                                                                                                                                                                                                      注： 我这里5037端口是正确的被adb.exe占用，如果是你，就是其他的应用程序啦
+结束该进程，输入taskkill /f /t /im 你的进程名，例如adb.exe，如下图，在重新连接手机，这时候你会发现程序运行起来了   
