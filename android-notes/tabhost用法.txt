@@ -1,0 +1,106 @@
+TabHostActivity.java
+public class TabHostActivity extends TabActivity {
+    private TabHost tabHost;
+    private Intent certificateIntent;
+    private Intent feeIntent;
+    private Intent scoreIntent;
+    private Intent studyIntent;
+    private Intent moreIntent;
+ 
+    @Override
+    publicvoid onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+       tabHost = getTabHost();
+       initIntent();
+       addSpec();
+    }
+    /**
+     * 初始化各个tab标签对应的intent
+     */
+    privatevoid initIntent() {
+       studyIntent = new Intent(this, StudyActivity.class);
+       scoreIntent = new Intent(this, ScoreActivity.class);
+       feeIntent = new Intent(this, FeeActivity.class);
+       certificateIntent = new Intent(this, CertificateActivity.class);
+       moreIntent = new Intent(this, MoreActivity.class);
+    }
+    /**
+     * 为tabHost添加各个标签项
+     */
+    privatevoid addSpec() {
+      tabHost.addTab(this.buildTagSpec("tab_study",
+R.string.study_progress,R.drawable.account01, studyIntent));
+    tabHost.addTab(this.buildTagSpec("tab_score",
+R.string.test_score,R.drawable.account02, scoreIntent));
+        tabHost.addTab(this.buildTagSpec("tab_fee",
+R.string.fee_pay,R.drawable.account03, feeIntent));
+       tabHost.addTab(this.buildTagSpec("tab_certificate",  R.string.certificate_grant,R.drawable.accountcertificateIntent));
+       tabHost.addTab(this.buildTagSpec("tab_more", R.string.more,
+              R.drawable.account05, moreIntent));
+    }
+    /**
+     * 自定义创建标签项的方法
+     * @param tagName 标签标识
+     * @param tagLable 标签文字
+     * @param icon  标签图标
+     * @param content 标签对应的内容
+     * @return
+     */
+    private TabHost.TabSpec buildTagSpec(String tagName, int tagLable,
+           int icon, Intent content) {
+       returntabHost
+              .newTabSpec(tagName)
+              .setIndicator(getResources().getString(tagLable),
+                     getResources().getDrawable(icon)).setContent(content);
+    }}
+运行结果如下图所示
+
+我们发现标签位置处于界面上方，但是我们看到的很多应用的标签都处于界面底部。
+如下图所示
+ 我们要实现这种效果只需要将TabActivity的默认布局覆盖即可。新布局只需将标签和标签对应内容的相对位置调换一下就可以了，这里是用相对布局将标签对应内容的位置放到了标签的上方。不要改动id（会抛异常，提示必须要用指定的id）。不要忘了在onCreate()里设置新布局将TabActivity的默认布局覆盖。
+    @Override
+    publicvoid onCreate(Bundle savedInstanceState) {
+       super.onCreate(savedInstanceState);
+setContentView(R.layout.tab);
+       tabHost = getTabHost();
+       initIntent();
+       addSpec();
+    }
+tab.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TabHost组件id值不可变-->
+<TabHostxmlns:android=http://schemas.android.com/apk/res/android
+    android:id="@android:id/tabhost"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+   
+    <RelativeLayout android:orientation="vertical"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent">
+      
+       <!-- TabWidget组件id值不可变-->
+       <TabWidget android:id="@android:id/tabs"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:layout_alignParentBottom="true">
+       </TabWidget>
+      
+       <!-- FrameLayout布局，id值不可变-->
+       <FrameLayout android:id="@android:id/tabcontent"
+           android:layout_width="fill_parent"
+           android:layout_height="fill_parent"
+           android:layout_above="@android:id/tabs">
+       </FrameLayout>
+      
+    </RelativeLayout>
+</TabHost>
+ 
+
+通常在项目中我们都会有一个自定义的Activity基类，我们会让所有的界面Activity去继承这个基类。但是要使用TabHost就要继承TabActivity，所以我们可以定义两个基类，一个是普通Activity界面的基类，另一个是包含TabHost界面的基类，让这个基类继承TabActivity即可。
+
+
+
+注意：如果页面中有edittext,那么点击edittext弹出输入法管理器的时候会把底部的tab顶上去，解决办法是
+两种方式解决：
+1.在配置文件里配置activity，如果是tabactivity就把tabactivity配置上 android:windowSoftInputMode="adjustPan|stateVisible"
+2.重写你这个布局的onSizeChanged
