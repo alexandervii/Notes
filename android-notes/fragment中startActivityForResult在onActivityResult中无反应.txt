@@ -1,0 +1,12 @@
+在使用fragment 和 fragmentActivity组合，调用startActivityForResult方法可能没有响应，还不知道问题出在哪里。现梳理一下正确的调用方式。
+?
+第一种情况：
+fragment.java 中
+getActivity().startActivityForResult(intent,1001);
+?这种情况下fragmentActivity下的onActivityResult方法被调用。fragment中的onActivityResult不会被调用。
+第二种情况：
+fragment.java 中
+startActivityForResult(intent,1001);
+?这种情况下fragmentActivity下的onActivityResult方法被调用，同时注意的是如果fragmentActivity下的onActivityResult方法调用了super.onActivityResult方法，fragment中的onActivityResult也会被调用。
+?
+最后，一般情况下使用第二种情况，且不重载fragmentActivity下的onActivityResult方法，除非fragment和activity有互动。出现标题现象的原因大多是重载fragmentActivity下的onActivityResult方法但是没有调用super.onActivityResult方法
