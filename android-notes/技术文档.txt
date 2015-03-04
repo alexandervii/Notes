@@ -12,4 +12,6 @@ android知识：http://blog.csdn.net/lmj623565791
 			  
 算法：
 			  http://blog.csdn.net/beiyeqingteng?viewmode=contents
+			  
+自定义控件：http://blog.csdn.net/aigestudio?viewmode=contents
 
