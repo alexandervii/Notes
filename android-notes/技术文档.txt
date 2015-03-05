@@ -15,3 +15,5 @@ android知识：http://blog.csdn.net/lmj623565791
 			  
 自定义控件：http://blog.csdn.net/aigestudio?viewmode=contents
 
+drawable使用:http://blog.csdn.net/lmj623565791/article/details/43752383
+
