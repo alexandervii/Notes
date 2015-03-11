@@ -17,3 +17,5 @@ android知识：http://blog.csdn.net/lmj623565791
 
 drawable使用:http://blog.csdn.net/lmj623565791/article/details/43752383
 
+面试中长遇到的问题：https://github.com/android-cn/interview-questions/issues
+
