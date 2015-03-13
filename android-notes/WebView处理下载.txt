@@ -1,0 +1,17 @@
+1.处理下载
+WebView.setDownloadListener(new DownLoader());
+
+class DownLoader implements DownloadListener {
+	@Override
+		public void onDownloadStart(String url, String userAgent,
+				String contentDisposition, String mimetype, long contentLength) {
+			if(url.endsWith(".apk")) {
+				//自定义下载
+//				new HttpThread(url).start();
+				//系统下载
+				Uri uri = Uri.parse(url);
+				Intent intent  = new Intent(Intent.ACTION_VIEW,uri);
+				startActivity(intent);
+			}
+		}
+}
