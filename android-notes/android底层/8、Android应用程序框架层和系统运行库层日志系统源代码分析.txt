@@ -1,0 +1,398 @@
+Android应用程序框架层和系统运行库层日志系统源代码分析
+分类： Android 2011-07-11 23:26 28351人阅读 评论(10) 收藏 举报
+android框架stringsystemevents
+        在开发Android应用程序时，少不了使用Log来监控和调试程序的执行。在上一篇文章Android日志系统驱动程序Logger源代码分析中，我们分析了驱动程序Logger的源代码，在前面的文章浅谈Android系统开发中Log的使用一文，我们也简单介绍在应用程序中使Log的方法，在这篇文章中，我们将详细介绍Android应用程序框架层和系统运行库存层日志系统的源代码，使得我们可以更好地理解Android的日志系统的实现。
+
+        我们在Android应用程序，一般是调用应用程序框架层的Java接口（android.util.Log）来使用日志系统，这个Java接口通过JNI方法和系统运行库最终调用内核驱动程序Logger把Log写到内核空间中。按照这个调用过程，我们一步步介绍Android应用程序框架层日志系统的源代码。学习完这个过程之后，我们可以很好地理解Android系统的架构，即应用程序层（Application）的接口是如何一步一步地调用到内核空间的。
+
+        一. 应用程序框架层日志系统Java接口的实现。
+
+        在浅谈Android系统开发中Log的使用一文中，我们曾经介绍过Android应用程序框架层日志系统的源代码接口。这里，为了描述方便和文章的完整性，我们重新贴一下这部份的代码，在frameworks/base/core/java/android/util/Log.java文件中，实现日志系统的Java接口：
+
+[java] view plaincopy在CODE上查看代码片派生到我的代码片
+................................................  
+  
+public final class Log {  
+  
+................................................  
+  
+    /** 
+     * Priority constant for the println method; use Log.v. 
+         */  
+    public static final int VERBOSE = 2;  
+  
+    /** 
+     * Priority constant for the println method; use Log.d. 
+         */  
+    public static final int DEBUG = 3;  
+  
+    /** 
+     * Priority constant for the println method; use Log.i. 
+         */  
+    public static final int INFO = 4;  
+  
+    /** 
+     * Priority constant for the println method; use Log.w. 
+         */  
+    public static final int WARN = 5;  
+  
+    /** 
+     * Priority constant for the println method; use Log.e. 
+         */  
+    public static final int ERROR = 6;  
+  
+    /** 
+     * Priority constant for the println method. 
+         */  
+    public static final int ASSERT = 7;  
+  
+.....................................................  
+  
+    public static int v(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, VERBOSE, tag, msg);  
+    }  
+  
+    public static int v(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, VERBOSE, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int d(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, DEBUG, tag, msg);  
+    }  
+  
+    public static int d(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, DEBUG, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int i(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, INFO, tag, msg);  
+    }  
+  
+    public static int i(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, INFO, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int w(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, WARN, tag, msg);  
+    }  
+  
+    public static int w(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, WARN, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int w(String tag, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, WARN, tag, getStackTraceString(tr));  
+    }  
+      
+    public static int e(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, ERROR, tag, msg);  
+    }  
+  
+    public static int e(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, ERROR, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+..................................................................  
+    /** @hide */ public static native int LOG_ID_MAIN = 0;  
+    /** @hide */ public static native int LOG_ID_RADIO = 1;  
+    /** @hide */ public static native int LOG_ID_EVENTS = 2;  
+    /** @hide */ public static native int LOG_ID_SYSTEM = 3;  
+  
+    /** @hide */ public static native int println_native(int bufID,  
+        int priority, String tag, String msg);  
+}  
+         定义了2~7一共6个日志优先级别ID和4个日志缓冲区ID。回忆一下Android日志系统驱动程序Logger源代码分析一文，在Logger驱动程序模块中，定义了log_main、log_events和log_radio三个日志缓冲区，分别对应三个设备文件/dev/log/main、/dev/log/events和/dev/log/radio。这里的4个日志缓冲区的前面3个ID就是对应这三个设备文件的文件描述符了，在下面的章节中，我们将看到这三个文件描述符是如何创建的。在下载下来的Android内核源代码中，第4个日志缓冲区LOG_ID_SYSTEM并没有对应的设备文件，在这种情况下，它和LOG_ID_MAIN对应同一个缓冲区ID，在下面的章节中，我们同样可以看到这两个ID是如何对应到同一个设备文件的。
+         在整个Log接口中，最关键的地方声明了println_native本地方法，所有的Log接口都是通过调用这个本地方法来实现Log的定入。下面我们就继续分析这个本地方法println_native。
+
+         二. 应用程序框架层日志系统JNI方法的实现。
+
+         在frameworks/base/core/jni/android_util_Log.cpp文件中，实现JNI方法println_native：
+
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/* //device/libs/android_runtime/android_util_Log.cpp 
+** 
+** Copyright 2006, The Android Open Source Project 
+** 
+** Licensed under the Apache License, Version 2.0 (the "License");  
+** you may not use this file except in compliance with the License.  
+** You may obtain a copy of the License at  
+** 
+**     http://www.apache.org/licenses/LICENSE-2.0  
+** 
+** Unless required by applicable law or agreed to in writing, software  
+** distributed under the License is distributed on an "AS IS" BASIS,  
+** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
+** See the License for the specific language governing permissions and  
+** limitations under the License. 
+*/  
+  
+#define LOG_NAMESPACE "log.tag."  
+#define LOG_TAG "Log_println"  
+  
+#include <assert.h>  
+#include <cutils/properties.h>  
+#include <utils/Log.h>  
+#include <utils/String8.h>  
+  
+#include "jni.h"  
+#include "utils/misc.h"  
+#include "android_runtime/AndroidRuntime.h"  
+  
+#define MIN(a,b) ((a<b)?a:b)  
+  
+namespace android {  
+  
+struct levels_t {  
+    jint verbose;  
+    jint debug;  
+    jint info;  
+    jint warn;  
+    jint error;  
+    jint assert;  
+};  
+static levels_t levels;  
+  
+static int toLevel(const char* value)   
+{  
+    switch (value[0]) {  
+        case 'V': return levels.verbose;  
+        case 'D': return levels.debug;  
+        case 'I': return levels.info;  
+        case 'W': return levels.warn;  
+        case 'E': return levels.error;  
+        case 'A': return levels.assert;  
+        case 'S': return -1; // SUPPRESS  
+    }  
+    return levels.info;  
+}  
+  
+static jboolean android_util_Log_isLoggable(JNIEnv* env, jobject clazz, jstring tag, jint level)  
+{  
+#ifndef HAVE_ANDROID_OS  
+    return false;  
+#else /* HAVE_ANDROID_OS */  
+    int len;  
+    char key[PROPERTY_KEY_MAX];  
+    char buf[PROPERTY_VALUE_MAX];  
+  
+    if (tag == NULL) {  
+        return false;  
+    }  
+      
+    jboolean result = false;  
+      
+    const char* chars = env->GetStringUTFChars(tag, NULL);  
+  
+    if ((strlen(chars)+sizeof(LOG_NAMESPACE)) > PROPERTY_KEY_MAX) {  
+        jclass clazz = env->FindClass("java/lang/IllegalArgumentException");  
+        char buf2[200];  
+        snprintf(buf2, sizeof(buf2), "Log tag \"%s\" exceeds limit of %d characters\n",  
+                chars, PROPERTY_KEY_MAX - sizeof(LOG_NAMESPACE));  
+  
+        // release the chars!  
+        env->ReleaseStringUTFChars(tag, chars);  
+  
+        env->ThrowNew(clazz, buf2);  
+        return false;  
+    } else {  
+        strncpy(key, LOG_NAMESPACE, sizeof(LOG_NAMESPACE)-1);  
+        strcpy(key + sizeof(LOG_NAMESPACE) - 1, chars);  
+    }  
+      
+    env->ReleaseStringUTFChars(tag, chars);  
+  
+    len = property_get(key, buf, "");  
+    int logLevel = toLevel(buf);  
+    return (logLevel >= 0 && level >= logLevel) ? true : false;  
+#endif /* HAVE_ANDROID_OS */  
+}  
+  
+/* 
+ * In class android.util.Log: 
+ *  public static native int println_native(int buffer, int priority, String tag, String msg) 
+ */  
+static jint android_util_Log_println_native(JNIEnv* env, jobject clazz,  
+        jint bufID, jint priority, jstring tagObj, jstring msgObj)  
+{  
+    const char* tag = NULL;  
+    const char* msg = NULL;  
+  
+    if (msgObj == NULL) {  
+        jclass npeClazz;  
+  
+        npeClazz = env->FindClass("java/lang/NullPointerException");  
+        assert(npeClazz != NULL);  
+  
+        env->ThrowNew(npeClazz, "println needs a message");  
+        return -1;  
+    }  
+  
+    if (bufID < 0 || bufID >= LOG_ID_MAX) {  
+        jclass npeClazz;  
+  
+        npeClazz = env->FindClass("java/lang/NullPointerException");  
+        assert(npeClazz != NULL);  
+  
+        env->ThrowNew(npeClazz, "bad bufID");  
+        return -1;  
+    }  
+  
+    if (tagObj != NULL)  
+        tag = env->GetStringUTFChars(tagObj, NULL);  
+    msg = env->GetStringUTFChars(msgObj, NULL);  
+  
+    int res = __android_log_buf_write(bufID, (android_LogPriority)priority, tag, msg);  
+  
+    if (tag != NULL)  
+        env->ReleaseStringUTFChars(tagObj, tag);  
+    env->ReleaseStringUTFChars(msgObj, msg);  
+  
+    return res;  
+}  
+  
+/* 
+ * JNI registration. 
+ */  
+static JNINativeMethod gMethods[] = {  
+    /* name, signature, funcPtr */  
+    { "isLoggable",      "(Ljava/lang/String;I)Z", (void*) android_util_Log_isLoggable },  
+    { "println_native",  "(IILjava/lang/String;Ljava/lang/String;)I", (void*) android_util_Log_println_native },  
+};  
+  
+int register_android_util_Log(JNIEnv* env)  
+{  
+    jclass clazz = env->FindClass("android/util/Log");  
+  
+    if (clazz == NULL) {  
+        LOGE("Can't find android/util/Log");  
+        return -1;  
+    }  
+      
+    levels.verbose = env->GetStaticIntField(clazz, env->GetStaticFieldID(clazz, "VERBOSE", "I"));  
+    levels.debug = env->GetStaticIntField(clazz, env->GetStaticFieldID(clazz, "DEBUG", "I"));  
+    levels.info = env->GetStaticIntField(clazz, env->GetStaticFieldID(clazz, "INFO", "I"));  
+    levels.warn = env->GetStaticIntField(clazz, env->GetStaticFieldID(clazz, "WARN", "I"));  
+    levels.error = env->GetStaticIntField(clazz, env->GetStaticFieldID(clazz, "ERROR", "I"));  
+    levels.assert = env->GetStaticIntField(clazz, env->GetStaticFieldID(clazz, "ASSERT", "I"));  
+                  
+    return AndroidRuntime::registerNativeMethods(env, "android/util/Log", gMethods, NELEM(gMethods));  
+}  
+  
+}; // namespace android  
+        在gMethods变量中，定义了println_native本地方法对应的函数调用是android_util_Log_println_native。在android_util_Log_println_native函数中，通过了各项参数验证正确后，就调用运行时库函数__android_log_buf_write来实现Log的写入操作。__android_log_buf_write函实实现在liblog库中，它有4个参数，分别缓冲区ID、优先级别ID、Tag字符串和Msg字符串。下面运行时库liblog中的__android_log_buf_write的实现。
+       三. 系统运行库层日志系统的实现。
+
+       在系统运行库层liblog库的实现中，内容比较多，这里，我们只关注日志写入操作__android_log_buf_write的相关实现：
+
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+int __android_log_buf_write(int bufID, int prio, const char *tag, const char *msg)  
+{  
+    struct iovec vec[3];  
+  
+    if (!tag)  
+        tag = "";  
+  
+    /* XXX: This needs to go! */  
+    if (!strcmp(tag, "HTC_RIL") ||  
+        !strncmp(tag, "RIL", 3) || /* Any log tag with "RIL" as the prefix */  
+        !strcmp(tag, "AT") ||  
+        !strcmp(tag, "GSM") ||  
+        !strcmp(tag, "STK") ||  
+        !strcmp(tag, "CDMA") ||  
+        !strcmp(tag, "PHONE") ||  
+        !strcmp(tag, "SMS"))  
+            bufID = LOG_ID_RADIO;  
+  
+    vec[0].iov_base   = (unsigned char *) &prio;  
+    vec[0].iov_len    = 1;  
+    vec[1].iov_base   = (void *) tag;  
+    vec[1].iov_len    = strlen(tag) + 1;  
+    vec[2].iov_base   = (void *) msg;  
+    vec[2].iov_len    = strlen(msg) + 1;  
+  
+    return write_to_log(bufID, vec, 3);  
+}  
+        函数首先是检查传进来的tag参数是否是为HTC_RIL、RIL、AT、GSM、STK、CDMA、PHONE和SMS中的一个，如果是，就无条件地使用ID为LOG_ID_RADIO的日志缓冲区作为写入缓冲区，接着，把传进来的参数prio、tag和msg分别存放在一个向量数组中，调用write_to_log函数来进入下一步操作。write_to_log是一个函数指针，定义在文件开始的位置上：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static int __write_to_log_init(log_id_t, struct iovec *vec, size_t nr);  
+static int (*write_to_log)(log_id_t, struct iovec *vec, size_t nr) = __write_to_log_init;  
+        并且初始化为__write_to_log_init函数：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static int __write_to_log_init(log_id_t log_id, struct iovec *vec, size_t nr)  
+{  
+#ifdef HAVE_PTHREADS  
+    pthread_mutex_lock(&log_init_lock);  
+#endif  
+  
+    if (write_to_log == __write_to_log_init) {  
+        log_fds[LOG_ID_MAIN] = log_open("/dev/"LOGGER_LOG_MAIN, O_WRONLY);  
+        log_fds[LOG_ID_RADIO] = log_open("/dev/"LOGGER_LOG_RADIO, O_WRONLY);  
+        log_fds[LOG_ID_EVENTS] = log_open("/dev/"LOGGER_LOG_EVENTS, O_WRONLY);  
+        log_fds[LOG_ID_SYSTEM] = log_open("/dev/"LOGGER_LOG_SYSTEM, O_WRONLY);  
+  
+        write_to_log = __write_to_log_kernel;  
+  
+        if (log_fds[LOG_ID_MAIN] < 0 || log_fds[LOG_ID_RADIO] < 0 ||  
+                log_fds[LOG_ID_EVENTS] < 0) {  
+            log_close(log_fds[LOG_ID_MAIN]);  
+            log_close(log_fds[LOG_ID_RADIO]);  
+            log_close(log_fds[LOG_ID_EVENTS]);  
+            log_fds[LOG_ID_MAIN] = -1;  
+            log_fds[LOG_ID_RADIO] = -1;  
+            log_fds[LOG_ID_EVENTS] = -1;  
+            write_to_log = __write_to_log_null;  
+        }  
+  
+        if (log_fds[LOG_ID_SYSTEM] < 0) {  
+            log_fds[LOG_ID_SYSTEM] = log_fds[LOG_ID_MAIN];  
+        }  
+    }  
+  
+#ifdef HAVE_PTHREADS  
+    pthread_mutex_unlock(&log_init_lock);  
+#endif  
+  
+    return write_to_log(log_id, vec, nr);  
+}  
+        这里我们可以看到，如果是第一次调write_to_log函数，write_to_log == __write_to_log_init判断语句就会true，于是执行log_open函数打开设备文件，并把文件描述符保存在log_fds数组中。如果打开/dev/LOGGER_LOG_SYSTEM文件失败，即log_fds[LOG_ID_SYSTEM] < 0，就把log_fds[LOG_ID_SYSTEM]设置为log_fds[LOG_ID_MAIN]，这就是我们上面描述的如果不存在ID为LOG_ID_SYSTEM的日志缓冲区，就把LOG_ID_SYSTEM设置为和LOG_ID_MAIN对应的日志缓冲区了。LOGGER_LOG_MAIN、LOGGER_LOG_RADIO、LOGGER_LOG_EVENTS和LOGGER_LOG_SYSTEM四个宏定义在system/core/include/cutils/logger.h文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+#define LOGGER_LOG_MAIN     "log/main"  
+#define LOGGER_LOG_RADIO    "log/radio"  
+#define LOGGER_LOG_EVENTS   "log/events"  
+#define LOGGER_LOG_SYSTEM   "log/system"  
+        接着，把write_to_log函数指针指向__write_to_log_kernel函数：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static int __write_to_log_kernel(log_id_t log_id, struct iovec *vec, size_t nr)  
+{  
+    ssize_t ret;  
+    int log_fd;  
+  
+    if (/*(int)log_id >= 0 &&*/ (int)log_id < (int)LOG_ID_MAX) {  
+        log_fd = log_fds[(int)log_id];  
+    } else {  
+        return EBADF;  
+    }  
+  
+    do {  
+        ret = log_writev(log_fd, vec, nr);  
+    } while (ret < 0 && errno == EINTR);  
+  
+    return ret;  
+}  
+       函数调用log_writev来实现Log的写入，注意，这里通过一个循环来写入Log，直到写入成功为止。这里log_writev是一个宏，在文件开始的地方定义为：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+#if FAKE_LOG_DEVICE  
+// This will be defined when building for the host.  
+#define log_open(pathname, flags) fakeLogOpen(pathname, flags)  
+#define log_writev(filedes, vector, count) fakeLogWritev(filedes, vector, count)  
+#define log_close(filedes) fakeLogClose(filedes)  
+#else  
+#define log_open(pathname, flags) open(pathname, flags)  
+#define log_writev(filedes, vector, count) writev(filedes, vector, count)  
+#define log_close(filedes) close(filedes)  
+#endif  
+       这里，我们看到，一般情况下，log_writev就是writev了，这是个常见的批量文件写入函数，就不多说了。
+       至些，整个调用过程就结束了。总结一下，首先是从应用程序层调用应用程序框架层的Java接口，应用程序框架层的Java接口通过调用本层的JNI方法进入到系统运行库层的C接口，系统运行库层的C接口通过设备文件来访问内核空间层的Logger驱动程序。这是一个典型的调用过程，很好地诠释Android的系统架构，希望读者好好领会。

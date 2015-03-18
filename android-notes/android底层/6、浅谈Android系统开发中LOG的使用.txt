@@ -1,0 +1,219 @@
+ 浅谈Android系统开发中LOG的使用
+分类： Android 2011-07-03 16:47 59789人阅读 评论(21) 收藏 举报
+androidframeworkspreprocessorstring程序开发
+         在程序开发过程中，LOG是广泛使用的用来记录程序执行过程的机制，它既可以用于程序调试，也可以用于产品运营中的事件记录。在Android系统中，提供了简单、便利的LOG机制，开发人员可以方便地使用。在这一篇文章中，我们简单介绍在Android内核空间和用户空间中LOG的使用和查看方法。
+
+        一. 内核开发时LOG的使用。Android内核是基于Linux Kerne 2.36的，因此，Linux Kernel的LOG机制同样适合于Android内核，它就是有名的printk，与C语言的printf齐名。与printf类似，printk提供格式化输入功能，同时，它也具有所有LOG机制的特点--提供日志级别过虑功能。printk提供了8种日志级别（<linux/kernel.h>）：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+#define KERN_EMERG  "<0>"     /* system is unusable           */  
+#define KERN_ALERT  "<1>"     /* action must be taken immediately */  
+#define KERN_CRIT   "<2>"     /* critical conditions          */  
+#deinfe KERN_ERR    "<3>"     /* error conditions         */  
+#deinfe KERN_WARNING    "<4>"     /* warning conditions           */  
+#deinfe KERN_NOTICE "<5>"     /* normal but significant condition */  
+#deinfe KERN_INFO   "<6>"     /* informational            */  
+#deinfe KERN_DEBUG  "<7>"     /* debug-level messages         */  
+       printk的使用方法：
+       printk(KERN_ALERT"This is the log printed by printk in linux kernel space.");
+
+       KERN_ALERT表示日志级别，后面紧跟着要格式化字符串。
+
+       在Android系统中，printk输出的日志信息保存在/proc/kmsg中，要查看/proc/kmsg的内容，参照在Ubuntu上下载、编译和安装Android最新内核源代码（Linux Kernel）一文，在后台中运行模拟器：
+
+       USER-NAME@MACHINE-NAME:~/Android$ emulator &
+
+       启动adb shell工具：
+
+       USER-NAME@MACHINE-NAME:~/Android$ adb shell
+
+       查看/proc/kmsg文件：
+
+       root@android:/ # cat  /proc/kmsg
+
+       二. 用户空间程序开发时LOG的使用。Android系统在用户空间中提供了轻量级的logger日志系统，它是在内核中实现的一种设备驱动，与用户空间的logcat工具配合使用能够方便地跟踪调试程序。在Android系统中，分别为C/C++ 和Java语言提供两种不同的logger访问接口。C/C++日志接口一般是在编写硬件抽象层模块或者编写JNI方法时使用，而Java接口一般是在应用层编写APP时使用。
+
+       Android系统中的C/C++日志接口是通过宏来使用的。在system/core/include/android/log.h定义了日志的级别：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/* 
+ * Android log priority values, in ascending priority order. 
+ */  
+typedef enum android_LogPriority {  
+    ANDROID_LOG_UNKNOWN = 0,  
+    ANDROID_LOG_DEFAULT,    /* only for SetMinPriority() */  
+    ANDROID_LOG_VERBOSE,  
+    ANDROID_LOG_DEBUG,  
+    ANDROID_LOG_INFO,  
+    ANDROID_LOG_WARN,  
+    ANDROID_LOG_ERROR,  
+    ANDROID_LOG_FATAL,  
+    ANDROID_LOG_SILENT, /* only for SetMinPriority(); must be last */  
+} android_LogPriority;  
+       在system/core/include/cutils/log.h中，定义了对应的宏，如对应于ANDROID_LOG_VERBOSE的宏LOGV：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/* 
+ * This is the local tag used for the following simplified 
+ * logging macros. You can change this preprocessor definition 
+ * before using the other macros to change the tag. 
+ */  
+#ifndef LOG_TAG  
+#define LOG_TAG NULL  
+#endif  
+  
+/* 
+ * Simplified macro to send a verbose log message using the current LOG_TAG. 
+ */  
+#ifndef LOGV  
+#if LOG_NDEBUG  
+#define LOGV(...)   ((void)0)  
+#else  
+#define LOGV(...)   ((void)LOG(LOG_VERBOSE, LOG_TAG, __VA_ARGS__))  
+#endif  
+#endif  
+  
+/* 
+ * Basic log message macro. 
+ * 
+ * Example: 
+ *  LOG(LOG_WARN, NULL, "Failed with error %d", errno); 
+ * 
+ * The second argument may be NULL or "" to indicate the "global" tag. 
+ */  
+#ifndef LOG  
+#define LOG(priority, tag, ...) \  
+     LOG_PRI(ANDROID_##priority, tag, __VA_ARGS__)  
+#endif  
+  
+/* 
+ * Log macro that allows you to specify a number for priority. 
+ */  
+#ifndef LOG_PRI  
+#define LOG_PRI(priority, tag, ...) \  
+     android_printLog(priority, tag, __VA_ARGS__)  
+#endif  
+  
+/* 
+ * ================================================================ 
+ * 
+ * The stuff in the rest of this file should not be used directly. 
+ */  
+#define android_printLog(prio, tag, fmt...) \  
+     __android_log_print(prio, tag, fmt)  
+         因此，如果要使用C/C++日志接口，只要定义自己的LOG_TAG宏和包含头文件system/core/include/cutils/log.h就可以了：
+         #define LOG_TAG "MY LOG TAG"
+
+         #include <cutils/log.h>
+
+         就可以了，例如使用LOGV：
+
+         LOGV("This is the log printed by LOGV in android user space.");
+
+         再来看Android系统中的Java日志接口。Android系统在Frameworks层中定义了Log接口（frameworks/base/core/java/android/util/Log.java）：
+
+[java] view plaincopy在CODE上查看代码片派生到我的代码片
+................................................  
+  
+public final class Log {  
+  
+................................................  
+  
+    /** 
+     * Priority constant for the println method; use Log.v. 
+         */  
+    public static final int VERBOSE = 2;  
+  
+    /** 
+     * Priority constant for the println method; use Log.d. 
+         */  
+    public static final int DEBUG = 3;  
+  
+    /** 
+     * Priority constant for the println method; use Log.i. 
+         */  
+    public static final int INFO = 4;  
+  
+    /** 
+     * Priority constant for the println method; use Log.w. 
+         */  
+    public static final int WARN = 5;  
+  
+    /** 
+     * Priority constant for the println method; use Log.e. 
+         */  
+    public static final int ERROR = 6;  
+  
+    /** 
+     * Priority constant for the println method. 
+         */  
+    public static final int ASSERT = 7;  
+  
+.....................................................  
+  
+    public static int v(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, VERBOSE, tag, msg);  
+    }  
+  
+    public static int v(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, VERBOSE, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int d(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, DEBUG, tag, msg);  
+    }  
+  
+    public static int d(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, DEBUG, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int i(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, INFO, tag, msg);  
+    }  
+  
+    public static int i(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, INFO, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int w(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, WARN, tag, msg);  
+    }  
+  
+    public static int w(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, WARN, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+    public static int w(String tag, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, WARN, tag, getStackTraceString(tr));  
+    }  
+      
+    public static int e(String tag, String msg) {  
+        return println_native(LOG_ID_MAIN, ERROR, tag, msg);  
+    }  
+  
+    public static int e(String tag, String msg, Throwable tr) {  
+        return println_native(LOG_ID_MAIN, ERROR, tag, msg + '\n' + getStackTraceString(tr));  
+    }  
+  
+..................................................................  
+  
+    /**@hide */ public static native int println_native(int bufID,  
+        int priority, String tag, String msg);  
+}  
+        因此，如果要使用Java日志接口，只要在类中定义的LOG_TAG常量和引用android.util.Log就可以了：
+
+        private static final String LOG_TAG = "MY_LOG_TAG";
+
+        Log.i(LOG_TAG, "This is the log printed by Log.i in android user space.");
+
+        要查看这些LOG的输出，可以配合logcat工具。如果是在Eclipse环境下运行模拟器，并且安装了Android插件，那么，很简单，直接在Eclipse就可以查看了：
+
+        
+
+        如果是在自己编译的Android源代码工程中使用，则在后台中运行模拟器：
+
+       USER-NAME@MACHINE-NAME:~/Android$ emulator &
+       启动adb shell工具：
+       USER-NAME@MACHINE-NAME:~/Android$ adb shell
+       使用logcat命令查看日志：
+       root@android:/ # logcat
+       这样就可以看到输出的日志了。

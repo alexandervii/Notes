@@ -1,0 +1,741 @@
+ Android日志系统Logcat源代码简要分析
+分类： Android 2011-07-15 02:27 42286人阅读 评论(9) 收藏 举报
+androidfilenullstruct代码分析
+        在前面两篇文章Android日志系统驱动程序Logger源代码分析和Android应用程序框架层和系统运行库层日志系统源代码中，介绍了Android内核空间层、系统运行库层和应用程序框架层日志系统相关的源代码，其中，后一篇文章着重介绍了日志的写入操作。为了描述完整性，这篇文章着重介绍日志的读取操作，这就是我们在开发Android应用程序时，经常要用到日志查看工具Logcat了。
+
+        Logcat工具内置在Android系统中，可以在主机上通过adb logcat命令来查看模拟机上日志信息。Logcat工具的用法很丰富，因此，源代码也比较多，本文并不打算完整地介绍整个Logcat工具的源代码，主要是介绍Logcat读取日志的主线，即从打开日志设备文件到读取日志设备文件的日志记录到输出日志记录的主要过程，希望能起到一个抛砖引玉的作用。
+
+        Logcat工具源代码位于system/core/logcat目录下，只有一个源代码文件logcat.cpp，编译后生成的可执行文件位于out/target/product/generic/system/bin目录下，在模拟机中，可以在/system/bin目录下看到logcat工具。下面我们就分段来阅读logcat.cpp源代码文件。
+
+        一.  Logcat工具的相关数据结构。
+
+        这些数据结构是用来保存从日志设备文件读出来的日志记录：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+struct queued_entry_t {  
+    union {  
+        unsigned char buf[LOGGER_ENTRY_MAX_LEN + 1] __attribute__((aligned(4)));  
+        struct logger_entry entry __attribute__((aligned(4)));  
+    };  
+    queued_entry_t* next;  
+  
+    queued_entry_t() {  
+        next = NULL;  
+    }  
+};  
+  
+struct log_device_t {  
+    char* device;  
+    bool binary;  
+    int fd;  
+    bool printed;  
+    char label;  
+  
+    queued_entry_t* queue;  
+    log_device_t* next;  
+  
+    log_device_t(char* d, bool b, char l) {  
+        device = d;  
+        binary = b;  
+        label = l;  
+        queue = NULL;  
+        next = NULL;  
+        printed = false;  
+    }  
+  
+    void enqueue(queued_entry_t* entry) {  
+        if (this->queue == NULL) {  
+            this->queue = entry;  
+        } else {  
+            queued_entry_t** e = &this->queue;  
+            while (*e && cmp(entry, *e) >= 0) {  
+                e = &((*e)->next);  
+            }  
+            entry->next = *e;  
+            *e = entry;  
+        }  
+    }  
+};  
+        其中，宏LOGGER_ENTRY_MAX_LEN和struct logger_entry定义在system/core/include/cutils/logger.h文件中，在Android应用程序框架层和系统运行库层日志系统源代码分析一文有提到，为了方便描述，这里列出这个宏和结构体的定义：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+struct logger_entry {  
+    __u16       len;    /* length of the payload */  
+    __u16       __pad;  /* no matter what, we get 2 bytes of padding */  
+    __s32       pid;    /* generating process's pid */  
+    __s32       tid;    /* generating process's tid */  
+    __s32       sec;    /* seconds since Epoch */  
+    __s32       nsec;   /* nanoseconds */  
+    char        msg[0]; /* the entry's payload */  
+};  
+  
+#define LOGGER_ENTRY_MAX_LEN        (4*1024)  
+        从结构体struct queued_entry_t和struct log_device_t的定义可以看出，每一个log_device_t都包含有一个queued_entry_t队列，queued_entry_t就是对应从日志设备文件读取出来的一条日志记录了，而log_device_t则是对应一个日志设备文件上下文。在Android日志系统驱动程序Logger源代码分析一文中，我们曾提到，Android日志系统有三个日志设备文件，分别是/dev/log/main、/dev/log/events和/dev/log/radio。
+        每个日志设备上下文通过其next成员指针连接起来，每个设备文件上下文的日志记录也是通过next指针连接起来。日志记录队例是按时间戳从小到大排列的，这个log_device_t::enqueue函数可以看出，当要插入一条日志记录的时候，先队列头开始查找，直到找到一个时间戳比当前要插入的日志记录的时间戳大的日志记录的位置，然后插入当前日志记录。比较函数cmp的定义如下：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static int cmp(queued_entry_t* a, queued_entry_t* b) {  
+    int n = a->entry.sec - b->entry.sec;  
+    if (n != 0) {  
+        return n;  
+    }  
+    return a->entry.nsec - b->entry.nsec;  
+}  
+        为什么日志记录要按照时间戳从小到大排序呢？原来，Logcat在使用时，可以指定一个参数-t <count>，可以指定只显示最新count条记录，超过count的记录将被丢弃，在这里的实现中，就是要把排在队列前面的多余日记记录丢弃了，因为排在前面的日志记录是最旧的，默认是显示所有的日志记录。在下面的代码中，我们还会继续分析这个过程。
+        二. 打开日志设备文件。
+        Logcat工具的入口函数main，打开日志设备文件和一些初始化的工作也是在这里进行。main函数的内容也比较多，前面的逻辑都是解析命令行参数。这里假设我们使用logcat工具时，不带任何参数。这不会影响我们分析logcat读取日志的主线，有兴趣的读取可以自行分析解析命令行参数的逻辑。
+
+        分析完命令行参数以后，就开始要创建日志设备文件上下文结构体struct log_device_t了：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+if (!devices) {  
+    devices = new log_device_t(strdup("/dev/"LOGGER_LOG_MAIN), false, 'm');  
+    android::g_devCount = 1;  
+    int accessmode =  
+              (mode & O_RDONLY) ? R_OK : 0  
+            | (mode & O_WRONLY) ? W_OK : 0;  
+    // only add this if it's available  
+    if (0 == access("/dev/"LOGGER_LOG_SYSTEM, accessmode)) {  
+        devices->next = new log_device_t(strdup("/dev/"LOGGER_LOG_SYSTEM), false, 's');  
+        android::g_devCount++;  
+    }  
+}  
+        由于我们假设使用logcat时，不带任何命令行参数，这里的devices变量为NULL，因此，就会默认创建/dev/log/main设备上下文结构体，如果存在/dev/log/system设备文件，也会一并创建。宏LOGGER_LOG_MAIN和LOGGER_LOG_SYSTEM也是定义在system/core/include/cutils/logger.h文件中：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+#define LOGGER_LOG_MAIN     "log/main"  
+#define LOGGER_LOG_SYSTEM   "log/system"  
+        我们在Android日志系统驱动程序Logger源代码分析一文中看到，在Android日志系统驱动程序Logger中，默认是不创建/dev/log/system设备文件的。
+        往下看，调用setupOutput()函数来初始化输出文件：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+android::setupOutput();  
+        setupOutput()函数定义如下：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void setupOutput()  
+{  
+  
+    if (g_outputFileName == NULL) {  
+        g_outFD = STDOUT_FILENO;  
+  
+    } else {  
+        struct stat statbuf;  
+  
+        g_outFD = openLogFile (g_outputFileName);  
+  
+        if (g_outFD < 0) {  
+            perror ("couldn't open output file");  
+            exit(-1);  
+        }  
+  
+        fstat(g_outFD, &statbuf);  
+  
+        g_outByteCount = statbuf.st_size;  
+    }  
+}  
+        如果我们在执行logcat命令时，指定了-f  <filename>选项，日志内容就输出到filename文件中，否则，就输出到标准输出控制台去了。
+
+        再接下来，就是打开日志设备文件了：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+dev = devices;  
+while (dev) {  
+    dev->fd = open(dev->device, mode);  
+    if (dev->fd < 0) {  
+        fprintf(stderr, "Unable to open log device '%s': %s\n",  
+            dev->device, strerror(errno));  
+        exit(EXIT_FAILURE);  
+    }  
+  
+    if (clearLog) {  
+        int ret;  
+        ret = android::clearLog(dev->fd);  
+        if (ret) {  
+            perror("ioctl");  
+            exit(EXIT_FAILURE);  
+        }  
+    }  
+  
+    if (getLogSize) {  
+        int size, readable;  
+  
+        size = android::getLogSize(dev->fd);  
+        if (size < 0) {  
+            perror("ioctl");  
+            exit(EXIT_FAILURE);  
+        }  
+  
+        readable = android::getLogReadableSize(dev->fd);  
+        if (readable < 0) {  
+            perror("ioctl");  
+            exit(EXIT_FAILURE);  
+        }  
+  
+        printf("%s: ring buffer is %dKb (%dKb consumed), "  
+               "max entry is %db, max payload is %db\n", dev->device,  
+               size / 1024, readable / 1024,  
+               (int) LOGGER_ENTRY_MAX_LEN, (int) LOGGER_ENTRY_MAX_PAYLOAD);  
+    }  
+  
+    dev = dev->next;  
+}  
+        如果执行logcat命令的目的是清空日志，即clearLog为true，则调用android::clearLog函数来执行清空日志操作：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static int clearLog(int logfd)  
+{  
+    return ioctl(logfd, LOGGER_FLUSH_LOG);  
+}  
+        这里是通过标准的文件函数ioctl函数来执行日志清空操作，具体可以参考logger驱动程序的实现。
+        如果执行logcat命令的目的是获取日志内存缓冲区的大小，即getLogSize为true，通过调用android::getLogSize函数实现：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/* returns the total size of the log's ring buffer */  
+static int getLogSize(int logfd)  
+{  
+    return ioctl(logfd, LOGGER_GET_LOG_BUF_SIZE);  
+}  
+        如果为负数，即size < 0，就表示出错了，退出程序。
+        接着验证日志缓冲区可读内容的大小，即调用android::getLogReadableSize函数：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/* returns the readable size of the log's ring buffer (that is, amount of the log consumed) */  
+static int getLogReadableSize(int logfd)  
+{  
+    return ioctl(logfd, LOGGER_GET_LOG_LEN);  
+}  
+        如果返回负数，即readable < 0，也表示出错了，退出程序。
+        接下去的printf语句，就是输出日志缓冲区的大小以及可读日志的大小到控制台去了。
+
+        继续看下看代码，如果执行logcat命令的目的是清空日志或者获取日志的大小信息，则现在就完成使命了，可以退出程序了：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+if (getLogSize) {  
+    return 0;  
+}  
+if (clearLog) {  
+    return 0;  
+}  
+        否则，就要开始读取设备文件的日志记录了：
+[html] view plaincopy在CODE上查看代码片派生到我的代码片
+android::readLogLines(devices);  
+       至此日志设备文件就打开并且初始化好了，下面，我们继续分析从日志设备文件读取日志记录的操作，即readLogLines函数。
+       三. 读取日志设备文件。
+
+       读取日志设备文件内容的函数是readLogLines函数：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void readLogLines(log_device_t* devices)  
+{  
+    log_device_t* dev;  
+    int max = 0;  
+    int ret;  
+    int queued_lines = 0;  
+    bool sleep = true;  
+  
+    int result;  
+    fd_set readset;  
+  
+    for (dev=devices; dev; dev = dev->next) {  
+        if (dev->fd > max) {  
+            max = dev->fd;  
+        }  
+    }  
+  
+    while (1) {  
+        do {  
+            timeval timeout = { 0, 5000 /* 5ms */ }; // If we oversleep it's ok, i.e. ignore EINTR.  
+            FD_ZERO(&readset);  
+            for (dev=devices; dev; dev = dev->next) {  
+                FD_SET(dev->fd, &readset);  
+            }  
+            result = select(max + 1, &readset, NULL, NULL, sleep ? NULL : &timeout);  
+        } while (result == -1 && errno == EINTR);  
+  
+        if (result >= 0) {  
+            for (dev=devices; dev; dev = dev->next) {  
+                if (FD_ISSET(dev->fd, &readset)) {  
+                    queued_entry_t* entry = new queued_entry_t();  
+                    /* NOTE: driver guarantees we read exactly one full entry */  
+                    ret = read(dev->fd, entry->buf, LOGGER_ENTRY_MAX_LEN);  
+                    if (ret < 0) {  
+                        if (errno == EINTR) {  
+                            delete entry;  
+                            goto next;  
+                        }  
+                        if (errno == EAGAIN) {  
+                            delete entry;  
+                            break;  
+                        }  
+                        perror("logcat read");  
+                        exit(EXIT_FAILURE);  
+                    }  
+                    else if (!ret) {  
+                        fprintf(stderr, "read: Unexpected EOF!\n");  
+                        exit(EXIT_FAILURE);  
+                    }  
+  
+                    entry->entry.msg[entry->entry.len] = '\0';  
+  
+                    dev->enqueue(entry);  
+                    ++queued_lines;  
+                }  
+            }  
+  
+            if (result == 0) {  
+                // we did our short timeout trick and there's nothing new  
+                // print everything we have and wait for more data  
+                sleep = true;  
+                while (true) {  
+                    chooseFirst(devices, &dev);  
+                    if (dev == NULL) {  
+                        break;  
+                    }  
+                    if (g_tail_lines == 0 || queued_lines <= g_tail_lines) {  
+                        printNextEntry(dev);  
+                    } else {  
+                        skipNextEntry(dev);  
+                    }  
+                    --queued_lines;  
+                }  
+  
+                // the caller requested to just dump the log and exit  
+                if (g_nonblock) {  
+                    exit(0);  
+                }  
+            } else {  
+                // print all that aren't the last in their list  
+                sleep = false;  
+                while (g_tail_lines == 0 || queued_lines > g_tail_lines) {  
+                    chooseFirst(devices, &dev);  
+                    if (dev == NULL || dev->queue->next == NULL) {  
+                        break;  
+                    }  
+                    if (g_tail_lines == 0) {  
+                        printNextEntry(dev);  
+                    } else {  
+                        skipNextEntry(dev);  
+                    }  
+                    --queued_lines;  
+                }  
+            }  
+        }  
+next:  
+        ;  
+    }  
+}  
+        由于可能同时打开了多个日志设备文件，这里使用select函数来同时监控哪个文件当前可读：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+do {  
+    timeval timeout = { 0, 5000 /* 5ms */ }; // If we oversleep it's ok, i.e. ignore EINTR.  
+    FD_ZERO(&readset);  
+    for (dev=devices; dev; dev = dev->next) {  
+        FD_SET(dev->fd, &readset);  
+    }  
+    result = select(max + 1, &readset, NULL, NULL, sleep ? NULL : &timeout);  
+} while (result == -1 && errno == EINTR);  
+       如果result >= 0，就表示有日志设备文件可读或者超时。接着，用一个for语句检查哪个设备文件可读，即FD_ISSET(dev->fd, &readset)是否为true，如果为true，表明可读，就要进一步通过read函数将日志读出，注意，每次只读出一条日志记录：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+for (dev=devices; dev; dev = dev->next) {  
+           if (FD_ISSET(dev->fd, &readset)) {  
+               queued_entry_t* entry = new queued_entry_t();  
+               /* NOTE: driver guarantees we read exactly one full entry */  
+               ret = read(dev->fd, entry->buf, LOGGER_ENTRY_MAX_LEN);  
+               if (ret < 0) {  
+                   if (errno == EINTR) {  
+                       delete entry;  
+                       goto next;  
+                   }  
+                   if (errno == EAGAIN) {  
+                       delete entry;  
+                       break;  
+                   }  
+                   perror("logcat read");  
+                   exit(EXIT_FAILURE);  
+               }  
+               else if (!ret) {  
+                   fprintf(stderr, "read: Unexpected EOF!\n");  
+                   exit(EXIT_FAILURE);  
+               }  
+  
+               entry->entry.msg[entry->entry.len] = '\0';  
+  
+               dev->enqueue(entry);  
+               ++queued_lines;  
+           }  
+       }  
+        调用read函数之前，先创建一个日志记录项entry，接着调用read函数将日志读到entry->buf中，最后调用dev->enqueue(entry)将日志记录加入到日志队例中去。同时，把当前的日志记录数保存在queued_lines变量中。
+        继续进一步处理日志：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+if (result == 0) {  
+    // we did our short timeout trick and there's nothing new  
+    // print everything we have and wait for more data  
+    sleep = true;  
+    while (true) {  
+        chooseFirst(devices, &dev);  
+        if (dev == NULL) {  
+            break;  
+        }  
+        if (g_tail_lines == 0 || queued_lines <= g_tail_lines) {  
+            printNextEntry(dev);  
+        } else {  
+            skipNextEntry(dev);  
+        }  
+        --queued_lines;  
+    }  
+  
+    // the caller requested to just dump the log and exit  
+    if (g_nonblock) {  
+        exit(0);  
+    }  
+} else {  
+    // print all that aren't the last in their list  
+    sleep = false;  
+    while (g_tail_lines == 0 || queued_lines > g_tail_lines) {  
+        chooseFirst(devices, &dev);  
+        if (dev == NULL || dev->queue->next == NULL) {  
+            break;  
+        }  
+        if (g_tail_lines == 0) {  
+            printNextEntry(dev);  
+        } else {  
+            skipNextEntry(dev);  
+        }  
+        --queued_lines;  
+    }  
+}  
+        如果result == 0，表明是等待超时了，目前没有新的日志可读，这时候就要先处理之前已经读出来的日志。调用chooseFirst选择日志队列不为空，且日志队列中的第一个日志记录的时间戳为最小的设备，即先输出最旧的日志：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void chooseFirst(log_device_t* dev, log_device_t** firstdev) {  
+    for (*firstdev = NULL; dev != NULL; dev = dev->next) {  
+        if (dev->queue != NULL && (*firstdev == NULL || cmp(dev->queue, (*firstdev)->queue) < 0)) {  
+            *firstdev = dev;  
+        }  
+    }  
+}  
+       如果存在这样的日志设备，接着判断日志记录是应该丢弃还是输出。前面我们说过，如果执行logcat命令时，指定了参数-t <count>，那么就会只显示最新的count条记录，其它的旧记录将被丢弃：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+if (g_tail_lines == 0 || queued_lines <= g_tail_lines) {  
+     printNextEntry(dev);  
+} else {  
+     skipNextEntry(dev);  
+}  
+         g_tail_lines表示显示最新记录的条数，如果为0，就表示全部显示。如果g_tail_lines == 0或者queued_lines <= g_tail_lines，就表示这条日志记录应该输出，否则就要丢弃了。每处理完一条日志记录，queued_lines就减1，这样，最新的g_tail_lines就可以输出出来了。
+        如果result > 0，表明有新的日志可读，这时候的处理方式与result == 0的情况不同，因为这时候还有新的日志可读，所以就不能先急着处理之前已经读出来的日志。这里，分两种情况考虑，如果能设置了只显示最新的g_tail_lines条记录，并且当前已经读出来的日志记录条数已经超过g_tail_lines，就要丢弃，剩下的先不处理，等到下次再来处理；如果没有设备显示最新的g_tail_lines条记录，即g_tail_lines == 0，这种情况就和result  == 0的情况处理方式一样，先处理所有已经读出的日志记录，再进入下一次循环。希望读者可以好好体会这段代码：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+while (g_tail_lines == 0 || queued_lines > g_tail_lines) {  
+     chooseFirst(devices, &dev);  
+     if (dev == NULL || dev->queue->next == NULL) {  
+          break;  
+     }  
+     if (g_tail_lines == 0) {  
+          printNextEntry(dev);  
+     } else {  
+          skipNextEntry(dev);  
+     }  
+     --queued_lines;  
+}  
+        丢弃日志记录的函数skipNextEntry实现如下：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void skipNextEntry(log_device_t* dev) {  
+    maybePrintStart(dev);  
+    queued_entry_t* entry = dev->queue;  
+    dev->queue = entry->next;  
+    delete entry;  
+}  
+        这里只是简单地跳过日志队列头，这样就把最旧的日志丢弃了。
+        printNextEntry函数处理日志输出，下一节中继续分析。
+
+        四. 输出日志设备文件的内容。
+
+        从前面的分析中看出，最终日志设备文件内容的输出是通过printNextEntry函数进行的：
+
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void printNextEntry(log_device_t* dev) {  
+    maybePrintStart(dev);  
+    if (g_printBinary) {  
+        printBinary(&dev->queue->entry);  
+    } else {  
+        processBuffer(dev, &dev->queue->entry);  
+    }  
+    skipNextEntry(dev);  
+}  
+        g_printBinary为true时，以二进制方式输出日志内容到指定的文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+void printBinary(struct logger_entry *buf)  
+{  
+    size_t size = sizeof(logger_entry) + buf->len;  
+    int ret;  
+      
+    do {  
+        ret = write(g_outFD, buf, size);  
+    } while (ret < 0 && errno == EINTR);  
+}  
+       我们关注g_printBinary为false的情况，调用processBuffer进一步处理：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void processBuffer(log_device_t* dev, struct logger_entry *buf)  
+{  
+    int bytesWritten = 0;  
+    int err;  
+    AndroidLogEntry entry;  
+    char binaryMsgBuf[1024];  
+  
+    if (dev->binary) {  
+        err = android_log_processBinaryLogBuffer(buf, &entry, g_eventTagMap,  
+                binaryMsgBuf, sizeof(binaryMsgBuf));  
+        //printf(">>> pri=%d len=%d msg='%s'\n",  
+        //    entry.priority, entry.messageLen, entry.message);  
+    } else {  
+        err = android_log_processLogBuffer(buf, &entry);  
+    }  
+    if (err < 0) {  
+        goto error;  
+    }  
+  
+    if (android_log_shouldPrintLine(g_logformat, entry.tag, entry.priority)) {  
+        if (false && g_devCount > 1) {  
+            binaryMsgBuf[0] = dev->label;  
+            binaryMsgBuf[1] = ' ';  
+            bytesWritten = write(g_outFD, binaryMsgBuf, 2);  
+            if (bytesWritten < 0) {  
+                perror("output error");  
+                exit(-1);  
+            }  
+        }  
+  
+        bytesWritten = android_log_printLogLine(g_logformat, g_outFD, &entry);  
+  
+        if (bytesWritten < 0) {  
+            perror("output error");  
+            exit(-1);  
+        }  
+    }  
+  
+    g_outByteCount += bytesWritten;  
+  
+    if (g_logRotateSizeKBytes > 0   
+        && (g_outByteCount / 1024) >= g_logRotateSizeKBytes  
+    ) {  
+        rotateLogs();  
+    }  
+  
+error:  
+    //fprintf (stderr, "Error processing record\n");  
+    return;  
+}  
+        当dev->binary为true，日志记录项是二进制形式，不同于我们在Android日志系统驱动程序Logger源代码分析一文中提到的常规格式：
+        struct logger_entry | priority | tag | msg
+        这里我们不关注这种情况，有兴趣的读者可以自已分析，android_log_processBinaryLogBuffer函数定义在system/core/liblog/logprint.c文件中，它的作用是将一条二进制形式的日志记录转换为ASCII形式，并保存在entry参数中，它的原型为：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/** 
+ * Convert a binary log entry to ASCII form. 
+ * 
+ * For convenience we mimic the processLogBuffer API.  There is no 
+ * pre-defined output length for the binary data, since we're free to format 
+ * it however we choose, which means we can't really use a fixed-size buffer 
+ * here. 
+ */  
+int android_log_processBinaryLogBuffer(struct logger_entry *buf,  
+    AndroidLogEntry *entry, const EventTagMap* map, char* messageBuf,  
+    int messageBufLen);  
+        通常情况下，dev->binary为false，调用android_log_processLogBuffer函数将日志记录由logger_entry格式转换为AndroidLogEntry格式。logger_entry格式在在Android日志系统驱动程序Logger源代码分析一文中已经有详细描述，这里不述；AndroidLogEntry结构体定义在system/core/include/cutils/logprint.h中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+typedef struct AndroidLogEntry_t {  
+    time_t tv_sec;  
+    long tv_nsec;  
+    android_LogPriority priority;  
+    pid_t pid;  
+    pthread_t tid;  
+    const char * tag;  
+    size_t messageLen;  
+    const char * message;  
+} AndroidLogEntry;  
+        android_LogPriority是一个枚举类型，定义在system/core/include/android/log.h文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/* 
+ * Android log priority values, in ascending priority order. 
+ */  
+typedef enum android_LogPriority {  
+    ANDROID_LOG_UNKNOWN = 0,  
+    ANDROID_LOG_DEFAULT,    /* only for SetMinPriority() */  
+    ANDROID_LOG_VERBOSE,  
+    ANDROID_LOG_DEBUG,  
+    ANDROID_LOG_INFO,  
+    ANDROID_LOG_WARN,  
+    ANDROID_LOG_ERROR,  
+    ANDROID_LOG_FATAL,  
+    ANDROID_LOG_SILENT,     /* only for SetMinPriority(); must be last */  
+} android_LogPriority;  
+        android_log_processLogBuffer定义在system/core/liblog/logprint.c文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/** 
+ * Splits a wire-format buffer into an AndroidLogEntry 
+ * entry allocated by caller. Pointers will point directly into buf 
+ * 
+ * Returns 0 on success and -1 on invalid wire format (entry will be 
+ * in unspecified state) 
+ */  
+int android_log_processLogBuffer(struct logger_entry *buf,  
+                                 AndroidLogEntry *entry)  
+{  
+    size_t tag_len;  
+  
+    entry->tv_sec = buf->sec;  
+    entry->tv_nsec = buf->nsec;  
+    entry->priority = buf->msg[0];  
+    entry->pid = buf->pid;  
+    entry->tid = buf->tid;  
+    entry->tag = buf->msg + 1;  
+    tag_len = strlen(entry->tag);  
+    entry->messageLen = buf->len - tag_len - 3;  
+    entry->message = entry->tag + tag_len + 1;  
+  
+    return 0;  
+}  
+        结合logger_entry结构体中日志项的格式定义（struct logger_entry | priority | tag | msg），这个函数很直观，不再累述。
+        调用完android_log_processLogBuffer函数后，日志记录的具体信息就保存在本地变量entry中了，接着调用android_log_shouldPrintLine函数来判断这条日志记录是否应该输出。
+        在分析android_log_shouldPrintLine函数之前，我们先了解数据结构AndroidLogFormat，这个结构体定义在system/core/liblog/logprint.c文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+struct AndroidLogFormat_t {  
+    android_LogPriority global_pri;  
+    FilterInfo *filters;  
+    AndroidLogPrintFormat format;  
+};  
+        AndroidLogPrintFormat也是定义在system/core/liblog/logprint.c文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+typedef struct FilterInfo_t {  
+    char *mTag;  
+    android_LogPriority mPri;  
+    struct FilterInfo_t *p_next;  
+} FilterInfo;  
+        因此，可以看出，AndroidLogFormat结构体定义了日志过滤规范。在logcat.c文件中，定义了变量
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static AndroidLogFormat * g_logformat;  
+       这个变量是在main函数里面进行分配的：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+g_logformat = android_log_format_new();  
+       在main函数里面，在分析logcat命令行参数时，会将g_logformat进行初始化，有兴趣的读者可以自行分析。
+       回到android_log_shouldPrintLine函数中，它定义在system/core/liblog/logprint.c文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+/** 
+ * returns 1 if this log line should be printed based on its priority 
+ * and tag, and 0 if it should not 
+ */  
+int android_log_shouldPrintLine (  
+        AndroidLogFormat *p_format, const char *tag, android_LogPriority pri)  
+{  
+    return pri >= filterPriForTag(p_format, tag);  
+}  
+       这个函数判断在p_format中根据tag值，找到对应的pri值，如果返回来的pri值小于等于参数传进来的pri值，那么就表示这条日志记录可以输出。我们来看filterPriForTag函数的实现：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static android_LogPriority filterPriForTag(  
+        AndroidLogFormat *p_format, const char *tag)  
+{  
+    FilterInfo *p_curFilter;  
+  
+    for (p_curFilter = p_format->filters  
+            ; p_curFilter != NULL  
+            ; p_curFilter = p_curFilter->p_next  
+    ) {  
+        if (0 == strcmp(tag, p_curFilter->mTag)) {  
+            if (p_curFilter->mPri == ANDROID_LOG_DEFAULT) {  
+                return p_format->global_pri;  
+            } else {  
+                return p_curFilter->mPri;  
+            }  
+        }  
+    }  
+  
+    return p_format->global_pri;  
+}  
+        如果在p_format中找到与tag值对应的filter，并且该filter的mPri不等于ANDROID_LOG_DEFAULT，那么就返回该filter的成员变量mPri的值；其它情况下，返回p_format->global_pri的值。
+        回到processBuffer函数中，如果执行完android_log_shouldPrintLine函数后，表明当前日志记录应当输出，则调用android_log_printLogLine函数来输出日志记录到文件fd中， 这个函数也是定义在system/core/liblog/logprint.c文件中：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+int android_log_printLogLine(  
+    AndroidLogFormat *p_format,  
+    int fd,  
+    const AndroidLogEntry *entry)  
+{  
+    int ret;  
+    char defaultBuffer[512];  
+    char *outBuffer = NULL;  
+    size_t totalLen;  
+  
+    outBuffer = android_log_formatLogLine(p_format, defaultBuffer,  
+            sizeof(defaultBuffer), entry, &totalLen);  
+  
+    if (!outBuffer)  
+        return -1;  
+  
+    do {  
+        ret = write(fd, outBuffer, totalLen);  
+    } while (ret < 0 && errno == EINTR);  
+  
+    if (ret < 0) {  
+        fprintf(stderr, "+++ LOG: write failed (errno=%d)\n", errno);  
+        ret = 0;  
+        goto done;  
+    }  
+  
+    if (((size_t)ret) < totalLen) {  
+        fprintf(stderr, "+++ LOG: write partial (%d of %d)\n", ret,  
+                (int)totalLen);  
+        goto done;  
+    }  
+  
+done:  
+    if (outBuffer != defaultBuffer) {  
+        free(outBuffer);  
+    }  
+  
+    return ret;  
+}  
+        这个函数的作用就是把AndroidLogEntry格式的日志记录按照指定的格式AndroidLogFormat进行输出了，这里，不再进一步分析这个函数。
+        processBuffer函数的最后，还有一个rotateLogs的操作：
+[cpp] view plaincopy在CODE上查看代码片派生到我的代码片
+static void rotateLogs()  
+{  
+    int err;  
+  
+    // Can't rotate logs if we're not outputting to a file  
+    if (g_outputFileName == NULL) {  
+        return;  
+    }  
+  
+    close(g_outFD);  
+  
+    for (int i = g_maxRotatedLogs ; i > 0 ; i--) {  
+        char *file0, *file1;  
+  
+        asprintf(&file1, "%s.%d", g_outputFileName, i);  
+  
+        if (i - 1 == 0) {  
+            asprintf(&file0, "%s", g_outputFileName);  
+        } else {  
+            asprintf(&file0, "%s.%d", g_outputFileName, i - 1);  
+        }  
+  
+        err = rename (file0, file1);  
+  
+        if (err < 0 && errno != ENOENT) {  
+            perror("while rotating log files");  
+        }  
+  
+        free(file1);  
+        free(file0);  
+    }  
+  
+    g_outFD = openLogFile (g_outputFileName);  
+  
+    if (g_outFD < 0) {  
+        perror ("couldn't open output file");  
+        exit(-1);  
+    }  
+  
+    g_outByteCount = 0;  
+  
+}  
+        这个函数只有在执行logcat命令时，指定了-f <filename>参数时，即g_outputFileName不为NULL时才起作用。它的作用是在将日志记录循环输出到一组文件中。例如，指定-f参数为logfile，g_maxRotatedLogs为3，则这组文件分别为：
+        logfile，logfile.1，logfile.2，logfile.3
+        当当前输入到logfile文件的日志记录大小g_outByteCount大于等于g_logRotateSizeKBytes时，就要将logfile.2的内容移至logfile.3中，同时将logfile.1的内容移至logfile.2中，同时logfle的内容移至logfile.1中，再重新打开logfile文件进入后续输入。这样做的作用是不至于使得日志文件变得越来越来大，以至于占用过多的磁盘空间，而是只在磁盘上保存一定量的最新的日志记录。这样，旧的日志记录就会可能被新的日志记录所覆盖。
+        至此，关于Android日志系统源代码，我们就完整地分析完了，其中包括位于内核空间的驱动程序Logger源代码分析，还有位于应用程序框架层和系统运行库层的日志写入操作接口源代码分析和用于日志读取的工具Logcat源代码分析，希望能够帮助读者对Android的日志系统有一个清晰的认识。
