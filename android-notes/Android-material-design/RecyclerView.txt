@@ -1,0 +1,2 @@
+1.位于android.support.v7.widget.RecyclerView
+2.使用前需要导入android.support.v7，和android.support.v7.widget.RecyclerView这两个jar包
