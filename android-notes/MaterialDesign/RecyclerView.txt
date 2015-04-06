@@ -1,0 +1,8 @@
+					RecyclerView
+
+*ListView控件的升级版本
+*配合布局管理器来管理布局
+		LinearLayoutManager：让所有的item呈线性排列(横向，纵向)
+		GridLayoutManager ：让所有的Item呈网格排列
+		StaggeredGridLayoutManager ：交错网格布局（线性和网格交错）
+*定制Item动画、制定Item之间的分隔条
