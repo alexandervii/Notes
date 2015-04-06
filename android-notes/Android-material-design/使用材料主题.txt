@@ -1,0 +1,8 @@
+android5.0有3中材料主题
+1.@android:style/Theme.Material
+2.@android:style/Theme.Material.Light
+3.@android:style/Theme.Material.Light.DarkActionBar
+
+android5.0的api level为21，修改对应的style属性在values-v14包下
+
+如果要使用android5.0的style，AndroidManifest.xml中android:minSdkVersion="21"

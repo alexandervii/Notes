@@ -1,0 +1,23 @@
+在android5.0，或者某些机型录制视屏时，特别是前置摄像头，会出现硬件适配错误，log显示MediaRecorder start failed: -19错误
+
+
+出现这些问题基本上都是以下两个方法参数导致的，每个手机的分辨率和预览大小支持都不一样，设置错误就会报错。
+//设置分辨率
+surfaceView.getHolder().setFixedSize(350, 500);
+//设置视频的大小
+mediaRecorder.setVideoSize(320, 240);
+
+如果把上面两个方法注释掉，屏幕可能花屏，解决办法如下：
+
+设置参数需要是相机支持的
+设置视屏的大小
+recorder.setVideoSize(width, height);
+支持尺寸列表可以通过下面方法得到
+List<Size> list = camera.getParameters().getSupportedVideoSizes();
+
+设置视屏的帧率
+recorder.setVideoFrameRate(30);
+可以通过List<Integer> list = camera.getParameters().getSupportedPreviewFrameRates();得到,一般为15或30
+花屏问题设置以下方法
+recorder.setVideoEncodingBitRate(1024 * 1024);
+参数大小可根据需求自行设定
