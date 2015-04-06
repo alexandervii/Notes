@@ -1,0 +1,13 @@
+Go to your java bin directory via the cmd:
+C:\Program Files\Java\jdk1.7.0_71\bin>
+Now type in the below command in your cmd:
+keytool
+-list -v -keystore c:\users\your_user_name\.android\debug.keystore
+-alias
+androiddebugkey -storepass android -keypass android
+example:
+
+keytool
+-list -v -keystore c:\users\James\.android\debug.keystore -alias
+androiddebugkey -storepass android -keypass android
+and you will get SHA1
