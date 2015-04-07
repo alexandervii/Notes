@@ -22,3 +22,5 @@ drawable使用:http://blog.csdn.net/lmj623565791/article/details/43752383
 android底层机制*****：http://blog.csdn.net/luoshengyang
 
 jni对象处理:http://leidiqiu.iteye.com/blog/720307
+
+android性能优化：http://hukai.me/android-performance-patterns/
