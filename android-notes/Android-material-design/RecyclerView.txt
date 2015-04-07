@@ -1,2 +1,12 @@
 1.位于android.support.v7.widget.RecyclerView
 2.使用前需要导入android.support.v7，和android.support.v7.widget.RecyclerView这两个jar包
+
+
+					RecyclerView
+
+*ListView控件的升级版本
+*配合布局管理器来管理布局
+		LinearLayoutManager：让所有的item呈线性排列(横向，纵向)
+		GridLayoutManager ：让所有的Item呈网格排列
+		StaggeredGridLayoutManager ：交错网格布局（线性和网格交错）
+*定制Item动画、制定Item之间的分隔条
