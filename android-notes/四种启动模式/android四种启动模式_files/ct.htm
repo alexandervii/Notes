@@ -1,0 +1,570 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0831)http://inte.sogou.com/ct?id=261623&h=328&w=250&fv=14&if=5&sohuurl=http%3A%2F%2Fwww.360doc.com%2Fcontent%2F13%2F0507%2F19%2F12229927_283691996.shtml&refer=https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3D4GUCO2usL-rpCmUbuhvMMc08DOkM_xaeNbt5Egnbq8h2eA-sJkHpPoV_6TFjvWj2LpffCmHyioEgyzl9Ekk-ucGfcyz5X-JMAEo0Q17Nq1q%26ie%3Dutf-8%26f%3D8%26tn%3Dbaidu%26wd%3Dandroid%25E5%259B%259B%25E7%25A7%258D%25E5%2590%25AF%25E5%258A%25A8%25E6%25A8%25A1%25E5%25BC%258F%26oq%3Dandroid%2520intentServ%26inputT%3D4413%26bs%3Dandroid%2520intentservice&rnd=5d61b356c6eb0d58&z=dece45a58d9fde09&lmt=1430356757&srp=1366,768&ccd=24&lhi=1&eja=true&npl=36&nmi=88&ece=true&lan=zh-CN&bi=1&t1=16&t2=1430385558&pvt=1430385557906&ssi0=259&ti=android%E5%9B%9B%E7%A7%8D%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%BC%8F&bs=250,328&tmp_cdif=0&m=MTQzMDM4NTU2MV9wcmV0dHkgZG9nXzI2MTYyMwA-&ex= -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">
+		
+		<title>SOGOU推广服务</title>
+		<style type="text/css">
+body ul form{
+	margin:0; 
+	padding:0;
+}
+body a{
+	font-family: Georgia, "Times New Roman","Microsoft YaHei", "微软雅黑",STXihei, "华文细黑", serif;
+	cursor:pointer;
+}
+body, em {
+	font-size:12px; 
+	font-family:Arial;
+}
+
+img {
+	border:0; 
+	vertical-align:middle;
+}
+
+a.logo {
+    display:block;
+    height:18px;
+    width:26px;
+    text-align:justify;
+    letter-spacing:20px;
+    text-decoration:none;
+    overflow:hidden;
+    cursor:default;
+    position:absolute;
+    bottom:0px;
+    right:0px;
+    z-index: 5;
+}
+.global a.logo {
+    background:url(http://p.inte.sogou.com/testgpimg/sogou_icon_short.png) no-repeat left top;
+    
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+.global a.logo:hover{
+    width:78px;
+    background-position:0px 0px !important;
+    background:url(http://p.inte.sogou.com/testgpimg/sogou_icon_long.png) no-repeat left top;
+    
+    filter: alpha(opacity=100);
+    opacity: 1;
+}
+.global div#logo_overlay{
+    background-image:none;
+    
+}
+.global div#logo_overlay:hover{
+    z-index: 1;
+    width:78px;
+
+    background:url(http://p.inte.sogou.com/testgpimg/sogou_icon_long.png)  no-repeat left top;
+    
+}
+
+.tag{
+	text-align: center;
+	display:block;
+	vertical-align:middle;
+	color:#000000;
+	text-decoration: none; 
+	z-index: 2;
+}
+
+.small{
+	background: #F4B5A6;
+}
+
+.middle{
+	background: #F4B5A6;
+}
+
+.big{
+	background: #F4B5A6;
+}
+
+body{
+    background:#FFFFFF;
+}
+
+.fade{	
+	text-align:center;
+	color:#000000;
+	position:absolute;
+	background:#F4B5A6;
+	cursor:pointer;
+	z-index:3;
+	display:block;
+}
+.fade span{
+	display:block;
+	padding:0 1px;
+	vertical-align: middle;
+}
+.toggle{
+	opacity:0;
+	filter:Alpha(opacity=0,finishOpacity=0,style=0);
+	position:absolute;
+	background:black;
+	cursor:pointer;
+	display:block;
+	z-index:4;
+}
+		</style>
+	</head>		
+	<body marginwidth="0" marginheight="0">
+		<iframe id="tanxcmiframe" width="0" height="0" src="qi.htm" style="display:none">
+		</iframe>
+		<script type="text/javascript">
+
+//后端变量填写
+var font_clr = "#000000";          //新字段
+var s_clr = "#F4B5A6";          
+var m_clr = "#F4B5A6";      
+var b_clr = "#F4B5A6";
+
+var fade_font_clr = "#000000";//新字段
+var f_clr = "#F4B5A6";             //新字段	注意！格式为rgba(0,0,0,0.8)
+var fsMap = [14,17,23];					//;             //新字段	注意！格式为[14,17,23]
+
+var total_height = 328;          
+var total_width = 250;                                         
+var h_num = 12;                  
+var w_num = 2;               
+var coor  = [{"size":3,"x":0,"y":2},{"size":3,"x":0,"y":5},{"size":2,"x":0,"y":0},{"size":2,"x":1,"y":0},{"size":2,"x":0,"y":7},{"size":2,"x":1,"y":7},{"size":2,"x":1,"y":9},{"size":2,"x":0,"y":10},{"size":1,"x":0,"y":4},{"size":1,"x":1,"y":4},{"size":1,"x":0,"y":9},{"size":1,"x":1,"y":11}]; 
+             
+var speed = 300;						//;				//新字段，默认请填300
+var carFlag = 1;						//;				//新字段，默认请填0
+var carSpeed = 3000;					//;			//新字段，默认请填3000
+
+var fsize = 14;
+var pid="360doc123";
+var mt_preview = 0;
+var logo_flag = 0;
+
+var ad_info = [
+
+    {
+		title : "小本经营模式",
+		desc : "动动手指就赚钱,创业毫无压力.",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV6Gdr9C9yeTXI2IHdqo65eawoja3yZhzD4@sLe1LOVp@f4LAfEhqBLLFgTBK7IAJoaATvkhWPAkKIrW0xvL@LJxcDQFecdvbcFdvTyWkZG5nBpQzMFn7BMkqzJMdxmETMisNWfdBA@LnXt@EhSyWKXbDdGt5R5Ts4$TKMKrHMK@@ke72TxcspcE5RoL70uH4NHSDK5IMWKsIi@5goMitV7JA5SSoFhOfxihnOGoKNNWAudrw7Wc8Z7xN52RCJJ7G7uKv36Srsnph8vJS1L9zSRHGIEBBBHdZqqqZ7Zizot2SCkXsBF0MQY8OSFrxSti8as6IuD0dmhTuBi$wuqzXgo2BogcJpUvyYrqlWLFz17OZMhmqlimPhrQArXcPIa1E4NPnj4lVAgcVkPjZvxJeV4mVCKYYl$LnGZl2E4SrBaxpoaQy75NEXoYkpym3oXOlwY2m90W9h7zle8KvoFHtk$JxJGtGWgHaDkAx752CpSsClMho1c6r26SgcXJpwWaENP$HeOYkjuBkyr9CaC4sFl0QIFT8323DwKtB6X5OPv5gfe6jkJ79S0c3zAkmfrgHRNJGv8Ve3tWlvcrmUPjc0e5UZN12G@k98jJl@&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "模式创业",
+		desc : "动动手指就赚钱,创业毫无压力.",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV6GCr919YeIO1uLF4RMwtIjZ3kkShLlT88m8XFzUUb@oKzJhBJ2mzEr$EhvbC1oIY7SKHyY0khBsorKbuyKR6Fv@WeJsk5CVXAHjBkgO@E8hDD@j14in@$4TDVXUfzfd@EEWs5gTMoNtELNsH1WDXbcibDKa5@ssqpZNKKrqs4TfDtsKX$LW2MZKaiWUe8@OnMMmEbiM50XiDWoJ74O3BjQRDxFI9cfr3m@euOLTo6c7M0@1cA57Au@FVHmXh0gv$VW7lKPPiRVkjX47MleoxW2F7aksaHVJzqpz0bVI5s4$XLsSpu1ansQi13TDc9p$AH$HmHpiYVpIyIF5C4EKUo7c3zzAzq@ZOG$fNtdk$hivvVSY60o5HsVRTj0qUxbOyCTg@ZvjqUL5FzQJU9lFnSY8pewYojX0AyLRfGc3cmyqxNiZCbnQ8qJ3nq9aiZvjwBF3UAABpUSV9XSBm09capCsFg9HCWSf0nQ6eh$O5FLOeSPkT4u1Sh1FrgG3QuVtaY6tPSjzO1nXkqFV5BUOzVwR$IvT$mqOJuAh964423CJ@1MwxRMnYfKp2ovS2o9uySwb3GE$mT1b6$7fNmc8ShlUwgyzehZVtXZBmFn9KcjW54y==&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "怎么创建网站",
+		desc : "海大科技公司---10年专注网站建设,量身定制",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeq0Edaw19Uei6Y7DXo4K9CholkAxx6jK20BTWL11b7dR@Zc7EpRzNuaEmz$wL3$lAjOzxkaLwBEJyRzDpRn1f7E5ZaxRmNHS9KlMddT$@ssnwpE3RACS6$OcWnX@z3wEsEOig3LdBuPKiinELhCGX8T6gsen2sGrCdnRPEMKDn@FPfmxMwN38gM@MMT4zETWs8mdN@2dmoJVh$uZ40ckj2SL6z0cXJGFiOgrsNr6zCP$cHPL6CQGchcgZQSMXvcP43VIwMX9MvxoUWaXCjtjOmPgnH7xfLcV7L5u@pqfIxtc6UGpoxYmyESPpUunNJcFHGBsOqyja8lzlBGoF8DQIRyCu4yW0wuOFzrMmyMOO4jokvjMtQ5owh8$@9IrgovtQidj0IefkRV$tnVKvRC0cJtnEgF@Ph5xXlMzjFr64JDbX0n6oo7EyTfRS1lPBO0xo858Yh8yy3TpUmVcBEHVpCPxvmUH8winozjo8f1sthv0iIC2yQYJk83u8n$Qt8iH$t3q7ZB0HULo$hN1FFKXy=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "p2p模式",
+		desc : "注册即送1000元红包!",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV6aCrV99YeIXaiKBL@njt3Ac9xVucYX5GeTiL37NPI@dxTn8GBNKtBNKNLNmd789xvblvx2plQ3yF3cH12uJOwCzLNPBLVrBeSoyGl@5MXsN0XIXMY@y4dG@WkGVkcMQ5o@f2cM5TZM4iZBGP@XBMtuz9rTDWsqm@NKrPq@@mdCWbdE@M5m6DM5F1eKQ1aN$qUNRADMug0cKlBREuWUwoWZbWkOF3ZuzTbFISmLuzUBquvB8enx7OMqeI$EFnBTQ7ouhKATzUhsXGBI2v$5SLbb5eRkdDu@IVut@8$B7oeSCErPD96SE3JOUuPS3bOghcJqHJHm8kF0pa989gMdwneI$FU7yhQc0@mjWQFqihStMxKoVCjgzr372o0g$SBUp83GqL3zzASVW1ieCOm2BMrSc9Jya9mkIxA6ZvxxfagnJIKY9l1LWjZRCrlTzaStbSkwH9mVE7PFhzto90gv9SZJYxnEs@lP2Lf13q$slhxj1h33zYcqRFDowkER8zyCTdedYCL9CzmUSu9R4uPCAOxTldzF2WwyGFkHqvVHgts9wdfPnKG7qrgVC0G9MCPVv2E1ZifP9tWqpk$b$kuh$TA8YIZthPVltnwbiRvWkZyPZgW1fwhqDqaIN5&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "旅游规划模式",
+		desc : "600余名优秀旅游规划专家团队,全程提供一站",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeVF8Crp19yBtMhFrWS0bhqtD9yGlwqPiXBCNEHNU6F17g@wJVsFiYZSuKNfvHIORynPuxgkPPUxq39c2axpRNJ3PWxcRMy3uc2My4nrP75l82si7Lbutob2$ft86uHH0rE7CdiK5RMzf2eMTbzk2MTefWmMXAd@Lgehb@RuDr8be@Q27DM48msis5IZDfGBR5hmsrdedQs7E@XJ8D@gqfDwicwyKtvin3l5noUSqYgFMsDuK4SzavPQD2WguZ6sN10Y0gDxEvUiCCkjC8ps6MdrJMME3KHHGMQa4MrCNURv@KaO5yBygMB6kE8Gw$6AJ7obgTwAaleYWvVs1IaLbjrQULXvN$UazO1T2YIeJBSGl3MviTHmLvVOkzBogowGIBteG$sU0JuaktnjJVV6TH9$bnTZ1rLFFmz0w7JDh3Oy491PdFoY0amfIhikl0p83OpsiW8GkDeiGakxQTQmU33UjOmiJLLBuQ9QGBLuB5KoTgFLLBr4999X9GUwwYxSeUwe3lJGOjl@Zpi7430&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "android",
+		desc : "北京融心百乐人科技,专业技术团队",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV0DC3Z1lUPBuLJmXYv0mrGAwwwXyShse61uvXpTpXbflC6EbxXfSJHzCmqJj3m4j0onkaAlHgAu@kCPNyNhitMlPCw6A4j85KXg5uTR9nUGNcmknOUmg$tL0GXIDMq3m0oDG$WSsN5nXndNKZKuaPiKOQQ@Ec3zMMXChjdW@ge1JbSXJKbM8wnl86GtP8uD0yochKkWOLHes2DDqiH$v$CMsq273HGlergrPdlqw8XoviJl6wh0aPYk88UWhsegEF0C4eFdDwipc$eeo9GywUF14ySXOzrZsmQOv6@F19WaIEj38kj7eVWcV9JWOEsAUzZIVmU@r9FSqNxl0QYzbCNh0xTpf6Iwbkk0uQYM9jx4L6GLwSS6P3k89qYzz8AKc@A77Zi@QEl8Q3vigNtms$syus4Dk9fYSvoIYzqAQ9jN3YFQTpVQWOjHvicab0GJQyzU$6UWw3iqWU0pOnTbgyR3n9uchSm6uIbFa$uJev1hajNl0dxYBIb5o=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "模式口中里",
+		desc : "我爱我家房产网最新二手房,租房房源更新,",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJe2Urma919tBIJt4mmRTlPhalAjxV37YScEm8mNmBPkI@@xuNmNJ4sXBsKLttOItdI9a9y7Pxn7E9vZm1fDyPj787bjhmzZHx978iuYCEJDnd@TMTf@bLbYDA2cOjDKsZ4qf7zrXi5hdWN5TdKricD5fM0bMWs06X51z@JmENbBXhHTJPMmTsshDPFt5@eEH0EoSnL4LmWTg8dMMs4ddnFT9CjPVsJjVe5fRJ86xu6zCQA8S0rhTNiIGJ@H22ZZ69hGTUVTLxtCL7XvYj7J7dAqi4Yvd7n7SAZOx7a871jJwPkVG89q7BJ$Paq2jBHhnX2zAOI$eSq7a$A0aJLbtDfSk$ubvQALVBxOWNI0aDo$PNm8YRttIu3Y8raBKaI0aQPrsIDIiB1B@n@mxO4gEZdgLCm8Dv7XzUr2WrlE5FQegZxCh@oVrBl65oJizNNCrSaVYA7Q5S4Rvf5S$a4NdbCGgzHWC9lGlNYszLll3dALpWUuB6rKPcj$rZsxggCR31FEskWrXXjVhbrGDg059ckrSZox16Hzr0dNqaqjV6OrLbB700Pedw7zpGGvZSzAjjHL7pSqabWTjCKMj4CN3E00dlxQF9ZtZPjTIQX24KHWl67wYhyKmqDB9AzZvje79vIiTInBJt$oiFP9PmSf4AeAenqd3BY7LyCBfD2rxj2$9wJ7lL5aw2ke3GzpAB0Pw5Z59c5x5y==&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "威客模式",
+		desc : "做网络任务威客,马上点击注册一品威客网!",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeH6aCrV99YeIXaiXBs@nlhzt3l9JjR3iB05uiuBE79J3FF@1jFXbuEwBINN8WivL8UJH9uzvwoIawFfcxV7l6IlAu7SNR3h7aQZ0P8FS$4kKNdXXXcsvDF5UG@y4ShR2rHPFKKdfaVZ@L5TWEqAMNNDmg$TUuoTsEtM8jEN5FCqEFfEyl@LR@fRSfNK@o85LwVLc1m@TfM54H@tKovHak6n7Docf@x38j$ffaRO8H7eNTeW2Z8eN0YRN5aDAKn7BszF4rVhpqQN2EPd1$0bQuhm7n63zZ8U6VcZI1tirU5FwVGW3FZU59Kr52LfLOiXl@HiryEx4iBKlGpqQUJuu9AeSALAHwDaGTlOnAQefhsQbTOwbkJyY6lebtPp39QFSax18cqTHdpk5mzwglKaDjkLaYzHbgJFVM7jzgFkFY6dY6zlYJRLxPnu8YGHkog0qvzJVwSPQdjG99PoiJZ1sN$iCIxL4Afkya@$gknxHu6T69HvvAFX44PYa5Beno3PYSvcoEbCn48j0QBIJJeILW1ueBhZzqv8n9blcLzO3yAFbh$rHqNd8B9NekO5pzGJRpOGuBUeB8vm9d9rl0dxe4V6Xy=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "股市人生",
+		desc : "百分之80(富人)都在学习的理财课程!",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV08Va499UeiX8s2Lb$JeRAuGk9lk4xd6di7T78miLLoANMyzJ8m8WXz3TEIEWgN3o0BJ3xlmVyphRSvoPFW$oFN3aIlmjXDRp8joo540sddEEs8@5@6SL64TLxNq$dWn@m@brkETFBs2MWfsJ@HZKXCXP1b@NbMG8q8MsEKub6@$EffMTfG5PTsWg4FNC5do@8AdM@EoDsdHxqvpBEAXkc02fLMXT1czYbKli9DsBvagULAG1eVhvm4OEcRJZlb0zSDUCMk3gDE8ahx0Tw1Ie2tTAdCutexuB4lZprzgVrHio$Nc$rQjU9yS1j$Gn$UwyMjahZj@fuZvJwAmjVukNOd52rAYC4zsYDeKdU9WJ0OOUb5yJYHFjIKBRUt5O0Nv7Lu9yWHwRvvtZpP3al8RxQ9p0BirjIKUqDsyiXtBO2Wh5vVU3jWxJAG8xtFg7fIeY8w0YkDPYd4JvcSw6Vcb4H4p1Pjd6p4J0UUo1$yja@jko34Mu2LbQJ$Mc7gtcBc9Rwx1novGl4w@iF70k5MYXNuy=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "配送模式",
+		desc : "康普汇维专业生产{车用尿素溶液},杂质少,",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeVFDCap19UBdzYTSCbvWtUPk$jjRu7cbLB84EtL6sZIsMxFgYLJHvz2b7e7bCUaibvyhuOonRJQMXBkflVUYvQ4XrosYWjTkrdxMJnaD3RdTEs@Fic8AmQnhN4IV3IKs$dEDe@K5nOqIs7s$Ex8DXPAS1WTne@XXihWs45QKEff@4$MYNTCr5rLE@qb02HsXvm@X8@tgXDEQh5m2w4TYdShaN6rIsXfzJDmAAzSYCpo@IctLnIsFVGfX4@egHAd4hpOr37xLe3$wP8f$zRBpLyNJwxWLkUEqB5RZLNOh6BGwJDOIwmt89wOwZz$GeMueVIW78wj$@vUrrN1fhA68PI$JY3NNFSjUvp6FGjT3bQMs@P9v121ca$wolGqzyj@ojvGbGS9xvlyFsTAVJrf86ruUW22xEXnDZ2loxy2jFZjILne8LNGSmZGjZ97Dz@XEphD29g77xFmoA8IBJMpwrjTmIoq6zwqpvArWZWaSvTNFYX93yXxlyWomDJRRLJfRqlWv4k4zP@tY7=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "分销模式",
+		desc : "不开店、不投资加入易分达分销平台",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV0EDsx99Ue82XTWf248OFGUk6wrOAtT68tEG@nPrSDSdZNsbtSHhHL@mVxkLPoBpy$4SjWh$NvAGzHUvP1CVou2qcWtuD8D8TKNDDzct6qmDviKn0BfD4CHFBcULPDanTQcRXXcmWfBL@4C8T8@YM5fhVDf@eINs0ste3EMC1rnrpErBCd@a1@gRCWaM5t7wxqyDYV1NooHI7e02Abob5fMh9UFW$VB2QrNZmxrUFOabFlQZ6vyv601mKUIhapMVhwfh9RFaUfgv3$MqwHYIxKY2uGQoyenkZSOQvYfcrPqdAGrCs9hFvGhxo6YiAwLi4AmSqpwyOQBzWDA7$xRdq2l6jzmaGLOMSe1YrCOaaN1xcTnV193GmGFuUylj6H5q5pptLCcuSr6O47xV1uC76iTrvD8kRotTfkLf69uwjYfxR@CFbCenviyi8m2RtI@y1U10PfjBHXf6o6ugkvdd23KuXzKLLSABFBiH8tpTp4J788ezGLvQyHkK7Vcvwt9l=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+    {
+		title : "植物",
+		desc : "我公司盛产水生植物,生命力极强,适应环境广",
+		url : "http://www.sogou.com/bill_un?v=1&p=WJeV08dal89Ye6uddHIoIQY$lY7kPyi4hBstT11gtN2so5qhHqQ6Bfd@rXqSOf$FoZom0HaJoYGKyPx9q8tXDy7w2NKV9G0EviETWBd6F1krnEO4PUaeEXnUgbuipVt$1E5FjXmNT6C1d@BrdJPWWEPivL1MKMWTeeMCTKsaTCh0VJzpLssFhDDihkubhBY5gVhPiUzX9ibVWIOs$2TsdfHEx8wWRwBeCQDNgzn6ODi0aY$z0GeehfGUiDJL72Gnf6pbiptNHzb7JX3zZzP292xV0xo6xci0jtD93EXs9vvv1hNoAezeVszz6PS6clWuqb2tfNqOZae91vpwUSLXduNVlQsNU9u8ykxZeeV1lznYfllul8z0ZFdPXRoMJa2@1AQ7MgVXo4aYrmTYYJr3anT4FS6SXy9ZHqSvBNM3vwbbY4nPW9f$zb$ZPnLfg2uXfIJ6k4uQihyU@Nn$WH7XhCZ220PX0kVkpeetyhUCFpYBaoG@$xeHbZ==&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" 
+	},
+
+];
+
+if (mt_preview == 1)
+{
+   	var height0=328;
+   	var width0=250;
+   	if ((width0==120 && height0==240) || (width0==125 && height0==125) || (width0==120 && height0==600) || (width0==180 && height0==150) || (width0==160 && height0==600) || (width0==200 && height0==200) || (width0==234 && height0==60) ||  (width0==250 && height0==250) || (width0==300 && height0==250) || (width0==336 && height0==280) || (width0==360 && height0==300) || (width0==460 && height0==60) || (width0==468 && height0==60) || (width0==480 && height0==160) || (width0==500 && height0==200) || (width0==580 && height0==90) || (width0==640 && height0==60) || (width0==728 && height0==90) || (width0==760 && height0==90) || (width0==960 && height0==60) || (width0==960 && height0==90))
+	{
+		var imgurl="\"http://mt.inte.sogou.com:8080/marketing/maskimg/"+width0+"-"+height0+".jpg\"";
+	  	document.write("<div id='mkt' onclick='document.getElementById(\"mkt\").style.display=\"none\";' style='top:0px; left:0px; width:100%; height:250px;line-height:250px; background-color:rgb(0,93,181);position:absolute;z-index:2;text-align:center;font-family:YaHeiConsolas,\"Microsoft YaHei\",\"微软雅黑\";font-size:"
+		+fsize+"px;color:white;'><p><img src="+imgurl+"></p></div>");
+	}
+	else
+	{
+	   	document.write("<div id='mkt' onclick='document.getElementById(\"mkt\").style.display=\"none\";' style='top:0px; left:0px; width:100%; height:100%;line-height:150%; background-color:rgb(0,93,181);position:absolute;z-index:2;text-align:center;font-family:YaHeiConsolas,\"Microsoft YaHei\",\"微软雅黑\";font-size:"
+	   	+fsize+"px;color:white;'>搜狗联盟广告位，点击开始展示</div>");
+	}
+}
+
+
+
+//动画部分
+var Easing = {
+	swing : function( p, n, firstNum, diff ) {
+		return ( ( -Math.cos(p*Math.PI)/2 ) + 0.5 ) * diff + firstNum;
+	},
+	linear : function( p, n, firstNum, diff ){
+		return firstNum+diff*p;
+	}
+};
+function fadeOutEasing(ele,time,hz,type){	
+	if(ele.mouseoverFlag){
+		return;
+	}
+	ele.mouseoverFlag = 1;
+	if(ele.mouseoutFlag){
+		ele.mouseoutFlag = null;
+	}
+	type = type || 'linear';
+	if(ele.fadeIn){
+		clearTimeout(ele.fadeIn);
+	}
+	var bc = ele.getBoundingClientRect();
+	var height = ele.fadeHeight || bc.height || bc.bottom - bc.top;
+	if(!ele.fadeHeight){
+		ele.fadeHeight = height;
+	}
+	var t_blank = 1000/hz;
+	
+	var caltime = 0;
+	if(ele.fadeOutPer){
+		caltime = ele.fadeOutPer * time;
+		ele.fadeInPer = 1 - ele.fadeOutPer;
+	}
+	
+	if(!ele.fadeOut){
+		ele.fadeOut=null;
+	}
+	var sto = function(){		
+		var per = caltime / time;
+		caltime += t_blank;
+		ele.fadeOutPer = per;
+		ele.fadeInPer = 1 - per;
+		if(caltime >= time){
+			ele.style.top = 0;
+			return;
+		}
+		ele.style.top = height -  Easing[type](per,0,0,1)*height+'px';
+		ele.fadeOut = setTimeout(sto,t_blank);
+	};
+	sto();
+};
+
+function fadeInEasing(ele,time,hz,type){	
+	if(ele.mouseoutFlag){
+		return;
+	}
+	ele.mouseoutFlag = 1;
+	if(ele.mouseoverFlag){
+		ele.mouseoverFlag = null;
+	}
+	
+	type = type || 'linear';
+	if(ele.fadeOut){
+		clearTimeout(ele.fadeOut);
+	}
+	var bc = ele.getBoundingClientRect();
+	var height = ele.fadeHeight || bc.height || bc.bottom - bc.top;
+	if(!ele.fadeHeight){
+		ele.fadeHeight = height;
+	}
+	var t_blank = 1000/hz;
+	
+	var caltime = 0;
+	if(ele.fadeInPer){
+		caltime = ele.fadeInPer * time;
+		ele.fadeOutPer = 1 - ele.fadeInPer;
+	}
+	if(!ele.fadeIn){
+		ele.fadeIn=null;
+	}
+	var sto = function(){		
+		var per = caltime / time;
+		caltime += t_blank;
+		ele.fadeInPer = per;
+		ele.fadeOutPer = 1 - per;
+		if(caltime >= time){
+			ele.style.top = height+1+'px';
+			return;
+		}
+		ele.style.top = Easing[type](per,0,0,1)*height+'px';
+		ele.fadeIn = setTimeout(sto,t_blank);
+	};
+	sto();
+};
+	
+var addHandler = function(element, type, handler){
+		if (element.addEventListener){
+			element.addEventListener(type, handler, false);
+		} else if(element.attachEvent){
+			element.attachEvent("on" + type , handler);
+		} else {
+			element["on" + type] = handler;
+		}
+	};
+var getEvent = function(event){
+		return event ? event : window.event;
+	};
+var getTarget = function(event){
+		return event.target || event.srcElement;
+	};
+
+//开始生成部分
+var div = document.createElement("div");
+var margin = 1;
+var border = 0;
+var cell_h = total_height / h_num;
+var cell_w = total_width / w_num;
+var dis_info = [];
+var carArr = [];
+
+var classMap = ["tag small","tag middle","tag big"];
+var hMap = [1,2,2];
+var wMap = [1,1,2];
+var fsMap = [14,17,23];
+var checkIEversion = function(){
+	var ua = navigator.userAgent;
+	if(/MSIE ([^;]+)/.test(ua)){
+		return RegExp["$1"];
+	}
+	return null;
+}();
+//补全tagParam
+var tagComplete = function(tagParam,data,cell_w,cell_h,margin,border){
+	var s = tagParam.size-1;
+	
+	tagParam.text = data.title;
+	tagParam.url = data.url;
+	tagParam.title = data.desc;
+	tagParam.className=classMap[s];
+	tagParam.desc = data.desc;
+	
+	if(checkIEversion && checkIEversion < 6){
+		tagParam.left = tagParam.x*cell_w+margin/2;
+		tagParam.top = tagParam.y*cell_h+margin/2;
+		
+		tagParam.w = wMap[s]*cell_w-margin;
+		tagParam.h = hMap[s]*cell_h-2*margin-border;
+		
+	}else{
+		tagParam.left = tagParam.x*cell_w+margin/2;
+		tagParam.top = tagParam.y*cell_h+margin/2;
+		
+		tagParam.w = wMap[s]*cell_w-2*margin-border;
+		tagParam.h = hMap[s]*cell_h-2*margin-border;
+	}
+	var fsCheck1 = Math.floor((wMap[s]*cell_w-2*margin-border)/tagParam.text.length);
+	var fsCheck2 = Math.floor((hMap[s]*cell_h-2*margin-border-2));
+	var fsCheck  = fsCheck1 < fsCheck2 ? fsCheck1 : fsCheck2; 
+	if(fsMap[s]>=fsCheck){ 
+		tagParam.fsize = Math.floor(fsCheck - 1);
+	}else{
+		tagParam.fsize = fsMap[s];
+	}
+	var lineNum = Math.ceil(tagParam.desc.length*fsMap[0]/tagParam.w);
+//	var showLineNum = Math.floor((tagParam.h-2*margin-border)/fsMap[0]);
+    var showLineNum = 1;
+	if(showLineNum<lineNum){
+		tagParam.desc = data.desc.slice(0,showLineNum*tagParam.w/fsMap[0]-2)+"...";
+	}
+};
+
+//生成标签云tag
+var createEle = function(tagParam){
+	var aTag = document.createElement("a");
+	var aTag1 = document.createElement("a");
+	var aTag2 = document.createElement("a");
+	var ele = document.createElement("div");
+	
+	//add title
+	if(aTag1.innerText){
+		aTag1.innerText = tagParam.text;
+	}else{
+		aTag1.appendChild(document.createTextNode(tagParam.text));
+	}
+	aTag1.setAttribute("title",tagParam.title);	
+	//add class
+	aTag1.className = tagParam.className;
+	//add style
+	aTag1.style.height = tagParam.h+"px";
+	aTag1.style.width = tagParam.w+"px";
+	aTag1.style.lineHeight = tagParam.h+"px";
+	aTag1.style.fontSize = tagParam.fsize+"px";
+	aTag1.style.overflow = "hidden";
+	
+	//add title
+	if(aTag2.innerText){
+		aTag2.innerText = tagParam.desc;
+	}else{
+		aTag2.appendChild(document.createTextNode(tagParam.desc));
+	}
+	
+	aTag2.innerHTML = '<span>'+tagParam.desc+'</span>';
+	aTag2.setAttribute("title",tagParam.desc);	
+	//add class
+	aTag2.className = "fade";
+	
+	//add style
+	aTag2.style.height = tagParam.h+1+"px";
+	aTag2.style.width = tagParam.w+"px";
+	aTag2.style.lineHeight = tagParam.h+1+"px";
+	aTag2.style.fontSize = fsMap[0]+"px";
+	aTag2.style.top = tagParam.h+"px";
+	
+	
+	//add title
+	aTag.setAttribute("title",tagParam.title);
+	
+	//add link
+	aTag.setAttribute("href",tagParam.url);
+	aTag.setAttribute("target","_blank");
+	
+	//add class
+	aTag.className = 'toggle';
+	aTag.style.opacity = 0;
+	
+	//add style
+	aTag.style.top=0;
+	aTag.style.left=0;
+	aTag.style.height = aTag.style.lineHeight = tagParam.h+"px";
+	aTag.style.width = tagParam.w+"px";
+	aTag.style.fontSize = tagParam.fsize+"px";
+	
+	ele.style.height = tagParam.h+"px";
+	ele.style.width = tagParam.w+margin*2+"px";
+	ele.style.top = tagParam.top+"px";
+	ele.style.left = tagParam.left+"px";
+	ele.setAttribute("id","div_textlink");	//anticheat有可能用到
+	ele.style.position = 'absolute';
+	ele.style.overflow = 'hidden';
+	ele.appendChild(aTag1);
+	ele.appendChild(aTag2);
+	ele.appendChild(aTag);
+	
+	
+	addHandler(aTag,"mouseover",function(){
+		fadeOutEasing(aTag2,speed,60,'linear');
+	});
+	addHandler(aTag,"mouseout",function(){
+		fadeInEasing(aTag2,speed,60,'linear');
+	});
+	//轮播用	//为了让a标签包装在div里，就在这里调用了
+	if(tagParam.size == 3 || (tagParam.size == 1 && (w_num == 1 || h_num == 1)) || (w_num == 2 && h_num <=3 )){	
+		carArr.push(aTag2);
+	}
+	return ele;
+};
+
+
+
+
+function render_page(){
+	for(var i = 0, len = coor.length; i < len; i++){
+		var tagParam = coor[i];
+		tagComplete(tagParam,ad_info[i],cell_w,cell_h,margin,border);	
+		ele = createEle(tagParam);
+		
+		div.appendChild(ele);		
+	}
+	div.setAttribute("id","div_ad");		//anticheat有可能用到
+	document.body.appendChild(div);
+	
+	//logo
+	if(logo_flag == 1){													//这里为空，为1，则加入网盟logo
+        document.write('<div class="global">');
+        document.write('<a id="logo" class="logo" href="http://wangmeng.sogou.com/" target="_blank"></a>');
+        document.write('<div id="logo_overlay"></div>');
+        document.write('</div>');
+    }
+	var carfun = function(){    //轮播
+    	var setCarousel = function(){	
+			carouselIntervalId = setInterval(function(carArr){return function(){
+				var hover_flag = 0;
+				if(carArr == undefined || carArr.length<=0){
+					return;
+				}
+				for(var i = 0 , len = carArr.length; i < len ; i ++){
+					if(carArr[i].className.indexOf('hover')>=0){
+						fadeOutEasing(carArr[(i+1)%len],300,60,'swing');
+						carArr[(i+1)%len].className = "fade hover";
+						carArr[i].className = "fade";
+						fadeInEasing(carArr[i],300,60,'swing');
+						hover_flag = 1;
+						break;
+					}
+				}
+				if(!hover_flag){	
+					carArr[0].className = "fade hover";
+					fadeOutEasing(carArr[0],300,60,'swing');
+				}
+			};}(carArr),carSpeed);
+		};
+		setCarousel();
+		var clearCarousel = function(carArr){return function(event){
+			var e = getEvent(event);
+			var t = getTarget(e);
+			t = t.parentNode;
+			for(var i = 0, count = carArr.length ; i < carArr.length ; i++){
+				if(carArr[i].className.indexOf('hover')>=0 && (carArr[i].parentNode != t)){
+					fadeInEasing(carArr[i],300,60,'swing');
+				}
+			}
+			if(carouselIntervalId){	
+				clearInterval(carouselIntervalId);
+				carouselIntervalId = null;
+			}
+		};}(carArr);
+		
+		addHandler(div,'mouseover',clearCarousel);
+		addHandler(div,'mouseout',setCarousel);
+	};
+	if(carFlag){
+		carfun();
+	}
+};
+render_page();
+(function(){var S=function(a){return document.getElementById(a)};var U=function(a){return document.getElementsByTagName(a)};var B=function(a){a=a||window.event;this.target=a.target||a.srcElement};B.add=function(a,b,c){if(window.addEventListener){a.addEventListener(b,c,false)}else{a.attachEvent("on"+b,c)}};var E=function(){return new Date().getTime()};var K=function(a){var b=new B(a);if(J==-1){J=0}J++;tmo=E();mopos=O(a)};var V=function(a){if(a.type=="mousedown"){R=E();mdpos=O(a)}else{R=E()-R}};var F=function(a){N==-1?N=a.clientX:N=N;P==-1?P=a.clientY:P=P};var D=function(){if(X==-1){X=E()}C=E()-X};var G=function(a){L=a.clientX;M=a.clientY};var O=function(a){if(a.pageX||a.pageY){return{x:a.pageX,y:a.pageY}}return{x:a.clientX+document.body.scrollLeft-document.body.clientLeft,y:a.clientY+document.body.scrollTop-document.body.clientTop}};var w=function(a){x[i++]=1};var o=function(){A=E()};var W=function(b){var a=b.target.innerHTML;if(b.target.href.indexOf("&ml")==-1){ma_plus=(A-tmo)+","+history.length+","+mopos.x+","+mopos.y+","+mdpos.x+","+mdpos.y+",250,328";b.target.href+="&ml="+i+"&mc="+(E()-A)+"&ma="+ma_plus;b.target.href+="&ak="+J+"."+R+"."+L+"."+M+"."+N+"."+P+"."+C}if((a.match(/(www\.)|(.*@.*)/i)!=null)&&document.all){a.match(/\<.*\>/i)==null?b.target.innerHTML=a:b.target.innerTEXT=a}};var Q=function(a){var b=new B(a);var c=0;while(b.target.tagName.toLowerCase()!="a"&&c<10){b.target=b.target.parentNode;c++}G(a);D();if("star"=="star"){W(b)}};var x=new Array(1000);var i=0,A=0;var L=-1,M=-1,N=-1,P=-1,R=-1,X=-1,C=-1,J=-1,H=-1;var T=S("div_ad");slots=T.getElementsByTagName("a");B.add(document,"mousemove",w);B.add(document,"mousedown",o);B.add(T,"mouseover",F);B.add(T,"mouseover",D);for(var I=0;I<slots.length;I++){node=slots[I];if(node.toString().indexOf("a1click.")>-1||node.toString().indexOf("www.sogou.com/bill_cpc")>-1||node.toString().indexOf("www.sogou.com/bill_un")>-1 || node.toString().indexOf("cx.sogou.com/bill_un")>-1 ){B.add(node,"mousedown",V);B.add(node,"mouseup",V);B.add(node,"click",Q);B.add(node,"mouseover",K)}}})();
+</script><div id="div_ad"><div id="div_textlink" style="height: 52.6666666666667px; width: 250px; top: 55.1666666666667px; left: 0.5px; position: absolute; overflow: hidden;"><a title="动动手指就赚钱,创业毫无压力." class="tag big" style="height: 52.6666666666667px; width: 248px; line-height: 52.6666666666667px; font-size: 23px; overflow: hidden;">小本经营模式</a><a title="动动手指就赚钱,创业毫无压力." class="fade hover" style="height: 53.6666666666667px; width: 248px; line-height: 53.6666666666667px; font-size: 14px; top: 1.617933907978px;"><span>动动手指就赚钱,创业毫无压力.</span></a><a title="动动手指就赚钱,创业毫无压力." href="http://www.sogou.com/bill_un?v=1&p=WJeV6Gdr9C9yeTXI2IHdqo65eawoja3yZhzD4@sLe1LOVp@f4LAfEhqBLLFgTBK7IAJoaATvkhWPAkKIrW0xvL@LJxcDQFecdvbcFdvTyWkZG5nBpQzMFn7BMkqzJMdxmETMisNWfdBA@LnXt@EhSyWKXbDdGt5R5Ts4$TKMKrHMK@@ke72TxcspcE5RoL70uH4NHSDK5IMWKsIi@5goMitV7JA5SSoFhOfxihnOGoKNNWAudrw7Wc8Z7xN52RCJJ7G7uKv36Srsnph8vJS1L9zSRHGIEBBBHdZqqqZ7Zizot2SCkXsBF0MQY8OSFrxSti8as6IuD0dmhTuBi$wuqzXgo2BogcJpUvyYrqlWLFz17OZMhmqlimPhrQArXcPIa1E4NPnj4lVAgcVkPjZvxJeV4mVCKYYl$LnGZl2E4SrBaxpoaQy75NEXoYkpym3oXOlwY2m90W9h7zle8KvoFHtk$JxJGtGWgHaDkAx752CpSsClMho1c6r26SgcXJpwWaENP$HeOYkjuBkyr9CaC4sFl0QIFT8323DwKtB6X5OPv5gfe6jkJ79S0c3zAkmfrgHRNJGv8Ve3tWlvcrmUPjc0e5UZN12G@k98jJl@&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 248px; font-size: 23px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 250px; top: 137.166666666667px; left: 0.5px; position: absolute; overflow: hidden;"><a title="动动手指就赚钱,创业毫无压力." class="tag big" style="height: 52.6666666666667px; width: 248px; line-height: 52.6666666666667px; font-size: 23px; overflow: hidden;">模式创业</a><a title="动动手指就赚钱,创业毫无压力." class="fade" style="height: 53.6666666666667px; width: 248px; line-height: 53.6666666666667px; font-size: 14px; top: 52.038316092022px;"><span>动动手指就赚钱,创业毫无压力.</span></a><a title="动动手指就赚钱,创业毫无压力." href="http://www.sogou.com/bill_un?v=1&p=WJeV6GCr919YeIO1uLF4RMwtIjZ3kkShLlT88m8XFzUUb@oKzJhBJ2mzEr$EhvbC1oIY7SKHyY0khBsorKbuyKR6Fv@WeJsk5CVXAHjBkgO@E8hDD@j14in@$4TDVXUfzfd@EEWs5gTMoNtELNsH1WDXbcibDKa5@ssqpZNKKrqs4TfDtsKX$LW2MZKaiWUe8@OnMMmEbiM50XiDWoJ74O3BjQRDxFI9cfr3m@euOLTo6c7M0@1cA57Au@FVHmXh0gv$VW7lKPPiRVkjX47MleoxW2F7aksaHVJzqpz0bVI5s4$XLsSpu1ansQi13TDc9p$AH$HmHpiYVpIyIF5C4EKUo7c3zzAzq@ZOG$fNtdk$hivvVSY60o5HsVRTj0qUxbOyCTg@ZvjqUL5FzQJU9lFnSY8pewYojX0AyLRfGc3cmyqxNiZCbnQ8qJ3nq9aiZvjwBF3UAABpUSV9XSBm09capCsFg9HCWSf0nQ6eh$O5FLOeSPkT4u1Sh1FrgG3QuVtaY6tPSjzO1nXkqFV5BUOzVwR$IvT$mqOJuAh964423CJ@1MwxRMnYfKp2ovS2o9uySwb3GE$mT1b6$7fNmc8ShlUwgyzehZVtXZBmFn9KcjW54y==&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 248px; font-size: 23px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 125px; top: 0.5px; left: 0.5px; position: absolute; overflow: hidden;"><a title="海大科技公司---10年专注网站建设,量身定制" class="tag middle" style="height: 52.6666666666667px; width: 123px; line-height: 52.6666666666667px; font-size: 17px; overflow: hidden;">怎么创建网站</a><a title="海大科技公司..." class="fade" style="height: 53.6666666666667px; width: 123px; line-height: 53.6666666666667px; font-size: 14px; top: 52.6666666666667px;"><span>海大科技公司...</span></a><a title="海大科技公司---10年专注网站建设,量身定制" href="http://www.sogou.com/bill_un?v=1&p=WJeq0Edaw19Uei6Y7DXo4K9CholkAxx6jK20BTWL11b7dR@Zc7EpRzNuaEmz$wL3$lAjOzxkaLwBEJyRzDpRn1f7E5ZaxRmNHS9KlMddT$@ssnwpE3RACS6$OcWnX@z3wEsEOig3LdBuPKiinELhCGX8T6gsen2sGrCdnRPEMKDn@FPfmxMwN38gM@MMT4zETWs8mdN@2dmoJVh$uZ40ckj2SL6z0cXJGFiOgrsNr6zCP$cHPL6CQGchcgZQSMXvcP43VIwMX9MvxoUWaXCjtjOmPgnH7xfLcV7L5u@pqfIxtc6UGpoxYmyESPpUunNJcFHGBsOqyja8lzlBGoF8DQIRyCu4yW0wuOFzrMmyMOO4jokvjMtQ5owh8$@9IrgovtQidj0IefkRV$tnVKvRC0cJtnEgF@Ph5xXlMzjFr64JDbX0n6oo7EyTfRS1lPBO0xo858Yh8yy3TpUmVcBEHVpCPxvmUH8winozjo8f1sthv0iIC2yQYJk83u8n$Qt8iH$t3q7ZB0HULo$hN1FFKXy=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 123px; font-size: 17px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 125px; top: 0.5px; left: 125.5px; position: absolute; overflow: hidden;"><a title="注册即送1000元红包!" class="tag middle" style="height: 52.6666666666667px; width: 123px; line-height: 52.6666666666667px; font-size: 17px; overflow: hidden;">p2p模式</a><a title="注册即送10..." class="fade" style="height: 53.6666666666667px; width: 123px; line-height: 53.6666666666667px; font-size: 14px; top: 52.6666666666667px;"><span>注册即送10...</span></a><a title="注册即送1000元红包!" href="http://www.sogou.com/bill_un?v=1&p=WJeV6aCrV99YeIXaiKBL@njt3Ac9xVucYX5GeTiL37NPI@dxTn8GBNKtBNKNLNmd789xvblvx2plQ3yF3cH12uJOwCzLNPBLVrBeSoyGl@5MXsN0XIXMY@y4dG@WkGVkcMQ5o@f2cM5TZM4iZBGP@XBMtuz9rTDWsqm@NKrPq@@mdCWbdE@M5m6DM5F1eKQ1aN$qUNRADMug0cKlBREuWUwoWZbWkOF3ZuzTbFISmLuzUBquvB8enx7OMqeI$EFnBTQ7ouhKATzUhsXGBI2v$5SLbb5eRkdDu@IVut@8$B7oeSCErPD96SE3JOUuPS3bOghcJqHJHm8kF0pa989gMdwneI$FU7yhQc0@mjWQFqihStMxKoVCjgzr372o0g$SBUp83GqL3zzASVW1ieCOm2BMrSc9Jya9mkIxA6ZvxxfagnJIKY9l1LWjZRCrlTzaStbSkwH9mVE7PFhzto90gv9SZJYxnEs@lP2Lf13q$slhxj1h33zYcqRFDowkER8zyCTdedYCL9CzmUSu9R4uPCAOxTldzF2WwyGFkHqvVHgts9wdfPnKG7qrgVC0G9MCPVv2E1ZifP9tWqpk$b$kuh$TA8YIZthPVltnwbiRvWkZyPZgW1fwhqDqaIN5&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 123px; font-size: 17px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 125px; top: 191.833333333333px; left: 0.5px; position: absolute; overflow: hidden;"><a title="600余名优秀旅游规划专家团队,全程提供一站" class="tag middle" style="height: 52.6666666666667px; width: 123px; line-height: 52.6666666666667px; font-size: 17px; overflow: hidden;">旅游规划模式</a><a title="600余名优..." class="fade" style="height: 53.6666666666667px; width: 123px; line-height: 53.6666666666667px; font-size: 14px; top: 52.6666666666667px;"><span>600余名优...</span></a><a title="600余名优秀旅游规划专家团队,全程提供一站" href="http://www.sogou.com/bill_un?v=1&p=WJeVF8Crp19yBtMhFrWS0bhqtD9yGlwqPiXBCNEHNU6F17g@wJVsFiYZSuKNfvHIORynPuxgkPPUxq39c2axpRNJ3PWxcRMy3uc2My4nrP75l82si7Lbutob2$ft86uHH0rE7CdiK5RMzf2eMTbzk2MTefWmMXAd@Lgehb@RuDr8be@Q27DM48msis5IZDfGBR5hmsrdedQs7E@XJ8D@gqfDwicwyKtvin3l5noUSqYgFMsDuK4SzavPQD2WguZ6sN10Y0gDxEvUiCCkjC8ps6MdrJMME3KHHGMQa4MrCNURv@KaO5yBygMB6kE8Gw$6AJ7obgTwAaleYWvVs1IaLbjrQULXvN$UazO1T2YIeJBSGl3MviTHmLvVOkzBogowGIBteG$sU0JuaktnjJVV6TH9$bnTZ1rLFFmz0w7JDh3Oy491PdFoY0amfIhikl0p83OpsiW8GkDeiGakxQTQmU33UjOmiJLLBuQ9QGBLuB5KoTgFLLBr4999X9GUwwYxSeUwe3lJGOjl@Zpi7430&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 123px; font-size: 17px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 125px; top: 191.833333333333px; left: 125.5px; position: absolute; overflow: hidden;"><a title="北京融心百乐人科技,专业技术团队" class="tag middle" style="height: 52.6666666666667px; width: 123px; line-height: 52.6666666666667px; font-size: 16px; overflow: hidden;">android</a><a title="北京融心百乐..." class="fade" style="height: 53.6666666666667px; width: 123px; line-height: 53.6666666666667px; font-size: 14px; top: 52.6666666666667px;"><span>北京融心百乐...</span></a><a title="北京融心百乐人科技,专业技术团队" href="http://www.sogou.com/bill_un?v=1&p=WJeV0DC3Z1lUPBuLJmXYv0mrGAwwwXyShse61uvXpTpXbflC6EbxXfSJHzCmqJj3m4j0onkaAlHgAu@kCPNyNhitMlPCw6A4j85KXg5uTR9nUGNcmknOUmg$tL0GXIDMq3m0oDG$WSsN5nXndNKZKuaPiKOQQ@Ec3zMMXChjdW@ge1JbSXJKbM8wnl86GtP8uD0yochKkWOLHes2DDqiH$v$CMsq273HGlergrPdlqw8XoviJl6wh0aPYk88UWhsegEF0C4eFdDwipc$eeo9GywUF14ySXOzrZsmQOv6@F19WaIEj38kj7eVWcV9JWOEsAUzZIVmU@r9FSqNxl0QYzbCNh0xTpf6Iwbkk0uQYM9jx4L6GLwSS6P3k89qYzz8AKc@A77Zi@QEl8Q3vigNtms$syus4Dk9fYSvoIYzqAQ9jN3YFQTpVQWOjHvicab0GJQyzU$6UWw3iqWU0pOnTbgyR3n9uchSm6uIbFa$uJev1hajNl0dxYBIb5o=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 123px; font-size: 16px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 125px; top: 246.5px; left: 125.5px; position: absolute; overflow: hidden;"><a title="我爱我家房产网最新二手房,租房房源更新," class="tag middle" style="height: 52.6666666666667px; width: 123px; line-height: 52.6666666666667px; font-size: 17px; overflow: hidden;">模式口中里</a><a title="我爱我家房产..." class="fade" style="height: 53.6666666666667px; width: 123px; line-height: 53.6666666666667px; font-size: 14px; top: 52.6666666666667px;"><span>我爱我家房产...</span></a><a title="我爱我家房产网最新二手房,租房房源更新," href="http://www.sogou.com/bill_un?v=1&p=WJe2Urma919tBIJt4mmRTlPhalAjxV37YScEm8mNmBPkI@@xuNmNJ4sXBsKLttOItdI9a9y7Pxn7E9vZm1fDyPj787bjhmzZHx978iuYCEJDnd@TMTf@bLbYDA2cOjDKsZ4qf7zrXi5hdWN5TdKricD5fM0bMWs06X51z@JmENbBXhHTJPMmTsshDPFt5@eEH0EoSnL4LmWTg8dMMs4ddnFT9CjPVsJjVe5fRJ86xu6zCQA8S0rhTNiIGJ@H22ZZ69hGTUVTLxtCL7XvYj7J7dAqi4Yvd7n7SAZOx7a871jJwPkVG89q7BJ$Paq2jBHhnX2zAOI$eSq7a$A0aJLbtDfSk$ubvQALVBxOWNI0aDo$PNm8YRttIu3Y8raBKaI0aQPrsIDIiB1B@n@mxO4gEZdgLCm8Dv7XzUr2WrlE5FQegZxCh@oVrBl65oJizNNCrSaVYA7Q5S4Rvf5S$a4NdbCGgzHWC9lGlNYszLll3dALpWUuB6rKPcj$rZsxggCR31FEskWrXXjVhbrGDg059ckrSZox16Hzr0dNqaqjV6OrLbB700Pedw7zpGGvZSzAjjHL7pSqabWTjCKMj4CN3E00dlxQF9ZtZPjTIQX24KHWl67wYhyKmqDB9AzZvje79vIiTInBJt$oiFP9PmSf4AeAenqd3BY7LyCBfD2rxj2$9wJ7lL5aw2ke3GzpAB0Pw5Z59c5x5y==&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 123px; font-size: 17px;"></a></div><div id="div_textlink" style="height: 52.6666666666667px; width: 125px; top: 273.833333333333px; left: 0.5px; position: absolute; overflow: hidden;"><a title="做网络任务威客,马上点击注册一品威客网!" class="tag middle" style="height: 52.6666666666667px; width: 123px; line-height: 52.6666666666667px; font-size: 17px; overflow: hidden;">威客模式</a><a title="做网络任务威..." class="fade" style="height: 53.6666666666667px; width: 123px; line-height: 53.6666666666667px; font-size: 14px; top: 52.6666666666667px;"><span>做网络任务威...</span></a><a title="做网络任务威客,马上点击注册一品威客网!" href="http://www.sogou.com/bill_un?v=1&p=WJeH6aCrV99YeIXaiXBs@nlhzt3l9JjR3iB05uiuBE79J3FF@1jFXbuEwBINN8WivL8UJH9uzvwoIawFfcxV7l6IlAu7SNR3h7aQZ0P8FS$4kKNdXXXcsvDF5UG@y4ShR2rHPFKKdfaVZ@L5TWEqAMNNDmg$TUuoTsEtM8jEN5FCqEFfEyl@LR@fRSfNK@o85LwVLc1m@TfM54H@tKovHak6n7Docf@x38j$ffaRO8H7eNTeW2Z8eN0YRN5aDAKn7BszF4rVhpqQN2EPd1$0bQuhm7n63zZ8U6VcZI1tirU5FwVGW3FZU59Kr52LfLOiXl@HiryEx4iBKlGpqQUJuu9AeSALAHwDaGTlOnAQefhsQbTOwbkJyY6lebtPp39QFSax18cqTHdpk5mzwglKaDjkLaYzHbgJFVM7jzgFkFY6dY6zlYJRLxPnu8YGHkog0qvzJVwSPQdjG99PoiJZ1sN$iCIxL4Afkya@$gknxHu6T69HvvAFX44PYa5Beno3PYSvcoEbCn48j0QBIJJeILW1ueBhZzqv8n9blcLzO3yAFbh$rHqNd8B9NekO5pzGJRpOGuBUeB8vm9d9rl0dxe4V6Xy=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 52.6666666666667px; height: 52.6666666666667px; width: 123px; font-size: 17px;"></a></div><div id="div_textlink" style="height: 25.3333333333333px; width: 125px; top: 109.833333333333px; left: 0.5px; position: absolute; overflow: hidden;"><a title="百分之80(富人)都在学习的理财课程!" class="tag small" style="height: 25.3333333333333px; width: 123px; line-height: 25.3333333333333px; font-size: 14px; overflow: hidden;">股市人生</a><a title="百分之80(..." class="fade" style="height: 26.3333333333333px; width: 123px; line-height: 26.3333333333333px; font-size: 14px; top: 25.3333333333333px;"><span>百分之80(...</span></a><a title="百分之80(富人)都在学习的理财课程!" href="http://www.sogou.com/bill_un?v=1&p=WJeV08Va499UeiX8s2Lb$JeRAuGk9lk4xd6di7T78miLLoANMyzJ8m8WXz3TEIEWgN3o0BJ3xlmVyphRSvoPFW$oFN3aIlmjXDRp8joo540sddEEs8@5@6SL64TLxNq$dWn@m@brkETFBs2MWfsJ@HZKXCXP1b@NbMG8q8MsEKub6@$EffMTfG5PTsWg4FNC5do@8AdM@EoDsdHxqvpBEAXkc02fLMXT1czYbKli9DsBvagULAG1eVhvm4OEcRJZlb0zSDUCMk3gDE8ahx0Tw1Ie2tTAdCutexuB4lZprzgVrHio$Nc$rQjU9yS1j$Gn$UwyMjahZj@fuZvJwAmjVukNOd52rAYC4zsYDeKdU9WJ0OOUb5yJYHFjIKBRUt5O0Nv7Lu9yWHwRvvtZpP3al8RxQ9p0BirjIKUqDsyiXtBO2Wh5vVU3jWxJAG8xtFg7fIeY8w0YkDPYd4JvcSw6Vcb4H4p1Pjd6p4J0UUo1$yja@jko34Mu2LbQJ$Mc7gtcBc9Rwx1novGl4w@iF70k5MYXNuy=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 25.3333333333333px; height: 25.3333333333333px; width: 123px; font-size: 14px;"></a></div><div id="div_textlink" style="height: 25.3333333333333px; width: 125px; top: 109.833333333333px; left: 125.5px; position: absolute; overflow: hidden;"><a title="康普汇维专业生产{车用尿素溶液},杂质少," class="tag small" style="height: 25.3333333333333px; width: 123px; line-height: 25.3333333333333px; font-size: 14px; overflow: hidden;">配送模式</a><a title="康普汇维专业..." class="fade" style="height: 26.3333333333333px; width: 123px; line-height: 26.3333333333333px; font-size: 14px; top: 25.3333333333333px;"><span>康普汇维专业...</span></a><a title="康普汇维专业生产{车用尿素溶液},杂质少," href="http://www.sogou.com/bill_un?v=1&p=WJeVFDCap19UBdzYTSCbvWtUPk$jjRu7cbLB84EtL6sZIsMxFgYLJHvz2b7e7bCUaibvyhuOonRJQMXBkflVUYvQ4XrosYWjTkrdxMJnaD3RdTEs@Fic8AmQnhN4IV3IKs$dEDe@K5nOqIs7s$Ex8DXPAS1WTne@XXihWs45QKEff@4$MYNTCr5rLE@qb02HsXvm@X8@tgXDEQh5m2w4TYdShaN6rIsXfzJDmAAzSYCpo@IctLnIsFVGfX4@egHAd4hpOr37xLe3$wP8f$zRBpLyNJwxWLkUEqB5RZLNOh6BGwJDOIwmt89wOwZz$GeMueVIW78wj$@vUrrN1fhA68PI$JY3NNFSjUvp6FGjT3bQMs@P9v121ca$wolGqzyj@ojvGbGS9xvlyFsTAVJrf86ruUW22xEXnDZ2loxy2jFZjILne8LNGSmZGjZ97Dz@XEphD29g77xFmoA8IBJMpwrjTmIoq6zwqpvArWZWaSvTNFYX93yXxlyWomDJRRLJfRqlWv4k4zP@tY7=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 25.3333333333333px; height: 25.3333333333333px; width: 123px; font-size: 14px;"></a></div><div id="div_textlink" style="height: 25.3333333333333px; width: 125px; top: 246.5px; left: 0.5px; position: absolute; overflow: hidden;"><a title="不开店、不投资加入易分达分销平台" class="tag small" style="height: 25.3333333333333px; width: 123px; line-height: 25.3333333333333px; font-size: 14px; overflow: hidden;">分销模式</a><a title="不开店、不投..." class="fade" style="height: 26.3333333333333px; width: 123px; line-height: 26.3333333333333px; font-size: 14px; top: 25.3333333333333px;"><span>不开店、不投...</span></a><a title="不开店、不投资加入易分达分销平台" href="http://www.sogou.com/bill_un?v=1&p=WJeV0EDsx99Ue82XTWf248OFGUk6wrOAtT68tEG@nPrSDSdZNsbtSHhHL@mVxkLPoBpy$4SjWh$NvAGzHUvP1CVou2qcWtuD8D8TKNDDzct6qmDviKn0BfD4CHFBcULPDanTQcRXXcmWfBL@4C8T8@YM5fhVDf@eINs0ste3EMC1rnrpErBCd@a1@gRCWaM5t7wxqyDYV1NooHI7e02Abob5fMh9UFW$VB2QrNZmxrUFOabFlQZ6vyv601mKUIhapMVhwfh9RFaUfgv3$MqwHYIxKY2uGQoyenkZSOQvYfcrPqdAGrCs9hFvGhxo6YiAwLi4AmSqpwyOQBzWDA7$xRdq2l6jzmaGLOMSe1YrCOaaN1xcTnV193GmGFuUylj6H5q5pptLCcuSr6O47xV1uC76iTrvD8kRotTfkLf69uwjYfxR@CFbCenviyi8m2RtI@y1U10PfjBHXf6o6ugkvdd23KuXzKLLSABFBiH8tpTp4J788ezGLvQyHkK7Vcvwt9l=&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 25.3333333333333px; height: 25.3333333333333px; width: 123px; font-size: 14px;"></a></div><div id="div_textlink" style="height: 25.3333333333333px; width: 125px; top: 301.166666666667px; left: 125.5px; position: absolute; overflow: hidden;"><a title="我公司盛产水生植物,生命力极强,适应环境广" class="tag small" style="height: 25.3333333333333px; width: 123px; line-height: 25.3333333333333px; font-size: 14px; overflow: hidden;">植物</a><a title="我公司盛产水..." class="fade" style="height: 26.3333333333333px; width: 123px; line-height: 26.3333333333333px; font-size: 14px; top: 25.3333333333333px;"><span>我公司盛产水...</span></a><a title="我公司盛产水生植物,生命力极强,适应环境广" href="http://www.sogou.com/bill_un?v=1&p=WJeV08dal89Ye6uddHIoIQY$lY7kPyi4hBstT11gtN2so5qhHqQ6Bfd@rXqSOf$FoZom0HaJoYGKyPx9q8tXDy7w2NKV9G0EviETWBd6F1krnEO4PUaeEXnUgbuipVt$1E5FjXmNT6C1d@BrdJPWWEPivL1MKMWTeeMCTKsaTCh0VJzpLssFhDDihkubhBY5gVhPiUzX9ibVWIOs$2TsdfHEx8wWRwBeCQDNgzn6ODi0aY$z0GeehfGUiDJL72Gnf6pbiptNHzb7JX3zZzP292xV0xo6xci0jtD93EXs9vvv1hNoAezeVszz6PS6clWuqb2tfNqOZae91vpwUSLXduNVlQsNU9u8ykxZeeV1lznYfllul8z0ZFdPXRoMJa2@1AQ7MgVXo4aYrmTYYJr3anT4FS6SXy9ZHqSvBNM3vwbbY4nPW9f$zb$ZPnLfg2uXfIJ6k4uQihyU@Nn$WH7XhCZ220PX0kVkpeetyhUCFpYBaoG@$xeHbZ==&q=WJZVZU9nkjlGx9xKCpCaxnHX5wlJxZ9Fu@FE8XFTdZyAkOauHArq2qRgd47fJwVTaPjR$3$BO6m5O9TGGXTNeE5dICZvil==" target="_blank" class="toggle" style="opacity: 0; top: 0px; left: 0px; line-height: 25.3333333333333px; height: 25.3333333333333px; width: 123px; font-size: 14px;"></a></div></div>
+<script type="text/javascript" src="fc.js"></script><div id="SwfStore_sogou_cx_0" style="position: absolute; top: -2000px; left: -2000px;"><object height="100" width="500" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab" id="SwfStore_sogou_cx_1" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">   <param value="http://images.sohu.com/cs/jsfile/js/storage.swf" name="movie">   <param value="logfn=SwfStore.sogou_cx.log&amp;onload=SwfStore.sogou_cx.onload&amp;onerror=SwfStore.sogou_cx.onerror&amp;LSOName=sogou_cx" name="FlashVars">   <param value="always" name="allowScriptAccess">   <embed height="375" align="middle" width="500" pluginspage="https://www.macromedia.com/go/getflashplayer" flashvars="logfn=SwfStore.sogou_cx.log&amp;onload=SwfStore.sogou_cx.onload&amp;onerror=SwfStore.sogou_cx.onerror&amp;LSOName=sogou_cx" type="application/x-shockwave-flash" allowscriptaccess="always" quality="high" loop="false" play="true" name="SwfStore_sogou_cx_1" bgcolor="#ffffff" src="http://images.sohu.com/cs/jsfile/js/storage.swf"></object></div>
+
+
+</body></html>

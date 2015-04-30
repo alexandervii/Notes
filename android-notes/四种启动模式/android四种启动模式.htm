@@ -1,0 +1,741 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0065)http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta content="360doc" name="classification">
+    
+    <link rel="alternate" media="only screen and (max-width: 640px)" href="http://www.360doc.cn/article/12229927_283691996.html">
+    <meta content="android,activity,acta" name="keywords">
+    <meta content="android四种启动模式" name="description">
+    <meta name="mobile-agent" content="format=html5;url=http://www.360doc.cn/article/12229927_283691996.html">
+
+    <meta content="www.360doc.com" name="author">
+
+    <title>
+        android四种启动模式
+    </title>
+    <link href="./android四种启动模式_files/bdsstyle.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="./android四种启动模式_files/jquery1.js"></script>
+    <script type="text/javascript" src="./android四种启动模式_files/jQuery.md5.js"></script>
+    
+    <script type="text/javascript" language="javascript">
+        window.onerror = ignoreError;
+        function ignoreError() {
+            return true;
+        }
+    </script>
+
+    <link href="./android四种启动模式_files/wzhead-cleaned.css" rel="stylesheet" type="text/css">
+    <link href="./android四种启动模式_files/wz20130912-cleaned.css" rel="stylesheet" type="text/css">
+
+
+    
+
+    <script type="text/javascript" src="./android四种启动模式_files/indexhead.js"></script><script type="text/javascript" src="./android四种启动模式_files/chat.js"></script><script type="text/javascript" src="./android四种启动模式_files/chatuserlist.js"></script><link rel="stylesheet" type="text/css" href="./android四种启动模式_files/chat.css">
+    <script type="text/javascript" src="./android四种启动模式_files/showarticlefollow20130912.js"></script>
+<link href="./android四种启动模式_files/bdsstyle(1).css" rel="stylesheet" type="text/css"><script type="text/javascript" src="./android四种启动模式_files/EssayforIE120425.js"></script></head>
+<body style="font-family: Arial, Helvetica, sans-serif;" onmouseup="setDragEnd()" onmousemove="DragDiv();" onclick="delAllDiv(event)"><iframe frameborder="0" style="display: none;"></iframe><div id="bdshare_s" style="display: block;"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div id="bdshare_l" style="display: none;"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_mshare mshare">一键分享</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_renren rrw">人人网</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_douban db">豆瓣网</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_sqq sqq">QQ好友</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_thx thx">和讯微博</a></li><li><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="bds_more">更多...</a></li></ul><p><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" class="goWebsite">百度分享</a></p></div></div></div>
+
+
+    <span id="LayerLogin"></span>
+    <div style="position: fixed; width: 100%; z-index: 1000;">
+        <div class="mainnav">
+            <div class="mainnav1">
+                <div class="lf360" style="padding-left: 5px;">
+                    <img src="./android四种启动模式_files/logoo.gif">
+                </div>
+                <div style="width: 625px; padding-top: 0px; padding-left: 4px; position: absolute;">
+                    <table height="34" border="0" cellspacing="0" cellpadding="0">
+                        <tbody>
+                            <tr id="daohangtr">
+                                <td style="width: 185px; _width: 0px; *width: 0px !important;"></td>
+                                <td class="navwz1" width="95">
+                                    <a href="http://www.360doc.com/index.html">首&nbsp;页</a>
+                                </td>
+                                <td width="100" class="  navwz1">
+                                    <a href="http://www.360doc.com/readroom.html">阅览室</a>
+                                </td>
+                                <td width="88" class="  navwz1">
+                                    <a href="http://www.360doc.com/weekstar.html">馆友</a>
+                                </td>
+                                <td width="132" class="  navwz1">
+                                    <a href="http://www.360doc.com/my360doc.aspx">我的图书馆</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="rt360" style="padding-top: 6px; width: 133px; padding-left: 38px;" id="outerdiv"><div class="denglbj lan2"><div style="width: 43px; float: left; text-align: center; background-color: rgb(252, 252, 252);" onmouseover="this.style.backgroundColor=&#39;#e5e5e5&#39;;this.parentNode.className=&#39;denglbj2 lan2&#39;" onmouseout="this.style.backgroundColor=&#39;#fcfcfc&#39;;this.parentNode.className=&#39;denglbj lan2&#39;"><a href="javascript:void(0)" onclick="loginnew()">登录</a></div><div style=" width:1px; float:left; "></div><div style="width:46px; float:left;text-align:center; margin-left:1px;*margin-left:0px;" onmouseover="this.style.backgroundColor=&#39;#e5e5e5&#39;;this.parentNode.className=&#39;denglbj3 lan2&#39;" onmouseout="this.style.backgroundColor=&#39;#fcfcfc&#39;;this.parentNode.className=&#39;denglbj lan2&#39;" id="regdiv"><a href="http://www.360doc.com/register.aspx?refer=800" target="_blank">注册</a></div><div class="boxwid xinngdui" id="bfdiv"><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#"><img id="imgbfabc" src="./android四种启动模式_files/5.gif"></a></div><div style=" position: absolute; margin-left:35px; *margin-left:-95px;_margin-left:-93px; width:96px;display:none;z-index:200;" id="func"><div class="tugduo3" id="divfunc" style="cursor:pointer;float:right; width:41px;"><div style=" height:26px; width:39px; border:1px solid #d4d4d4; border-bottom:none; background-color:#fff;"></div></div><div class="tipzhu3  right hui2" id="layerdiv"><ul><li><a href="http://www.360doc.com/advice.html" target="_blank">留言交流</a></li><li><a href="http://www.360doc.com/helpnew.html" target="_blank">网文摘手</a></li><li><a href="http://www.360doc.com/mobilapp.htm" target="_blank">手机客户端</a></li><li style=" border:none;"><a href="http://www.360doc.com/help.html" target="_blank">帮助</a></li></ul></div></div></div></div>
+                <div class=" rt360" style="padding-top: 6px; padding-right: 0px;">
+                    <div class="lf360 serch">
+                        <input name="input2" class="serchpt" id="txtSearchword" onkeydown="ongosearch()" onkeyup="showIntelliSense()" onfocus="if(this.value==&#39;搜文章 找馆友&#39;) this.value=&#39;&#39;;this.style.color=&#39;#272727&#39;" onblur="if(!this.value) {this.value=&#39;搜文章 找馆友&#39;;this.style.color=&#39;#b2b2b2&#39;;}" onpaste="showIntelliSense1()" type="text" value="搜文章 找馆友">
+                    </div>
+                    <div class="lf360 ssuo">
+                        <a id="searchlinkid" href="javascript:gosearch();"></a>
+                    </div>
+                    <div id="divsearch" style="margin-top: 25px; margin-left: 1px; display: none; position: absolute; z-index: 100;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navxt">
+        </div>
+    </div>
+    <div style="height: 44px; _height: 0px; width: 100%;"></div>
+
+    <div class="both">
+    </div>
+    <div id="docTotalInfo" class="mainzt">
+        <table class="index_main" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td align="left" valign="top" width="727px">
+                        <div id="ADAboveArtContent"><iframe marginwidth="0" marginheight="0" frameborder="0" scrolling="no" width="728" height="90" src="./android四种启动模式_files/aboveConentAD2.htm"></iframe></div>
+                        <div style="height: 7px;">
+                        </div>
+                        <table border="0" cellpadding="0" cellspacing="0" class="mainbj6" id="docArtClass">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <table border="0" cellpadding="0" cellspacing="0" style="width: 100%; text-align: center;">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <table style="width: 100%; text-align: left;" border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="biaoti">
+                                                                        <div class="biaoti2 lf360">
+                                                                            android四种启动模式
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="height: 32px;">
+
+
+                                                                        <div style="width: 670px; height: 28px; padding-left: 26px; color: #777b7a;">
+                                                                            <table>
+                                                                                <tbody><tr>
+                                                                                    <td>收藏人：<span class="name" onclick="wzhitnew(1);"><a href="http://www.360doc.com/userhome/12229927" target="_blank">TheGrounch</a></span>
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div class="btzctsg" id="spanfollowstatus"><div class="gzbt1"><a onclick="gzuser(12229927);wzhitnew(2);" href="javascript:void(0)"></a></div></div>
+                                                                                        <script>isfollow(12229927);</script>
+
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <div class="ytdh1"><a onclick="doctalk();wzhitnew(106);" href="javascript:void(0)"></a></div>
+
+                                                                                    </td>
+
+                                                                                </tr>
+                                                                            </tbody></table>
+                                                                        </div>
+
+
+
+
+                                                                        <div class="wztopxx">
+                                                                            <div style="float: left; height: 28px; padding-top: 7px;">
+                                                                                <table cellpadding="0" cellspacing="0" style="position: relative; z-index: 4">
+                                                                                    <tbody>
+                                                                                        <tr>
+
+                                                                                            <td>
+                                                                                                2013-05-07&nbsp;|&nbsp;阅：<span id="360doc_Readnum">2479</span>&nbsp;&nbsp;<span style="position: relative;">转：<span onclick="wzhitnew(3)" id="360doc_saverNum"><span style="cursor:pointer;" onclick="javascript:ShowSaverUser();">9</span></span><span id="360doc_saverUser"><div id="sameArtOuter" style="display: none; position: absolute; height: 305px; width: 144px; left: 0px; margin-top: 15px; z-index: 100000;"><div id="sameArt" style=" overflow-y: auto;  height:300px;overflow-x: hidden; z-index: 100;right:0px;margin-top:-10px;" onclick="event.cancelBubble=true;"></div></div></span></span>&nbsp;&nbsp;
+
+
+
+                                                                                            </td>
+
+                                                                                            <td>
+                                                                                                <div style="position: relative;">
+                                                                                                    &nbsp;|&nbsp;<span id="docsource">&nbsp;&nbsp;<a onclick="wzhitnew(14);" href="http://marshal.easymorse.com/archives/2950" target="_blank">来源</a></span>
+                                                                                                </div>
+                                                                                                <div class="sekuaibox" style="display: none; margin-left: 48px;" id="zihaoboxID">
+                                                                                                    <div style="padding-top: 10px; padding-left: 5px;">
+                                                                                                        <div class="lf360 danxunbt">
+                                                                                                            <input id="artdocfont3" onclick="ChangeArtSize(3, this); wzhitnew(15); " name="radio" type="radio" value="1">
+                                                                                                        </div>
+                                                                                                        <div class="lf360 danxunwz" onclick="ChangeArtSize(3,this);wzhitnew(15); " style="cursor: pointer;">
+                                                                                                            大
+                                                                                                        </div>
+                                                                                                        <div class="lf360 danxunbt">
+                                                                                                            <input id="artdocfont2" onclick="ChangeArtSize(2, this); wzhitnew(16); " name="radio" type="radio" value="2">
+                                                                                                        </div>
+                                                                                                        <div class="lf360 danxunwz" onclick="ChangeArtSize(2,this);wzhitnew(16); " style="cursor: pointer;">
+                                                                                                            中
+                                                                                                        </div>
+                                                                                                        <div class="lf360 danxunbt">
+                                                                                                            <input id="artdocfont1" onclick="ChangeArtSize(1, this); wzhitnew(17); " name="radio" type="radio" value="3">
+                                                                                                        </div>
+                                                                                                        <div class="lf360 danxunwz" onclick="ChangeArtSize(1,this);wzhitnew(17); " style="cursor: pointer;">
+                                                                                                            小
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="sekuaibox" style="margin-left: 76px; display: none;" id="sekuaiboxID">
+                                                                                                    <div style="padding-top: 10px; padding-left: 5px;">
+                                                                                                        <img src="./android四种启动模式_files/cr1.gif" id="docArtC1" onclick="ChangeArtClass(1,this);wzhitnew(18);" style="cursor: pointer;"><img src="./android四种启动模式_files/cr2.gif" id="docArtC2" onclick="ChangeArtClass(2,this);wzhitnew(19);" style="cursor: pointer;"><img src="./android四种启动模式_files/cr3.gif" id="docArtC3" onclick="ChangeArtClass(3,this);wzhitnew(20);" style="cursor: pointer;"><img src="./android四种启动模式_files/cr4.gif" id="docArtC4" onclick="ChangeArtClass(4,this);wzhitnew(21);" style="cursor: pointer;"><img src="./android四种启动模式_files/cr5.gif" id="docArtC5" onclick="ChangeArtClass(5,this);wzhitnew(22);" style="cursor: pointer;"><img src="./android四种启动模式_files/cr6-1.gif" id="docArtC6" onclick="ChangeArtClass(6,this);wzhitnew(23);" style="cursor: pointer;">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <div style="padding-left: 10px;">
+                                                                                                    <a href="javascript:void(0)">
+                                                                                                        <img onmouseover="changedivdisplay(1);" src="./android四种启动模式_files/wz1.gif"></a>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <div style="padding-left: 10px;" onmouseover="changedivdisplay(2);">
+                                                                                                    <a href="javascript:void(0)">
+                                                                                                        <img src="./android四种启动模式_files/wz2.gif"></a>
+                                                                                                </div>
+                                                                                            </td>
+                                                                                            <td>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" onclick=" setTimeout(showShareLayer, 10);wzhitnew(4);">分享</a>&nbsp;</td>
+                                                                                            <td>
+                                                                                                <a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" onclick="  setTimeout(showShareLayer, 10);wzhitnew(5);">
+                                                                                                    <img style="cursor: pointer;" src="./android四种启动模式_files/tb10.gif"></a><div class="fenxiang" id="fenxiangLayer" style="display: none; border: none; width: 110px; margin-left: -28px; _margin-left: -40px;"><div style="border:1px solid #cbcbcb; height:240px; width:108px;"><div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare share-bar-btn"><table cellpadding="0" cellspacing="0" width="108" style=" background-color:#fff; "><tbody><tr><td width="12"></td><td height="29" onclick="wzhitnew(6);"><a class="bds_qzone" href="javascript:void(0);" title="分享到QQ空间">&nbsp;&nbsp;&nbsp;&nbsp;腾讯空间</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(9);"><a class="bds_tsina" href="javascript:void(0);" title="分享到新浪微博">&nbsp;&nbsp;&nbsp;&nbsp;新浪微博</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(10);"><a class="bds_tqq" href="javascript:void(0);" title="分享到腾讯微博">&nbsp;&nbsp;&nbsp;&nbsp;腾讯微博</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(7);"><a class="bds_renren" href="javascript:void(0);" title="分享到人人网">&nbsp;&nbsp;&nbsp;&nbsp;人人网</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(8);"><a class="bds_kaixin001" href="javascript:void(0);" title="分享到开心网">&nbsp;&nbsp;&nbsp;&nbsp;开心网</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(11);"><a class="bds_tsohu" href="javascript:void(0);" title="分享到搜狐微博">&nbsp;&nbsp;&nbsp;&nbsp;搜狐微博</a></td></tr><tr><td width="12"></td><td height="29"><a href="javascript:void(0);" onclick="showdivemail();wzhitnew(12);"><div class="bds_py">&nbsp;&nbsp;&nbsp;&nbsp;推荐给朋友</div></a></td></tr><tr><td width="12"></td><td height="29"><a href="javascript:void(0);"><div class="bds_jubao" onclick="showAlertLayer();wzhitnew(13);">&nbsp;&nbsp;&nbsp;&nbsp;举报</div></a></td></tr></tbody></table></div></div></div>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div id="resavelayer1" class="rt360"><div class="zswdbtn1"><a href="javascript:void(0);" onclick="SaveArt();wzhitnew(24);"></a></div><div style="position: absolute;display:none;z-index:100000;" id="fuzhitishidiv"></div></div>
+
+
+                                                                            <div id="shareweixinabove" class="rt360"> <div class="fxwx2bt"><a href="javascript:void(0);" onclick="shareWeixin();wzhitnew(65);"></a></div></div>
+
+
+                                                                            <table cellpadding="0" cellspacing="0" style="text-align: center; margin: 0px auto;">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <div id="AlertArt1" style="display: none; position: absolute;">
+                                                                                            </div>
+                                                                                            <div id="SendToFriends1" style="display: none; position: absolute; z-index: 100;">
+                                                                                            </div>
+                                                                                            <div class="lf360 zcbutton" style="margin-left: 100px;">
+                                                                                            </div>
+                                                                                            <div class="lf360">
+                                                                                                &nbsp;&nbsp;
+                                                                                            </div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        
+                                                        <table class="wenzhangcss" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="xiantao">
+                                                                        </div>
+
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left" valign="top" width="670px" style="height: 200px;">
+                                                                        <span id="articlecontent" onmousedown="newhighlight = true;" onmouseup="NewHighlight(event)">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td width="670px" style="position: relative;">
+
+                                                                                            <div>
+<p>在多Activity开发中，有可能是自己应用之间的Activity跳转，或者夹带其他应用的可复用Activity。可能会希望跳转到原来某个Activity实例，而不是产生大量重复的Activity。</p>
+<p>这需要为Activity配置特定的加载模式，而不是使用默认的加载模式。</p>
+<h4>加载模式分类及在哪里配置</h4>
+<p>Activity有四种加载模式：</p>
+<ul>
+<li>standard</li>
+<li>singleTop</li>
+<li>singleTask</li>
+<li>singleInstance</li></ul>
+<p>设置的位置在AndroidManifest.xml文件中activity元素的android:launchMode属性：</p>
+<blockquote>
+<p>&lt;activity android:name="ActB" <strong>android:launchMode</strong>="singleTask"&gt;&lt;/activity&gt;</p></blockquote>
+<p>也可以在Eclipse ADT中图形界面中编辑：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image54.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_1.png" width="498" height="144"></a> </p>
+<p><span id="more-2950"></span>
+</p><p>区分Activity的加载模式，通过示例一目了然。这里编写了一个Activity A（ActA）和Activity B（ActB）循环跳转的例子。对加载模式修改和代码做稍微改动，就可以说明四种模式的区别。</p>
+<h4>standard</h4>
+<p>首先说standard模式，也就是默认模式，不需要配置launchMode。先只写一个名为ActA的Activity：</p>
+<blockquote>
+<p>package com.easymorse.activities; </p>
+<p>import android.app.Activity; <br>import android.content.Intent; <br>import android.os.Bundle; <br>import android.view.View; <br>import android.view.View.OnClickListener; <br>import android.widget.Button; <br>import android.widget.LinearLayout; <br>import android.widget.TextView; </p>
+<p>public class ActA extends Activity { <br>/** Called when the activity is first created. */ <br>@Override <br>public void onCreate(Bundle savedInstanceState) { <br>super.onCreate(savedInstanceState); <br>TextView textView = new TextView(this); <br>textView.setText(this + ""); <br>Button button = new Button(this); <br>button.setText("go actA"); <br>button.setOnClickListener(new OnClickListener() { <br>@Override <br>public void onClick(View v) { <br>Intent intent = new Intent(); <br>intent.setClass(ActA.this, ActA.class); <br>startActivity(intent); <br>} <br>}); <br>LinearLayout layout = new LinearLayout(this); <br>layout.setOrientation(LinearLayout.VERTICAL); <br>layout.addView(textView); <br>layout.addView(button); <br>this.setContentView(layout); <br>} <br>}</p></blockquote>
+<p>例子中都没有用layout，免得看着罗嗦。可见是ActA –&gt; ActA的例子。在界面中打印出对象的toString值可以根据hash code识别是否创建新ActA实例。</p>
+<p>第一个界面：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image55.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_2.png" width="244" height="101"></a> </p>
+<p>点击按钮后：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image56.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_3.png" width="244" height="114"></a> </p>
+<p>可以多点几次。发现每次都创建了该Activity的新实例。standard的加载模式就是这样的，intent将发送给新的实例。</p>
+<p>现在点Android设备的回退键，可以看到是按照刚才创建Activity实例的倒序依次出现，类似退栈的操作，而刚才操作跳转按钮的过程是压栈的操作。如下图：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image57.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_4.png" width="244" height="233"></a> </p>
+<p>
+</p><h4>singleTop</h4>
+<p>singleTop和standard模式，都会将intent发送新的实例（后两种模式不发送到新的实例，如果已经有了的话）。不过，singleTop要求如果创建intent的时候栈顶已经有要创建的Activity的实例，则将intent发送给该实例，而不发送给新的实例。</p>
+<p>还是用刚才的示例，只需将launchMode改为singleTop，就能看到区别。</p>
+<p>运行的时候会发现，按多少遍按钮，都是相同的ActiA实例，因为该实例在栈顶，因此不会创建新的实例。如果回退，将退出应用。</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image58.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_5.png" width="244" height="144"></a> </p>
+<p>singleTop模式，可用来解决栈顶多个重复相同的Activity的问题。</p>
+<p>如果是A Activity跳转到B Activity，再跳转到A Activity，行为就和standard一样了，会在B Activity跳转到A Activity的时候创建A Activity的新实例，因为当时的栈顶不是A Activity实例。</p>
+<p>ActA类稍作改动：</p>
+<blockquote>
+<p>package com.easymorse.activities; </p>
+<p>import android.app.Activity; <br>import android.content.Intent; <br>import android.os.Bundle; <br>import android.view.View; <br>import android.view.View.OnClickListener; <br>import android.widget.Button; <br>import android.widget.LinearLayout; <br>import android.widget.TextView; </p>
+<p>public class ActA extends Activity { <br>/** Called when the activity is first created. */ <br>@Override <br>public void onCreate(Bundle savedInstanceState) { <br>super.onCreate(savedInstanceState); <br>TextView textView = new TextView(this); <br>textView.setText(this + ""); <br>Button button = new Button(this); <br>button.setText("go actB"); <br>button.setOnClickListener(new OnClickListener() { <br>@Override <br>public void onClick(View v) { <br>Intent intent = new Intent(); <br>intent.setClass(ActA.this, ActB.class); <br>startActivity(intent); <br>} <br>}); <br>LinearLayout layout = new LinearLayout(this); <br>layout.setOrientation(LinearLayout.VERTICAL); <br>layout.addView(textView); <br>layout.addView(button); <br>this.setContentView(layout); <br>} <br>}</p>
+<p></p></blockquote>
+<p>ActB类：</p>
+<blockquote>
+<p>package com.easymorse.activities; </p>
+<p>import android.app.Activity; <br>import android.content.Intent; <br>import android.os.Bundle; <br>import android.view.View; <br>import android.view.View.OnClickListener; <br>import android.widget.Button; <br>import android.widget.LinearLayout; </p>
+<p>public class ActB extends Activity { <br>@Override <br>protected void onCreate(Bundle savedInstanceState) { <br>super.onCreate(savedInstanceState); <br>Button button=new Button(this); <br>button.setText("go actA"); <br>button.setOnClickListener(new OnClickListener() { <br>@Override <br>public void onClick(View v) { <br>Intent intent=new Intent(); <br>intent.setClass(ActB.this, ActA.class); <br>startActivity(intent); <br>} <br>}); <br>LinearLayout layout=new LinearLayout(this); <br>layout.addView(button); <br>this.setContentView(layout); <br>} <br>}</p>
+<p></p></blockquote>
+<p>ActB类使用默认（standard）加载，ActA使用singleTop加载。结果类似下图：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image59.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_6.png" width="244" height="211"></a> </p>
+<p>如果把ActA的加载模式改为standard，情况一样。</p>
+<h4>singleTask</h4>
+<p>singleTask模式和后面的singleInstance模式都是只创建一个实例的。</p>
+<p>当intent到来，需要创建singleTask模式Activity的时候，系统会检查栈里面是否已经有该Activity的实例。如果有直接将intent发送给它。</p>
+<p>把上面singleTop的实例中的ActA的launchMode改为singleTask，ActB的改为standard。那么会发现在ActA界面中按一次按钮：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image60.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_7.png" width="244" height="217"></a> </p>
+<p>然后在ActB1界面中按按钮，因为ActA是singleTask，会使用原来的ActA1实例。这时候栈内的情况:</p>
+<p>
+</p><p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image61.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_8.png" width="244" height="134"></a></p>
+<p>如果多次按按钮跳转，会发现始终只有ActA1这一个ActA类的实例。 </p>
+<p>
+</p><h4>singleInstance</h4>
+<p>解释singleInstance模式比较麻烦。</p>
+<p>首先要说一下Task（任务）的概念。</p>
+<p>如果是Swing或者Windows程序，可能有多个窗口可以切换，但是你无法在自己程序中复用人家的窗口。注意是直接复用人家的二进制代码，不是你拿到人家api后的源代码级调用。</p>
+<p>Android可以做到，让别人的程序直接复用你的Activity（类似桌面程序的窗口）。</p>
+<p>Android为提供这种机制，就引入了Task的概念。Task可以认为是一个栈，可放入多个Activity。比如启动一个应用，那么Android就创建了一个Task，然后启动这个应用的入口Activity，就是intent-filter中配置为main和launch的那个（见<a title="一个APK文件部署产生多个应用安装的效果" href="http://marshal.easymorse.com/archives/2929">一个APK文件部署产生多个应用安装的效果</a>）。这个Activity是根（Root）Activity，可能会在它的界面调用其他Activity，这些Activity如果按照上面那三个模式，也会在这个栈（Task）中，只是实例化的策略不同而已。</p>
+<p>验证的办法是调用和打印Activity的taskId：</p>
+<blockquote>
+<p>TextView textView2 = new TextView(this); <br>textView2.setText("task id: "+this.getTaskId());</p></blockquote>
+<p>会发现，无论切换Activity，taskId是相同的。</p>
+<p>当然也可以在这个单一的Task栈中，放入别人的Activity，比如google地图，这样用户看过地图按回退键的时候，会退栈回到调用地图的Activity。对用户来说，并不觉得在操作多个应用。这就是Task的作用。</p>
+<p>但是，有这样的需求，多个Task共享一个Activity（singleTask是在一个task中共享一个Activity）。</p>
+<p>现成的例子是google地图。比如我有一个应用是导游方面的，其中调用的google地图Activity。那么现在我比如按home键，然后到应用列表中打开google地图，你会发现显示的就是刚才的地图，实际上是同一个Activity。</p>
+<p>如果使用上面三种模式，是无法实现这个需求的。google地图应用中有多个上下文Activity，比如路线查询等的，导游应用也有一些上下文Activity。在各自应用中回退要回退到各自的上下文Activity中。</p>
+<p>singleInstance模式解决了这个问题（绕了这么半天才说到正题）。让这个模式下的Activity单独在一个task栈中。这个栈只有一个Activity。导游应用和google地图应用发送的intent都由这个Activity接收和展示。</p>
+<p>这里又有两个问题：</p>
+<ul>
+<li>如果是这种情况，多个task栈也可以看作一个应用。比如导游应用启动地图Activity，实际上是在导游应用task栈之上singleInstance模式创建的（如果还没有的话，如果有就是直接显示它）一个新栈，当这个栈里面的唯一Activity，地图Activity回退的时候，只是把这个栈移开了，这样就看到导游应用刚才的Activity了；</li>
+<li>多个应用（Task）共享一个Activity要求这些应用都没有退出，比如刚才强调要用home键从导游应用切换到地图应用。因为，如果退出导游应用，而这时也地图应用并未运行的话，那个单独的地图Activity（task）也会退出了。</li></ul>
+<p>如果还是拿刚才的ActA和ActB的示例，可以把ActB的模式改为singleInstance，ActA为standard，如果按一次按钮切换到ActB，看到现象用示意图类似这样：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image62.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_9.png" width="244" height="222"></a> </p>
+<p>如果是第一次按钮切换到ActB，在ActB在按按钮切换到ActA，然后再回退，示意图是：</p>
+<p><a href="http://marshal.easymorse.com/wp-content/uploads/2010/07/image63.png"><img style="DISPLAY: inline" title="image" border="0" alt="image" src="./android四种启动模式_files/32169311_10.png" width="342" height="166"></a> </p>
+<p>另外，可以看到两个Activity的taskId是不同的。</p></div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                            <div id="viewerPlaceHolder" style="width: 717px; height: 700px; display: none;">
+                                                                            </div>
+                                                                        </span>
+                                                                        <table>
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left">
+                                                                        <a name="anchordoc1" id="anchordoc1"></a>
+                                                                        <div style="height: 28px">
+                                                                            <div style="font-size: 14px; color: #797b7a; float: left;">
+                                                                                来自：<span class="name" onclick="wzhitnew(59)"><a href="http://www.360doc.com/userhome/12229927" target="_blank">TheGrounch</a></span>&nbsp;&gt;&nbsp;<span id="cname" onclick="wzhitnew(60)"><a href="http://www.360doc.com/userhome.aspx?userid=12229927&cid=3" target="_blank">《android》</a></span>
+                                                                            </div>
+                                                                            <div style="float: left;">
+                                                                                <div class="btzctsg" id="spanfollowstatus1"><div class="gzbt1"><a onclick="gzuser(12229927);wzhitnew(61);" href="javascript:void(0)"></a></div></div>
+                                                                                <script>isfollow(12229927);</script>
+
+                                                                            </div>
+                                                                            <div style="float: left;">
+                                                                                <div class="ytdh1"><a onclick="doctalk();wzhitnew(107);" href="javascript:void(0)"></a></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="modlist lf360 list" style="padding-top: 0px;">
+                                                                                <ul>
+                                                                                    <div id="lastart"><div class="shangyp">上一篇：<a href="http://www.360doc.com/content/13/0506/14/12229927_283363897.shtml" target="_blank" onclick="wzhitnew(57);">Android 获取屏幕尺寸与密度</a></div></div>
+                                                                                    <div id="nextart">下一篇：<a href="http://www.360doc.com/content/13/0507/19/12229927_283697007.shtml" target="_blank" onclick="wzhitnew(58);">android完全退出应用程序</a></div>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left">
+                                                                        <div style="padding-top: 12px;">
+                                                                            <div id="docAdBelowContent"><iframe marginwidth="0" marginheight="0" frameborder="0" scrolling="no" width="650" height="120" src="./android四种启动模式_files/docAdBelowContent1.htm"></iframe></div>
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align: left;">
+                                                                        <div style="padding-top: 15px; width: 670px;">
+                                                                            <table style="width: 670px;" cellpadding="0" cellspacing="0">
+                                                                                <tbody>
+                                                                                    <tr>
+
+                                                                                        <td style="width: 530px;">
+                                                                                            <div class=" lf360" style="cursor: pointer" onmouseover="ChangeBtnStyle(1);" onmouseout="ChangeBtnStyle(2);">
+                                                                                                <div class="zscbt">
+                                                                                                    <a href="javascript:void(0);" onclick="SaveArt();wzhitnew(26);">
+                                                                                                        <div id="zscbtword" class="lf360 xianhua" style="padding-left: 38px;">
+                                                                                                            转藏到我的图书馆
+                                                                                                        </div>
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div style="margin-left: 10px; cursor: pointer;" class="lf360 xhmainbox" id="sendflowerdiv" onclick="Showflowerlayer(&quot;sendedLayer1&quot;);wzhitnew(27)" onmouseover="ChangeFlowerBtnStyle(1);" onmouseout="ChangeFlowerBtnStyle(2);">
+
+                                                                                                <div id="flowimg2" class="lf360">
+                                                                                                    <div style="padding-left: 10px; padding-top: 10px;">
+                                                                                                        <img id="flowimg3" src="./android四种启动模式_files/huahuanew.gif">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div id="flowimg5" class=" lf360 xianhua">
+                                                                                                    献花(<span id="articleflowernum">0</span>)<div id="flowernumadd" class="addtionone">
+                                                                                                        +1
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+
+
+
+
+                                                                                            <div class="lf360" style="cursor: pointer; padding-left: 10px;" onmouseover="ChangeBtnStyle(3);" onmouseout="ChangeBtnStyle(4);">
+                                                                                                <div class="fxwxbt">
+
+                                                                                                    <a href="javascript:void(0);" onclick="shareWeixin();wzhitnew(64);">
+                                                                                                        <div id="fxwxword" class="lf360 xianhua" style="padding-left: 38px;">
+                                                                                                            分享到微信
+                                                                                                        </div>
+                                                                                                    </a>
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                            <div class="lf360" style="cursor: pointer; padding-left: 10px;" onmouseover="ChangeBtnStyle(5);" onmouseout="ChangeBtnStyle(6);">
+                                                                                                <div class="ywzwbt">
+
+                                                                                                    <a id="ywzwa" href="http://www.baidu.com/s?wd=android+activity+acta&tn=SE_hldp01010_6r0gix1f" onclick="wzhitnew(100);" target="_blank">
+                                                                                                        <div id="ywzwword" class="lf360 xianhua" style="padding-left: 44px;">
+                                                                                                            以文找文
+                                                                                                        </div>
+                                                                                                    </a>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td style="vertical-align: bottom; font-size: 12px;" width="140">
+                                                                                            <div class="rt360" id="sharediv2"><table style=" vertical-align: text-bottom;" border="0" cellpadding="0" cellspacing="0"> <tbody><tr><td><div style="height:20px; width:105px;"><div style="float:left;"><span style="font-size:12px; line-height:16px; color:#959595;">分享：</span></div><div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare share-bar-btn2" style="float:left;"><span onclick="wzhitnew(28);"><a class="bds_qzone" title="分享到QQ空间" href="javascript:void(0);"></a></span><span onclick="wzhitnew(31);"><a class="bds_tsina" title="分享到新浪微博" href="javascript:void(0);"></a></span><span onclick="wzhitnew(32);"><a class="bds_tqq" title="分享到腾讯微博" href="javascript:void(0);"></a></span></div></div></td><td width="24"><a><img style="cursor:pointer;" src="./android四种启动模式_files/tb10.gif" onclick="setTimeout(showShareLayer2, 10);wzhitnew(34);"></a><div id="fenxiangLayer1" class="fenxiang" style=" margin-left:-100px;*margin-left:-120px!important; margin-top:5px;*margin-top:16px!important;display:none;z-index:1000;"><div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare share-bar-btn"><table cellpadding="0" cellspacing="0" width="108" style=" background-color:#fff; "><tbody><tr><td width="12"></td><td height="29" onclick="wzhitnew(29);"><a class="bds_renren" href="javascript:void(0);" title="分享到人人网">&nbsp;&nbsp;&nbsp;&nbsp;人人网</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(30);"><a class="bds_kaixin001" href="javascript:void(0);" title="分享到开心网">&nbsp;&nbsp;&nbsp;&nbsp;开心网</a></td></tr><tr><td width="12"></td><td height="29" onclick="wzhitnew(33);"><a class="bds_tsohu" href="javascript:void(0);" title="分享到搜狐微博">&nbsp;&nbsp;&nbsp;&nbsp;搜狐微博</a></td></tr><tr><td width="12"></td><td height="29"><a href="javascript:void(0);" onclick="showdivemail1();wzhitnew(35);"><div class="bds_py">&nbsp;&nbsp;&nbsp;&nbsp;推荐给朋友</div></a></td></tr><tr><td width="12"></td><td height="29"><a href="javascript:void(0);"><div class="bds_jubao" onclick="showAlertLayer1();wzhitnew(36);">&nbsp;&nbsp;&nbsp;&nbsp;举报</div></a></td></tr></tbody></table></div></div></td></tr></tbody></table><div id="AlertArt2" style="display:none; position:absolute;"></div><div id="SendToFriends2" style="display:none;position:absolute;z-index:1000;"></div></div>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td height="10"></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="lswzbox" style="padding-top: 10px;">
+                            <div>
+                                <table cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td width="330" valign="top">
+                                                <div class="lswz" style="height: 300px;">
+                                                    <div class="lstwtop">
+                                                        <div class="lswztit">
+                                                            <div class=" lf360">
+                                                                <div class="titwx1">
+                                                                    类似文章
+                                                                </div>
+                                                            </div>
+                                                            <div class="rt360" style="padding-top: 5px; padding-right: 9px;">
+                                                                <a href="http://www.360doc.com/relevant/283691996_more.shtml" target="_blank" onclick="wzhitnew(38)">更多</a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modlist2 list">
+                                                            <ul>
+                                                                
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/12/0118/10/8134611_180127211.shtml" target="_blank" onclick="wzhitnew(37)">总结篇之二：Activity的四种launchMode</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/11/0808/11/7471983_138862319.shtml" target="_blank" onclick="wzhitnew(37)">Android开发小技巧</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/11/0929/16/7471983_152176935.shtml" target="_blank" onclick="wzhitnew(37)">Android四种Activity的加载模式</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/12/0510/22/7857928_210184762.shtml" target="_blank" onclick="wzhitnew(37)">【Android基础】Activity的启动模式(and...</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/13/1228/00/9316347_340672931.shtml" target="_blank" onclick="wzhitnew(37)">android开发教程(十一）——android应用...</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/11/1116/15/8134611_164824009.shtml" target="_blank" onclick="wzhitnew(37)">深入Android 【五】 —— 任务和进程</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/14/0118/11/7673502_346141234.shtml" target="_blank" onclick="wzhitnew(37)">Activity的四种加载模式（转载）</a></span></li>
+                                                                    
+                                                                        <li style="height: 30px; line-height: 30px;"><span>
+                                                                            <a href="http://www.360doc.com/content/12/0520/17/7365618_212345740.shtml" target="_blank" onclick="wzhitnew(37)">Android开发教程10：Activity启动模式 –....</a></span></li>
+                                                                    
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td width="330" valign="top">
+                                                <div class="lswz" style="margin-left: 9px; height: 300px;">
+                                                    <div class="lstwtop">
+                                                        <div class="lswztit">
+                                                            <div class=" lf360">
+                                                                <div class="titwx1">
+                                                                    热搜文章
+                                                                </div>
+                                                            </div>
+                                                            <div class="rt360" style="padding-top: 5px; padding-right: 9px;">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modlist2 list">
+                                                            <ul> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e7%be%8e%e5%9b%bd%e6%83%8a%e5%91%bc%ef%bc%9a%e4%b8%ad%e5%9b%bd%e5%9c%a8%e7%99%bd%e4%bf%84%e7%bd%97%e6%96%af%e6%8a%9b%e5%87%ba%e5%a4%a7%e6%89%8b%e7%ac%94%ef%bc%8c%e7%8b%ac%e4%b8%80%e6%97%a0%e4%ba%8c&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)" title="美国惊呼：中国在白俄罗斯抛出大手笔，独一无二">美国惊呼：中国在白俄罗斯抛出大手笔，独...</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e7%89%9b%e4%ba%ba%e5%b0%b1%e6%98%af%e4%b8%8d%e4%b8%80%e6%a0%b7%ef%bc%81%e7%94%a8%e5%85%ac%e8%bd%a6%e6%b3%a1%e5%a6%9e%e9%81%9b%e7%8b%97%e6%b4%97%e6%b8%a9%e6%b3%89&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)">牛人就是不一样！用公车泡妞遛狗洗温泉</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e5%a4%a9%e4%ba%ba%e5%90%88%e4%b8%80%ef%bc%9a%e9%a3%8e%e6%b0%b4%e4%b8%8e%e4%b8%ad%e5%8c%bb%e7%9a%84%e7%a7%98%e5%af%86&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)">天人合一：风水与中医的秘密</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e6%b4%8b%e8%b7%9f%e5%b8%96%e6%9a%b4%e9%9c%b2%e5%af%b9%e5%a4%96%e5%bd%a2%e8%b1%a1%ef%bc%9a%e6%97%a5%e6%9c%ac%e7%bd%91%e5%8f%8b%e8%b0%83%e4%be%83%e6%80%8e%e4%b9%88%e5%88%86%e8%be%a8%e4%b8%ad%e5%9b%bd%e4%ba%ba%e5%92%8c%e6%97%a5%e6%9c%ac%e4%ba%ba&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)" title="洋跟帖暴露对外形象：日本网友调侃怎么分辨中国人和日本人">洋跟帖暴露对外形象：日本网友调侃怎么分...</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e7%8e%a9%e8%bd%ac%e4%bf%a1%e7%94%a8%e5%8d%a1%e4%b8%8d%e6%98%af%e6%a2%a6%e2%80%94%e2%80%94%e5%a6%82%e4%bd%95%e6%9b%b4%e6%9c%89%e6%95%88%e5%9c%b0%e4%bd%bf%e7%94%a8%e8%bf%99%e4%b8%80%e9%87%91%e8%9e%8d%e5%b7%a5%e5%85%b7&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)" title="玩转信用卡不是梦——如何更有效地使用这一金融工具">玩转信用卡不是梦——如何更有效地使用这...</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e8%a5%bf%e6%96%b9%e7%a5%9e%e7%a7%98%e7%bb%84%e7%bb%87%e5%8f%8a%e7%a5%9e%e7%a7%98%e5%ad%a6%e6%b5%81%e6%b4%be%e4%b8%8d%e5%ae%8c%e5%85%a8%e6%94%b6%e9%9b%86&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)">西方神秘组织及神秘学流派不完全收集</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e5%94%af%e7%be%8e%e7%9a%84%e5%8f%a4%e9%a3%8e%e5%8f%a5%e5%ad%90100%e6%9d%a1%ef%bc%9a%e9%bb%84%e6%b3%89%e3%80%81%e7%b4%ab%e9%99%8c%e3%80%81%e7%a2%a7%e8%90%bd%e3%80%81%e7%ba%a2%e5%b0%98%ef%bc%8c%e7%9a%86%e6%98%af%e5%b9%bb%e7%81%ad&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)" title="唯美的古风句子100条：黄泉、紫陌、碧落、红尘，皆是幻灭">唯美的古风句子100条：黄泉、紫陌、碧落、...</a></span></li> <li style="height: 30px; line-height: 30px;"><span><a href="http://www.baidu.com/s?wd=%e6%9c%80%e5%85%88%e9%81%93%e6%ad%89%e7%9a%84%e4%ba%ba%e6%9c%80%e5%8b%87%e6%95%a2%3b%e6%9c%80%e5%85%88%e5%8e%9f%e8%b0%85%e7%9a%84%e4%ba%ba%e6%9c%80%e5%9d%9a%e5%bc%ba%3b%e6%9c%80%e5%85%88%e9%87%8a%e6%80%80%e7%9a%84%e4%ba%ba%e6%9c%80%e5%b9%b8%e7%a6%8f&tn=SE_hldp01010_6r0gix1f" target="_blank" onclick="wzhitnew(106)" title="最先道歉的人最勇敢;最先原谅的人最坚强;最先释怀的人最幸福">最先道歉的人最勇敢;最先原谅的人最坚强;...</a></span></li></ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div style="background-color: #fafafa; width: 670px; height: 317px; margin-top: 10px;">
+                                    <div style=" padding-top:7px; padding-left:12px; height:182px;"> <div style=" height:30px;"><div class="titwx3 lf360">猜你喜欢</div><div class=" rt360" style=" padding-right:18px;"><img onclick="changefiveart(&quot;19999&quot;,&quot;19999&quot;);wzhitnew(62);" src="./android四种启动模式_files/hyz.gif" onmouseover="this.src=&quot;http://pubimage.360doc.com/wz/hyza.gif&quot;" onmouseout="this.src=&quot;http://pubimage.360doc.com/wz/hyz.gif&quot;" width="76" height="24" style="cursor:pointer;"></div></div><table cellpadding="0" cellspacing="0"><tbody><tr id="fivearttdid"><td valign="top" width="131"><div><a onclick="wzhitnew(39);" href="http://www.360doc.com/content/13/1223/20/11735161_339582543.shtml" target="_blank"><img src="./android四种启动模式_files/339582543_201401021411570170.jpg" width="114" height="86"></a></div><div class="lan twentit"><a onclick="wzhitnew(40);" href="http://www.360doc.com/content/13/1223/20/11735161_339582543.shtml" target="_blank">走向成功的100句忠告</a></div></td><td valign="top" width="131"><div><a onclick="wzhitnew(39);" href="http://www.360doc.com/content/13/1201/22/14854059_333753276.shtml" target="_blank"><img src="./android四种启动模式_files/14854059_201312080010050743.jpg" width="114" height="86"></a></div><div class="lan twentit"><a onclick="wzhitnew(40);" href="http://www.360doc.com/content/13/1201/22/14854059_333753276.shtml" target="_blank">麻衣神相十二宫</a></div></td><td valign="top" width="131"><div><a onclick="wzhitnew(39);" href="http://www.360doc.com/content/13/1206/03/11263728_334849350.shtml" target="_blank"><img src="./android四种启动模式_files/11263728_201312120841570085_a334849350.jpg" width="114" height="86"></a></div><div class="lan twentit"><a onclick="wzhitnew(40);" href="http://www.360doc.com/content/13/1206/03/11263728_334849350.shtml" target="_blank">这些你了解吗？图解日本古代服饰</a></div></td><td valign="top" width="131"><div><a onclick="wzhitnew(39);" href="http://www.360doc.com/content/13/0312/16/1816256_271053260.shtml" target="_blank"><img src="./android四种启动模式_files/1816256_201309021143250793.jpg" width="114" height="86"></a></div><div class="lan twentit"><a onclick="wzhitnew(40);" href="http://www.360doc.com/content/13/0312/16/1816256_271053260.shtml" target="_blank">人生30个安慰的技巧</a></div></td><td valign="top" width="131"><div><a onclick="wzhitnew(39);" href="http://www.360doc.com/content/09/0731/18/154035_4579930.shtml" target="_blank"><img src="./android四种启动模式_files/4579930_201405211736050642.jpg" width="114" height="86"></a></div><div class="lan twentit"><a onclick="wzhitnew(40);" href="http://www.360doc.com/content/09/0731/18/154035_4579930.shtml" target="_blank">中考古诗文名句分类集锦</a></div></td></tr></tbody></table></div>
+                                    <div style="padding-left: 12px;">
+                                        <iframe marginwidth="0" marginheight="0" frameborder="0" scrolling="no" width="650" height="100" src="./android四种启动模式_files/artadali4.htm"></iframe>
+                                    </div>
+                                    <div id="adabtest" style="display: none;">
+                                    </div>
+
+                                </div>
+
+
+
+
+
+                                <div id="Reflction" style="padding-top: 15px; padding-left: 15px;">
+                                    <div id="360docRefTN" style="display: none;"></div>
+                                    <div id="360docRefCT"></div>
+                                    <div id="360docRefPB" align="center" style="display: none;"></div>
+                                </div>
+                                <a name="sf"></a>
+                                
+                                <div id="ReflectionPart"><div style=" height:206px; margin:0px 0px;"><div class="plbox"><div class="plmain"><div class="titwx" style=" height:23px;">发表评论：</div><div class="deluwx">您好，请&nbsp;<span><a href="javascript:void(0);" onclick="ReflectionLoginform();wzhitnew(45);">登录</a></span>&nbsp;或者&nbsp;<span><a href="http://www.360doc.com/register.aspx?refer=53&reurl=showweb/0/0/283691996.aspx" onclick="InsertLogData(4);wzhitnew(46);">注册</a></span>&nbsp;后再进行评论 </div><div class=" rt360"><div style=" float:left; color:#959595; width:90px; "><div style="padding-top:4px;">其它帐号登录：</div></div><div style=" float:left ; width:70px;"><img onclick="toSNSLogin(&#39;smb&#39;);wzhitnew(47);" style="cursor:pointer;" src="./android四种启动模式_files/tb25.gif">&nbsp;&nbsp;&nbsp;<img onclick="toSNSLogin(&#39;qq&#39;);wzhitnew(48);" style="cursor:pointer;" src="./android四种启动模式_files/tb26.gif">&nbsp;&nbsp;&nbsp;<img onclick="toSNSLogin(&#39;rr&#39;);wzhitnew(49);" style="cursor:pointer;" src="./android四种启动模式_files/tb27.gif"></div> </div> </div></div></div></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td align="center" valign="top" width="18px"></td>
+                    <td align="left" valign="top" width="252px">
+                        
+
+
+<div style="height: 98px" id="artrightad1"><iframe marginwidth="0" id="Iframeadabtest" marginheight="0" frameborder="0" scrolling="no" width="250" height="90" src="./android四种启动模式_files/artrightadABtest_A.htm" allowtransparency="true"></iframe></div>
+
+
+    <div id="artrightnewarticle" class="remenwz" style="height:219px;"><div class="rementop"><div class="titwx" style=" padding-top:10px; padding-left:24px;">最新文章</div></div><div class="modlist3 list" style=" padding-left:15px;"><ul><li><span><a href="http://www.360doc.com/content/13/0527/15/12229927_288552092.shtml" target="_blank" onclick="wzhitnew(51)">大谈android安全2——Activity劫持的...</a></span></li><li><span><a href="http://www.360doc.com/content/13/0527/15/12229927_288551760.shtml" target="_blank" onclick="wzhitnew(51)">大谈android安全1——Activity劫持与...</a></span></li><li><span><a href="http://www.360doc.com/content/13/0523/18/12229927_287578277.shtml" target="_blank" onclick="wzhitnew(51)">android面试题 不单单为了面试也是一...</a></span></li><li><span><a href="http://www.360doc.com/content/13/0520/21/12229927_286867162.shtml" target="_blank" onclick="wzhitnew(51)">堆 和 栈的 区别(经典)</a></span></li><li><span><a href="http://www.360doc.com/content/13/0507/19/12229927_283697007.shtml" target="_blank" onclick="wzhitnew(51)">android完全退出应用程序</a></span></li><li><span><a href="./android四种启动模式_files/android四种启动模式.htm" target="_blank" onclick="wzhitnew(51)">android四种启动模式</a></span></li></ul> <div class=" rt360" style=" padding-right:23px;"><a href="http://www.360doc.com/userhome/12229927" target="_blank" onclick="wzhitnew(52);">更多</a></div></div></div>
+
+
+<div class="both" style="padding-top: 10px; height: 260px;">
+   <iframe id="ifartad1" height="250px" width="250px" frameborder="0" scrolling="no" src="./android四种启动模式_files/artadali1.htm"></iframe>
+    <div style="height: 10px;">
+    </div>
+</div>
+
+<div class="remenwz" id="artrighthotarticle">
+    <div class="rementop">
+        <div class="titwx" style="padding-top: 10px; padding-left: 24px;">
+            热门文章</div>
+    </div>
+    <div class="modlist3 list" style="padding-left: 15px;">
+        <ul>
+            
+                    <li><span>
+                        <a href="http://www.360doc.com/content/13/1231/19/10685331_341558722.shtml" target="_blank" onclick="wzhitnew(55)">[披肩] 最近仿了一件商场买1380块的披...</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/14/0603/17/9563373_383326375.shtml" target="_blank" onclick="wzhitnew(55)">玩车游戏，进来试试你的车技如何？</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/14/0624/20/4441170_389439459.shtml" target="_blank" onclick="wzhitnew(55)">中国宋词鉴赏辞典*</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/15/0403/21/6017453_460436739.shtml" target="_blank" onclick="wzhitnew(55)">18种有趣的读书方法,让您魔术般的爱上...</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/14/1119/13/8874353_426386423.shtml" target="_blank" onclick="wzhitnew(55)">内功三式（快速长功，强身的好方法）</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/14/1025/01/8413713_419631752.shtml" target="_blank" onclick="wzhitnew(55)">小学奥数（解题方法）完整版</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/15/0225/17/6932394_450749468.shtml" target="_blank" onclick="wzhitnew(55)">最全中国人民解放军特种部队武器装备</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/15/0404/08/14695021_460496806.shtml" target="_blank" onclick="wzhitnew(55)">10本传记图画书－预见美丽的人生</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/14/0221/17/15403128_354547827.shtml" target="_blank" onclick="wzhitnew(55)">【图】史上最全的你不知道的QQ秘密</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/15/0216/22/9986257_449063809.shtml" target="_blank" onclick="wzhitnew(55)">【阅读指南】一张图教你《培养终身阅...</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/14/0503/16/15921762_374224275.shtml" target="_blank" onclick="wzhitnew(55)">数学速算之首加1的好方法</a></span></li>
+                
+                    <li><span>
+                        <a href="http://www.360doc.com/content/13/1222/07/6956316_339165140.shtml" target="_blank" onclick="wzhitnew(55)">“篆刻”印模若干系列（爱好者必藏）</a></span></li>
+                
+        </ul>
+        <div class=" rt360" style="padding-right: 23px;">
+            <a href="http://www.360doc.com/readroom.html" target="_blank" onclick="wzhitnew(56)">更多&gt;&gt;</a></div>
+    </div>
+</div>
+
+<div class="both" style="padding-top: 10px;">
+    <iframe id="ifartad2" height="250px" width="250px" frameborder="0" scrolling="no" src="./android四种启动模式_files/artadali2.htm"></iframe>
+</div>
+<br>
+
+
+ <iframe id="ifartrightsogou" height="328px" width="250px" frameborder="0" scrolling="no" src="./android四种启动模式_files/artrightadsogou250.htm"></iframe>
+
+
+
+<script>
+    function change(pro_name, i) {
+        var pro = document.getElementById(pro_name); 
+        var pro_arr = pro.getElementsByTagName("span");
+
+        for (var m = 0; m < pro_arr.length; m++) {
+            pro_arr[m].className = "unclecked link_black";
+        }
+        pro_arr[i].className = "checked link_bai";
+
+        if (i == 1) {
+            document.getElementById("qh_ul_1").style.display = "";
+            document.getElementById("qh_ul_0").style.display = "none";
+        }
+        else if (i == 0) {
+            document.getElementById("qh_ul_1").style.display = "none";
+            document.getElementById("qh_ul_0").style.display = "";
+        }
+    }
+</script>
+
+                        <div class="both" id="divad5" style="padding-top: 11px; zoom: 1; position: fixed; top: 55px; left: 921px;">
+                            <div id="divad4" style="display: none;">
+                                <div>
+                                    <iframe id="ifartad" height="250px" width="250px" frameborder="0" scrolling="no" src="./android四种启动模式_files/artadali.htm"></iframe>
+                                </div>
+                                <div class="ggwz">
+                                    <a href="javascript:void(0);" onclick="closead(2);">关闭</a>
+                                </div>
+                                <div style="height: 13px;">
+                                </div>
+                            </div>
+                            <div style="clear: both; display: none;" id="divad6">
+                                <div id="adfloatbaidu">
+                                    <iframe id="ifartadfloadbaidu" height="250px" width="250px" frameborder="0" scrolling="no" src="./android四种启动模式_files/ad5.htm"></iframe>
+                                </div>
+                                <div class="ggwz">
+                                    <a href="javascript:void(0);" onclick="closead(3);">关闭</a>
+                                </div>
+                                <div style="height: 13px;">
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="docarttitle" value="android%e5%9b%9b%e7%a7%8d%e5%90%af%e5%8a%a8%e6%a8%a1%e5%bc%8f">
+    <input type="hidden" id="artreadroomid" value="0">
+    <script>var asw='android+activity+acta'</script>
+    <div id="docdiviframe"></div>
+
+
+    <script language="javascript" type="text/javascript">
+        var appName = navigator.appName.toLowerCase();
+        if (appName.indexOf("microsoft internet explorer") > -1) {
+            document.write("<scr" + "ipt type='text/javascript' src='http://www.360doc.com/js/StickySystemIE20130911.js?t=2015041601'></sc" + "ript>");
+        }
+        else {
+
+            document.write("<scr" + "ipt type='text/javascript' src='http://www.360doc.com/js/StickySystemOther20130911.js?t=2015041601'></sc" + "ript>");
+        }
+    </script><script type="text/javascript" src="./android四种启动模式_files/StickySystemOther20130911.js"></script>
+
+    <script>GerLookingUserInfo(1,12229927,1,1,'-1',-1,10,0);OutputSource('http%3a%2f%2fmarshal.easymorse.com%2farchives%2f2950');OutputCategory(12229927,3,'%e3%80%8aandroid%e3%80%8b');OutputLastNextArt('Android+%e8%8e%b7%e5%8f%96%e5%b1%8f%e5%b9%95%e5%b0%ba%e5%af%b8%e4%b8%8e%e5%af%86%e5%ba%a6','http://www.360doc.com/content/13/0506/14/12229927_283363897.shtml',0);OutputLastNextArt('android%e5%ae%8c%e5%85%a8%e9%80%80%e5%87%ba%e5%ba%94%e7%94%a8%e7%a8%8b%e5%ba%8f','http://www.360doc.com/content/13/0507/19/12229927_283697007.shtml',1);</script>
+
+    <script type="text/javascript">
+        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fd86954201130d615136257dde062a503' type='text/javascript'%3E%3C/script%3E"));
+    </script><script src="./android四种启动模式_files/h.js" type="text/javascript"></script>
+
+    <script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=6857724" src="./android四种启动模式_files/bds_s_v2.js"></script>
+
+    <script type="text/javascript">
+        document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date() / 3600000);
+    </script>
+    <!-- Baidu Button END -->
+    <script src="./android四种启动模式_files/logger.js"></script>
+
+
+
+
+<div id="goTop2" style="left: 1190.5px; display: block;"><div id="goTop"><a href="http://www.360doc.com/content/13/0507/19/12229927_283691996.shtml#" id="go_top"></a></div><div id="goTop1"><a href="javascript:void(0);" id="go_top1"></a></div><div><div id="artweixinDiv" style="position: relative;display:none;"><div style="position: absolute; z-index: 2001;margin-left:-220px;*margin-left:-244px;!important;margin-top:-34px;*margin-top:-134px;!important;"><img src="./android四种启动模式_files/wzweixin.gif"></div></div><div id="goTop3" onmouseover="document.getElementById(&#39;artweixinDiv&#39;).style.display=&#39;&#39;;" onmouseout="document.getElementById(&#39;artweixinDiv&#39;).style.display=&#39;none&#39;;"><a href="javascript:void(0);" id="go_top3"></a></div></div></div></body></html>
