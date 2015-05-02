@@ -1,0 +1,263 @@
+ Service使用方式
+
+serviceimportcallbackandroidstringserver
+使用Service的场合：
+1.一个或多个Activity需要向同一应用中的Service发出执行某一操作的命令。
+PS：不需要绑定
+ 
+ 
+ 
+2.某个Activity需要同一应用中的Service为其单独服务，当此Activity消毁时，也将为其服务的Service一并消毁。
+PS：需要绑定
+ 
+ 
+ 
+3.多个Activity绑定到同一个Service，仅当所有Activity取消了绑定，Service才消毁。
+PS：只有第一个Activity绑定时才调用onBind()方法，第二个、第三个....第N个直接取得第一个Activity绑定时onBind()方法返回的IBinder对象
+ 
+ 
+ 
+4.即使退出当前应用时，仍希望Service继续运行（如：上传或下载任务）；或者此Service为其他应用提供服务。
+PS：需要跨进程通信（IPC）
+4.1当远程服务不需要支持多线程时，使用Messager.
+
+Server端应用代码
+[java] view plaincopy
+public class RemoteServiceProxy extends Service {    
+    public static final int GET_RESULT = 1;    
+    private final Messenger mMessenger = new Messenger(new Handler() {    
+        private int status = 0;    
+        @Override    
+        public void handleMessage(Message msg) {    
+            if (msg.what == GET_RESULT) {    
+                try {    
+                    msg.replyTo.send(Message.obtain(null, GET_RESULT, status++, 0));    
+                } catch (RemoteException e) {    
+                    e.printStackTrace();    
+                }    
+            } else {    
+                super.handleMessage(msg);    
+            }    
+        }    
+    });    
+        
+    @Override    
+    public IBinder onBind(Intent intent) {    
+        return mMessenger.getBinder();    
+    }    
+}    
+
+[html] view plaincopy
+<service android:name=".module.photo.RemoteServiceProxy"    
+                 android:process=":remote" />    
+
+Client端应用代码
+
+[java] view plaincopy
+//开启一个服务    
+bindService(new Intent(this, RemoteServiceProxy.class), mConnection, BIND_AUTO_CREATE);    
+    
+private Messenger mService;    
+private ServiceConnection mConnection = new ServiceConnection() {    
+        @Override    
+        public void onServiceConnected(ComponentName name, IBinder service) {    
+            mService = new Messenger(service);    
+        }    
+    
+        @Override    
+        public void onServiceDisconnected(ComponentName name) {    
+        }    
+};    
+
+[java] view plaincopy
+private Messenger mMessenger = new Messenger(new Handler() {    
+        @Override    
+        public void handleMessage(Message msg) {    
+            if (msg.what == RemoteServiceProxy.GET_RESULT) {    
+                Log.i("M", "From Remote Service "+msg.arg1);    
+            } else {    
+                super.handleMessage(msg);    
+            }    
+        }    
+});    
+    
+Message message = Message.obtain(null, RemoteServiceProxy.GET_RESULT);    
+message.replyTo = mMessenger;    
+try {    
+        mService.send(message);    
+} catch (RemoteException e) {    
+        e.printStackTrace();    
+}    
+
+4.2当远程服务需要同时响应多个Client的请求，使用AIDL.
+注意：一般我们应用中是不需要使用AIDL的，这里仅仅是为了学习和深入理解Android的IPC机制。
+ 
+Server端应用代码
+ 
+在Server端应用新建IRemoteService.aidl和IRemoteCallback.aidl文件，编辑内容如下
+[java] view plaincopy
+package com.example.aidl;    
+    
+interface IRemoteCallback {    
+    void executeCallback(String msg);    
+}    
+
+[java] view plaincopy
+package com.example.aidl;    
+    
+import com.example.aidl.IRemoteCallback;    
+    
+interface IRemoteService {    
+    //注册回调    
+    void register(IRemoteCallback callback);    
+    //取消注册回调    
+    void unregister(IRemoteCallback callback);    
+    //执行回调    
+    void execute();    
+    //获取状态    
+    int getStatus(String flag);    
+}    
+
+创建Service类为客户端提供服务
+[java] view plaincopy
+package com.example.server.service;    
+    
+import com.example.aidl.IRemoteCallback;    
+import com.example.aidl.IRemoteService;    
+    
+import android.app.Service;    
+import android.content.Intent;    
+import android.os.IBinder;    
+import android.os.RemoteCallbackList;    
+import android.os.RemoteException;    
+import android.util.Log;    
+    
+public class RemoteService extends Service {    
+    
+    @Override    
+    public IBinder onBind(Intent intent) {    
+        return iBinder;    
+    }    
+        
+    private final RemoteCallbackList<IRemoteCallback> remoteCallbackList = new RemoteCallbackList<IRemoteCallback>();     
+        
+    private IRemoteService.Stub iBinder = new IRemoteService.Stub() {    
+        @Override    
+        public void register(IRemoteCallback cb) throws RemoteException {    
+            if (cb != null) remoteCallbackList.register(cb);    
+        }    
+    
+        @Override    
+        public void unregister(IRemoteCallback cb) throws RemoteException {    
+            if (cb != null) remoteCallbackList.unregister(cb);    
+        }    
+    
+        @Override    
+        public void execute() throws RemoteException {    
+            int size = remoteCallbackList.beginBroadcast();    
+            while (size > 0) {    
+                size--;    
+                remoteCallbackList.getBroadcastItem(size).executeCallback("Hello, Client.");    
+            }    
+            remoteCallbackList.finishBroadcast();    
+            Log.i("RS", "RemoteService.execute() has done.");    
+        }    
+    
+        int status;    
+        @Override    
+        public int getStatus(String flag) throws RemoteException {    
+            Log.i("RS", "RemoteService.getStatus(flag) flag is "+flag);    
+            if ("reset".equals(flag)) status = 0;    
+            return status++;    
+        }    
+    };    
+}    
+
+在AndroidManifast.xml中配置Service，必需设置Action过滤
+[html] view plaincopy
+<service android:name=".server.service.RemoteService" android:process=":remote">    
+            <intent-filter>    
+                <action android:name="test.remote.service"/>    
+            </intent-filter>    
+</service>    
+
+Client端应用代码
+ 
+将Server端创建的IRemoteService.aidl和IRemoteCallback.aidl文件copy到Client端应用中
+ 
+在Client端获取Server端的RemoteService对象的引用
+[java] view plaincopy
+package com.example;    
+    
+import com.example.aidl.IRemoteCallback;    
+import com.example.aidl.IRemoteService;    
+    
+import android.app.Activity;    
+import android.content.ComponentName;    
+import android.content.Intent;    
+import android.content.ServiceConnection;    
+import android.os.Bundle;    
+import android.os.IBinder;    
+import android.os.RemoteException;    
+import android.view.View;    
+import android.view.View.OnClickListener;    
+import android.widget.Toast;    
+    
+public class ClientActivity extends Activity {    
+    @Override    
+    public void onCreate(Bundle savedInstanceState) {    
+        super.onCreate(savedInstanceState);    
+        setContentView(R.layout.client_activity);    
+            
+        /*  
+           绑定远程服务，与其他进程Service通信。  
+           注意：Client需要通过Action与RemoteService绑定，因为Client端是没有RemoteService.class的  
+         */    
+        this.bindService(new Intent("test.remote.service"), sConnection, BIND_AUTO_CREATE);    
+            
+        this.findViewById(R.id.execute_callback).setOnClickListener(mOnClickListener);    
+        this.findViewById(R.id.get_status).setOnClickListener(mOnClickListener);    
+    }    
+    
+    private OnClickListener mOnClickListener = new OnClickListener() {    
+        @Override    
+        public void onClick(View button) {    
+            try {    
+                if (button.getId() == R.id.execute_callback) remoteService.execute();    
+                else {    
+                    int remoteStatus = remoteService.getStatus("set");    
+                    Toast.makeText(getApplicationContext(), "Status: "+remoteStatus+" is from RemoteService", Toast.LENGTH_LONG).show();    
+                }    
+            } catch (RemoteException e) {    
+                e.printStackTrace();    
+            }    
+        }    
+    };    
+        
+    private IRemoteService remoteService;//远程服务    
+    private ServiceConnection sConnection = new ServiceConnection() {    
+        @Override    
+        public void onServiceConnected(ComponentName name, IBinder service) {    
+            remoteService = IRemoteService.Stub.asInterface(service);    
+            //注册回调    
+            try {    
+                remoteService.register(remoteCallback);    
+            } catch (RemoteException e) {    
+                e.printStackTrace();    
+            }    
+        }    
+    
+        @Override    
+        public void onServiceDisconnected(ComponentName name) {    
+            //意外断开连接时回调    
+            remoteService = null;    
+        }    
+    };    
+        
+    private IRemoteCallback.Stub remoteCallback = new IRemoteCallback.Stub() {    
+        @Override    
+        public void executeCallback(String msg) throws RemoteException {    
+            Toast.makeText(getApplicationContext(), "ClientActivity: "+msg, Toast.LENGTH_LONG).show();    
+        }    
+    };    
+}    

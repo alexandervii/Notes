@@ -1,0 +1,277 @@
+深入分析AIDL原理
+
+在上一篇文章（Service使用方式）中，介绍了Android进程间通信（IPC）的使用，并给出了一个示例。但并没有深入分析aidl是怎样可以做到进程间通信的，它的执行过程是怎样的？
+这篇文章来分析IRemoteService.aidl的执行过程，并理解aidl是怎样跨进程通信的。
+ 
+当我们创建IRemoteService.aidl文件时，IDE会为我们在gen目录中创建相应的文件。
+[java] view plaincopy
+/** This file is auto-generated.  DO NOT MODIFY.   
+ * Original file: F:\\workspace\\AndroidImprove\\src\\com\\example\\aidl\\IRemoteService.aidl   
+ */    
+package com.example.aidl;    
+public interface IRemoteService extends android.os.IInterface    
+{    
+/** Local-side IPC implementation stub class. */    
+public static abstract class Stub extends android.os.Binder implements com.example.aidl.IRemoteService    
+{    
+private static final java.lang.String DESCRIPTOR = "com.example.aidl.IRemoteService";    
+/** Construct the stub at attach it to the interface. */    
+public Stub()    
+{    
+this.attachInterface(this, DESCRIPTOR);    
+}    
+/**   
+ * Cast an IBinder object into an com.example.aidl.IRemoteService interface,   
+ * generating a proxy if needed.   
+ */    
+public static com.example.aidl.IRemoteService asInterface(android.os.IBinder obj)    
+{    
+if ((obj==null)) {    
+return null;    
+}    
+android.os.IInterface iin = (android.os.IInterface)obj.queryLocalInterface(DESCRIPTOR);    
+if (((iin!=null)&&(iin instanceof com.example.aidl.IRemoteService))) {    
+return ((com.example.aidl.IRemoteService)iin);    
+}    
+return new com.example.aidl.IRemoteService.Stub.Proxy(obj);    
+}    
+public android.os.IBinder asBinder()    
+{    
+return this;    
+}    
+@Override public boolean onTransact(int code, android.os.Parcel data, android.os.Parcel reply, int flags) throws android.os.RemoteException    
+{    
+switch (code)    
+{    
+case INTERFACE_TRANSACTION:    
+{    
+reply.writeString(DESCRIPTOR);    
+return true;    
+}    
+case TRANSACTION_register:    
+{    
+data.enforceInterface(DESCRIPTOR);    
+com.example.aidl.IRemoteCallback _arg0;    
+_arg0 = com.example.aidl.IRemoteCallback.Stub.asInterface(data.readStrongBinder());    
+this.register(_arg0);    
+reply.writeNoException();    
+return true;    
+}    
+case TRANSACTION_unregister:    
+{    
+data.enforceInterface(DESCRIPTOR);    
+com.example.aidl.IRemoteCallback _arg0;    
+_arg0 = com.example.aidl.IRemoteCallback.Stub.asInterface(data.readStrongBinder());    
+this.unregister(_arg0);    
+reply.writeNoException();    
+return true;    
+}    
+case TRANSACTION_execute:    
+{    
+data.enforceInterface(DESCRIPTOR);    
+this.execute();    
+reply.writeNoException();    
+return true;    
+}    
+case TRANSACTION_getStatus:    
+{    
+data.enforceInterface(DESCRIPTOR);    
+java.lang.String _arg0;    
+_arg0 = data.readString();    
+int _result = this.getStatus(_arg0);    
+reply.writeNoException();    
+reply.writeInt(_result);    
+return true;    
+}    
+}    
+return super.onTransact(code, data, reply, flags);    
+}    
+private static class Proxy implements com.example.aidl.IRemoteService    
+{    
+private android.os.IBinder mRemote;    
+Proxy(android.os.IBinder remote)    
+{    
+mRemote = remote;    
+}    
+public android.os.IBinder asBinder()    
+{    
+return mRemote;    
+}    
+public java.lang.String getInterfaceDescriptor()    
+{    
+return DESCRIPTOR;    
+}    
+//注册回调    
+    
+public void register(com.example.aidl.IRemoteCallback callback) throws android.os.RemoteException    
+{    
+android.os.Parcel _data = android.os.Parcel.obtain();    
+android.os.Parcel _reply = android.os.Parcel.obtain();    
+try {    
+_data.writeInterfaceToken(DESCRIPTOR);    
+_data.writeStrongBinder((((callback!=null))?(callback.asBinder()):(null)));    
+mRemote.transact(Stub.TRANSACTION_register, _data, _reply, 0);    
+_reply.readException();    
+}    
+finally {    
+_reply.recycle();    
+_data.recycle();    
+}    
+}    
+//取消注册回调    
+    
+public void unregister(com.example.aidl.IRemoteCallback callback) throws android.os.RemoteException    
+{    
+android.os.Parcel _data = android.os.Parcel.obtain();    
+android.os.Parcel _reply = android.os.Parcel.obtain();    
+try {    
+_data.writeInterfaceToken(DESCRIPTOR);    
+_data.writeStrongBinder((((callback!=null))?(callback.asBinder()):(null)));    
+mRemote.transact(Stub.TRANSACTION_unregister, _data, _reply, 0);    
+_reply.readException();    
+}    
+finally {    
+_reply.recycle();    
+_data.recycle();    
+}    
+}    
+//执行回调    
+    
+public void execute() throws android.os.RemoteException    
+{    
+android.os.Parcel _data = android.os.Parcel.obtain();    
+android.os.Parcel _reply = android.os.Parcel.obtain();    
+try {    
+_data.writeInterfaceToken(DESCRIPTOR);    
+mRemote.transact(Stub.TRANSACTION_execute, _data, _reply, 0);    
+_reply.readException();    
+}    
+finally {    
+_reply.recycle();    
+_data.recycle();    
+}    
+}    
+//获取状态    
+    
+public int getStatus(java.lang.String flag) throws android.os.RemoteException    
+{    
+android.os.Parcel _data = android.os.Parcel.obtain();    
+android.os.Parcel _reply = android.os.Parcel.obtain();    
+int _result;    
+try {    
+_data.writeInterfaceToken(DESCRIPTOR);    
+_data.writeString(flag);    
+mRemote.transact(Stub.TRANSACTION_getStatus, _data, _reply, 0);    
+_reply.readException();    
+_result = _reply.readInt();    
+}    
+finally {    
+_reply.recycle();    
+_data.recycle();    
+}    
+return _result;    
+}    
+}    
+static final int TRANSACTION_register = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);    
+static final int TRANSACTION_unregister = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);    
+static final int TRANSACTION_execute = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);    
+static final int TRANSACTION_getStatus = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);    
+}    
+//注册回调    
+    
+public void register(com.example.aidl.IRemoteCallback callback) throws android.os.RemoteException;    
+//取消注册回调    
+    
+public void unregister(com.example.aidl.IRemoteCallback callback) throws android.os.RemoteException;    
+//执行回调    
+    
+public void execute() throws android.os.RemoteException;    
+//获取状态    
+    
+public int getStatus(java.lang.String flag) throws android.os.RemoteException;    
+}    
+
+在ClientActivity绑定远程Service并建立连接时会调用ServiceConnection.onServiceConnected(ComponentName name, IBinder service)
+[java] view plaincopy
+public void onServiceConnected(ComponentName name, IBinder service) {    
+            remoteService = IRemoteService.Stub.asInterface(service);    
+            //注册回调    
+            try {    
+                remoteService.register(remoteCallback);    
+            } catch (RemoteException e) {    
+                e.printStackTrace();    
+            }    
+}    
+
+IBinder service是从RemoteService返回的IRemoteService.Stub iBinder，这个对象是Server应用进程中的对象。
+IRemoteService.Stub.asInterface(service)在本地创建了一个代理
+ 
+public static com.example.aidl.IRemoteService asInterface(android.os.IBinder obj)
+{
+if ((obj==null)) {
+return null;
+}
+android.os.IInterface iin = (android.os.IInterface)obj.queryLocalInterface(DESCRIPTOR);//这里肯定返回null
+if (((iin!=null)&&(iin instanceof com.example.aidl.IRemoteService))) {
+return ((com.example.aidl.IRemoteService)iin);
+}
+return new com.example.aidl.IRemoteService.Stub.Proxy(obj);//创建一个本地代理
+}
+ 
+ 
+当使用remoteService调用方法时，其实是调用了本地com.example.aidl.IRemoteService.Stub.Proxy对象的方法，从Proxy方法中可以看到，每个方法都执行了mRemote.transact(Stub.TRANSACTION_xxx, _data, _reply, 0);。
+如：
+[java] view plaincopy
+//获取状态    
+    
+public int getStatus(java.lang.String flag) throws android.os.RemoteException    
+{    
+android.os.Parcel _data = android.os.Parcel.obtain();    
+android.os.Parcel _reply = android.os.Parcel.obtain();    
+int _result;    
+try {    
+_data.writeInterfaceToken(DESCRIPTOR);    
+_data.writeString(flag);    
+mRemote.transact(Stub.TRANSACTION_getStatus, _data, _reply, 0);    
+_reply.readException();    
+_result = _reply.readInt();    
+}    
+finally {    
+_reply.recycle();    
+_data.recycle();    
+}    
+return _result;    
+}    
+
+这一过程是把Client端的参数转换成Parcel（_data）传递到Server端，而在Server端又会把返回数据保存到_reply中，这就形成了一次交互。
+mRemote是远程对象，transact方法会执行onTransact方法
+[java] view plaincopy
+public final boolean transact(int code, Parcel data, Parcel reply,    
+            int flags) throws RemoteException {    
+        if (Config.LOGV) Log.v("Binder", "Transact: " + code + " to " + this);    
+        if (data != null) {    
+            data.setDataPosition(0);    
+        }    
+        boolean r = onTransact(code, data, reply, flags);    
+        if (reply != null) {    
+            reply.setDataPosition(0);    
+        }    
+        return r;    
+    }    
+
+这样就会执行远程的onTransact方法，
+[java] view plaincopy
+case TRANSACTION_getStatus:    
+{    
+data.enforceInterface(DESCRIPTOR);    
+java.lang.String _arg0;    
+_arg0 = data.readString();    
+int _result = this.getStatus(_arg0);    
+reply.writeNoException();    
+reply.writeInt(_result);    
+return true;    
+}    
+
+注意 int _result = this.getStatus(_arg0);，这就调用了Server端的getStatus(String flag)，并把返回结果写到Client端的代理Proxy对象的_reply中
+ 
+到此，aidl通信过程就完成了。
