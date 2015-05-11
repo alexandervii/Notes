@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://wiki.eoeandroid.com/Supporting_Multiple_Screens -->
+<html lang="zh-hans" dir="ltr" class="client-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Supporting Multiple Screens - eoeAndroid wiki</title>
+<meta charset="UTF-8">
+<meta name="generator" content="MediaWiki 1.18.2">
+<link rel="stylesheet" href="http://wiki.eoeandroid.com/extensions/Drafts/Drafts.css?3">
+<link rel="shortcut icon" href="http://wiki.eoeandroid.com/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="http://wiki.eoeandroid.com/opensearch_desc.php" title="eoeAndroid wiki (zh-hans)">
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.eoeandroid.com/api.php?action=rsd">
+<link rel="copyright" href="http://wiki.eoeandroid.com/eoe_wiki:Copyright">
+<link rel="alternate" type="application/atom+xml" title="eoeAndroid wiki的Atom" href="http://wiki.eoeandroid.com/index.php?title=%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E6%9B%B4%E6%94%B9&feed=atom">
+<link rel="stylesheet" href="http://wiki.eoeandroid.com/load.php?debug=false&lang=zh-hans&modules=mediawiki.legacy.commonPrint%2Cshared%7Cskins.vector&only=styles&skin=vector&*">
+<style type="text/css" media="all">.mw-collapsible-toggle{float:right} li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+
+/* cache key: eoeandroid_wiki:resourceloader:filter:minify-css:4:4250852ed2349a0d4d0fc6509a3e7d4c */
+</style><style type="text/css" media="all">.js-messagebox{margin:1em 5%;padding:0.5em 2.5%;border:1px solid #ccc;background-color:#fcfcfc;font-size:0.8em}.js-messagebox .js-messagebox-group{margin:1px;padding:0.5em 2.5%;border-bottom:1px solid #ddd}.js-messagebox .js-messagebox-group:last-child{border-bottom:thin none transparent}
+
+/* cache key: eoeandroid_wiki:resourceloader:filter:minify-css:4:8b08bdc91c52a9ffba396dccfb5b473c */
+</style><meta name="ResourceLoaderDynamicStyles" content="">
+<style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}a.new,#quickbar a.new{color:#ba0000}
+
+/* cache key: eoeandroid_wiki:resourceloader:filter:minify-css:4:c88e2bcd56513749bec09a7e29cb3ffa */
+</style>
+<script type="text/javascript" async="" src="./Supporting Multiple Screens - eoeAndroid wiki_files/ga.js"></script><script src="./Supporting Multiple Screens - eoeAndroid wiki_files/load.php"></script><script src="./Supporting Multiple Screens - eoeAndroid wiki_files/load(1).php"></script>
+<script>if(window.mw){
+	mw.config.set({"wgCanonicalNamespace": "", "wgCanonicalSpecialPageName": false, "wgNamespaceNumber": 0, "wgPageName": "Supporting_Multiple_Screens", "wgTitle": "Supporting Multiple Screens", "wgCurRevisionId": 11095, "wgArticleId": 781, "wgIsArticle": true, "wgAction": "view", "wgUserName": null, "wgUserGroups": ["*"], "wgCategories": [], "wgBreakFrames": false, "wgRestrictionEdit": [], "wgRestrictionMove": []});
+}
+</script><script>if(window.mw){
+	mw.loader.load(["mediawiki.page.startup"]);
+}
+</script><script type="text/javascript" src="./Supporting Multiple Screens - eoeAndroid wiki_files/load(2).php"></script>
+<!--[if lt IE 7]><style type="text/css">body{behavior:url("/skins/vector/csshover.min.htc")}</style><![endif]--></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Supporting_Multiple_Screens action-view skin-vector">
+		<div id="mw-page-base" class="noprint">
+        	<div class="daohang">
+        	<a href="http://wiki.eoeandroid.com/">WIKI首页</a>　<a target="_blank" href="http://www.eoeandroid.com/">安卓社区</a>　<a target="_blank" href="http://news.eoe.cn/">移动资讯</a>　<a target="_blank" href="http://salon.eoe.cn/">移动开放日</a>　<a target="_blank" href="http://zhaopin.eoe.cn/">移动人才招聘</a>　<a target="_blank" href="http://service.eoe.cn/">开发者服务</a>
+        	</div>
+        </div>
+		<div id="mw-head-base" class="noprint"></div>
+		<!-- content -->
+		<div id="content">
+			<a id="top"></a>
+			<div id="mw-js-message" style="display:none;" class="js-messagebox"></div>
+						<!-- firstHeading -->
+			<h1 id="firstHeading" class="firstHeading">Supporting Multiple Screens</h1>
+			<!-- /firstHeading -->
+			<!-- bodyContent -->
+			<div id="bodyContent">
+								<!-- tagline -->
+				<div id="siteSub">来自eoeAndroid wiki</div>
+				<!-- /tagline -->
+								<!-- subtitle -->
+				<div id="contentSub"></div>
+				<!-- /subtitle -->
+																<!-- jumpto -->
+				<div id="jump-to-nav">
+					跳转到： <a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#mw-head">导航</a>,
+					<a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#p-search">搜索</a>
+				</div>
+				<!-- /jumpto -->
+								<!-- bodycontent -->
+				<div lang="zh-hans" dir="ltr" class="mw-content-ltr"><p>负责人：冰凝 
+</p><p>原文链接：<a rel="nofollow" target="_blank" class="external free" href="http://developer.android.com/guide/practices/screens_support.html">http://developer.android.com/guide/practices/screens_support.html</a> 
+</p><p><br>
+</p>
+<table id="toc" class="toc"><tbody><tr><td><div id="toctitle"><h2>目录</h2><span class="toctoggle">&nbsp;[<a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#" class="internal" id="togglelink">隐藏</a>]&nbsp;</span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E6.94.AF.E6.8C.81.E5.A4.9A.E5.B1.8F"><span class="tocnumber">1</span> <span class="toctext">支持多屏</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E5.A4.9A.E5.B1.8F.E6.94.AF.E6.8C.81.E6.A6.82.E8.BF.B0"><span class="tocnumber">1.1</span> <span class="toctext">多屏支持概述</span></a>
+<ul>
+<li class="toclevel-3 tocsection-3"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E6.9C.AF.E8.AF.AD.E5.92.8C.E6.A6.82.E5.BF.B5"><span class="tocnumber">1.1.1</span> <span class="toctext">术语和概念</span></a></li>
+<li class="toclevel-3 tocsection-4"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E6.94.AF.E6.8C.81.E7.9A.84.E5.B1.8F.E5.B9.95.E8.8C.83.E5.9B.B4"><span class="tocnumber">1.1.2</span> <span class="toctext">支持的屏幕范围</span></a></li>
+<li class="toclevel-3 tocsection-5"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E5.AF.86.E5.BA.A6.E6.97.A0.E5.85.B3.E6.80.A7"><span class="tocnumber">1.1.3</span> <span class="toctext">密度无关性</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-6"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E5.A6.82.E4.BD.95.E6.94.AF.E6.8C.81.E5.A4.9A.E5.B1.8F"><span class="tocnumber">1.2</span> <span class="toctext">如何支持多屏</span></a>
+<ul>
+<li class="toclevel-3 tocsection-7"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E4.BD.BF.E7.94.A8.E9.85.8D.E7.BD.AE.E9.99.90.E5.AE.9A.E7.AC.A6"><span class="tocnumber">1.2.1</span> <span class="toctext">使用配置限定符</span></a></li>
+<li class="toclevel-3 tocsection-8"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E8.AE.BE.E8.AE.A1.E5.8F.AF.E6.9B.BF.E4.BB.A3.E7.9A.84.E5.B8.83.E5.B1.80.E5.92.8C.E7.BB.98.E5.9B.BE"><span class="tocnumber">1.2.2</span> <span class="toctext">设计可替代的布局和绘图</span></a>
+<ul>
+<li class="toclevel-4 tocsection-9"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E5.8F.AF.E6.9B.BF.E4.BB.A3.E7.9A.84.E5.B8.83.E5.B1.80"><span class="tocnumber">1.2.2.1</span> <span class="toctext">可替代的布局</span></a></li>
+<li class="toclevel-4 tocsection-10"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E5.8F.AF.E6.9B.BF.E4.BB.A3.E7.9A.84.E7.BB.98.E5.9B.BE"><span class="tocnumber">1.2.2.2</span> <span class="toctext">可替代的绘图</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-11"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#Android3.2.E5.B9.B3.E6.9D.BF.E5.B8.83.E5.B1.80.E7.9A.84.E5.A3.B0.E6.98.8E"><span class="tocnumber">1.3</span> <span class="toctext">Android3.2平板布局的声明</span></a>
+<ul>
+<li class="toclevel-3 tocsection-12"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E6.96.B0.E7.9A.84.E5.B0.BA.E5.AF.B8.E9.99.90.E5.AE.9A.E7.AC.A6.E7.9A.84.E4.BD.BF.E7.94.A8"><span class="tocnumber">1.3.1</span> <span class="toctext">新的尺寸限定符的使用</span></a></li>
+<li class="toclevel-3 tocsection-13"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E9.85.8D.E7.BD.AE.E5.AE.9E.E4.BE.8B"><span class="tocnumber">1.3.2</span> <span class="toctext">配置实例</span></a></li>
+<li class="toclevel-3 tocsection-14"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E6.94.AF.E6.8C.81.E5.B1.8F.E5.B9.95.E5.B0.BA.E5.AF.B8.E7.9A.84.E5.A3.B0.E6.98.8E"><span class="tocnumber">1.3.3</span> <span class="toctext">支持屏幕尺寸的声明</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-15"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E6.9C.80.E4.BD.B3.E5.AE.9E.E8.B7.B5"><span class="tocnumber">1.4</span> <span class="toctext">最佳实践</span></a></li>
+<li class="toclevel-2 tocsection-16"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E9.99.84.E5.8A.A0.E5.AF.86.E5.BA.A6.E7.9A.84.E6.B3.A8.E6.84.8F.E4.BA.8B.E9.A1.B9"><span class="tocnumber">1.5</span> <span class="toctext">附加密度的注意事项</span></a>
+<ul>
+<li class="toclevel-3 tocsection-17"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E8.B0.83.E6.95.B4.E8.BF.90.E8.A1.8C.E6.97.B6.E5.88.9B.E5.BB.BA.E7.9A.84.E4.BD.8D.E5.9B.BE.E5.AF.B9.E8.B1.A1"><span class="tocnumber">1.5.1</span> <span class="toctext">调整运行时创建的位图对象</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-18"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#-.3D_.E8.BD.AC.E6.8D.A2dp.E5.8D.95.E4.BD.8D.E4.B8.BA.E5.83.8F.E7.B4.A0.E5.8D.95.E4.BD.8D_.3D-"><span class="tocnumber">2</span> <span class="toctext">-= 转换dp单位为像素单位 =-</span></a>
+<ul>
+<li class="toclevel-2 tocsection-19"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E4.BD.BF.E7.94.A8.E9.A2.84.E5.85.88.E8.B0.83.E6.95.B4.E7.9A.84.E9.85.8D.E7.BD.AE.E5.80.BC"><span class="tocnumber">2.1</span> <span class="toctext">使用预先调整的配置值</span></a></li>
+<li class="toclevel-2 tocsection-20"><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#.E5.A6.82.E4.BD.95.E5.9C.A8.E5.A4.9A.E5.B1.8F.E4.B8.8A.E6.B5.8B.E8.AF.95.E4.BD.A0.E7.9A.84.E5.BA.94.E7.94.A8.E7.A8.8B.E5.BA.8F"><span class="tocnumber">2.2</span> <span class="toctext">如何在多屏上测试你的应用程序</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></tbody></table>
+<h1> <span class="mw-headline" id=".E6.94.AF.E6.8C.81.E5.A4.9A.E5.B1.8F">支持多屏</span></h1>
+<p>Android涉及各种各样的支持不同屏幕尺寸和密度的设备。对于应用程序，Android系统通过设备和句柄提供了统一的开发环境，大部分工作是校正每一个应用程序的用户界面到它显示的屏上。与此同时，系统提供APIs允许你控制应用界面为特定的屏幕尺寸和密度，为不同屏幕的配置提供最优化的用户界面设计。例如，你可能会要一个平板电脑的用户界面，这不同于手机的用户界面。
+</p><p>虽然系统能缩放，调整其尺寸，以使应用软件工作在不同屏上，但是应该尽量优化应用软件适应不同的屏幕尺寸和密度。为此，对所有设备的用户体验应最大化且应让用户们相信应用软件是真正为他们的设备设计的，而不是简单的拉伸使屏适合他们的设备。
+</p><p>按照文中描述的做法，通过使用一个apk文件，可以创建一个应用软件能恰当显示并在所有的支持屏配置中提供最优用户体验。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p><b>注</b>：在此文中假设应用程序是为android 1.6（API level为4）或者更高的Android系统设计的。如果应用程序支持android 1.5或者更低的安卓系统，请首先阅读<a rel="nofollow" target="_blank" class="external text" href="http://developer.android.com/intl/zh-CN/guide/practices/screens-support-1.5.html">Strategies for Android 1.5</a>章节。
+</p><p>Also, be aware that Android 3.2 has introduced new APIs that allow you to more precisely control the layout resources your application uses for different screen sizes. These new features are especially important if you're developing an application that's optimized for tablets. For details, see the section about Declaring Tablet Layouts for Android 3.2. 
+</p>
+</div>
+<h2> <span class="mw-headline" id=".E5.A4.9A.E5.B1.8F.E6.94.AF.E6.8C.81.E6.A6.82.E8.BF.B0"> 多屏支持概述 </span></h2>
+<p>本节提供了Android支持多屏的概述，包括：介绍了本文中API用到的术语和概念，总结了系统支持的屏设置，概述了API和下面的屏幕兼容特性。
+</p>
+<h3> <span class="mw-headline" id=".E6.9C.AF.E8.AF.AD.E5.92.8C.E6.A6.82.E5.BF.B5"> 术语和概念 </span></h3>
+<p>屏幕尺寸
+</p>
+<dl><dd>实际的物理尺寸，是按照屏幕的对角线计量的。
+</dd></dl>
+<dl><dd>为简单起见，Android把所有的屏幕尺寸划分为四种广义的尺寸：小、标准、大，特大号。
+</dd></dl>
+<p>屏幕密度
+</p>
+<dl><dd>屏幕占据的物理区域所含像素的个数；通常被称为dpi（每英寸点数）.
+</dd></dl>
+<dl><dd>例如在给定的物理区域中,与“标准的”或“高”密度屏幕相比，低密度屏幕具有较少的像素。
+</dd></dl>
+<p>方向
+</p>
+<dl><dd>屏幕的方向来自于用户的角度。这是横向或纵向，分别指屏幕各个角度的比例，而不是宽或高。需要注意的是，不仅不同的设备在不同方向运行，而且当用户旋转设备时，方向也同时在改变。
+</dd></dl>
+<p>分辨率
+</p>
+<dl><dd>屏幕上物理像素的总数。支持多屏时，应用程序不直接与分辨率有关，应用程序应该只关心屏幕的尺寸和密度，用指定的广义的尺寸和密度组。
+</dd></dl>
+<p>dp
+</p>
+<dl><dd>一种有效的在定义UI布局时你应当使用的像素单位，以一种密度无关的方式表示布局的尺寸或者位置。
+</dd></dl>
+<dl><dd>dp相当于160dpi屏幕，它是系统为“中等的”密度屏设定的基准密度。同时，系统透明地处理任何一种dp单位，必要时，基于使用中的屏的实际密度。dp单位根据公式 px = dp * (dpi / 160)简单地转化为屏像素。例如,一个240dpi的屏幕，1 dp等于1.5个物理像素。定义应用程序的UI时，你应该总是使用dp单位，以确保在不同密度的屏幕上正确地显示你的UI。
+</dd></dl>
+<h3> <span class="mw-headline" id=".E6.94.AF.E6.8C.81.E7.9A.84.E5.B1.8F.E5.B9.95.E8.8C.83.E5.9B.B4"> 支持的屏幕范围 </span></h3>
+<p>从Android1.6（API等级为4）开始，Android提供了支持多个屏幕的尺寸和密度，表明一种设备拥有许多不同的屏幕配置。你应该利用Android系统的这些特性去为每一个屏幕配置优化你的应用程序界面，并且应确保你的应用程序不仅能正常运行，而且应尽可能地在每一个屏幕上提供最好的用户体验。
+</p><p>为了简化为多个屏的用户界面设计方式，Android系统将实际的屏幕尺寸和密度范围划分为：
+</p>
+<ul><li>一组广义的尺寸：小，标准，大，特大号。
+</li></ul>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p><b>注</b>：从Android3.2（API等级为13）起，这些尺寸分组已被弃用，大家支持的是一种新的基于可用屏幕宽度的管理屏幕尺寸的技术。如果你正在开发Android3.2或者更高版本，参见Android3.2平板电脑布局章节获取更多信息。
+</p>
+</div>
+<ul><li>一组四个广义的密度：ldpi (低), mdpi (中等), hdpi (高),和 xhdpi (超高)。
+</li></ul>
+<p>这种广义的尺寸和密度是围绕一种基准的配置进行划分的，这种基准的配置是指一个标准尺寸和mdpi （中等）密度。这个基线是基于第一个Android 上电设备，T-Mobile G1的屏幕配置，它具有HVGA屏幕（直到Android1.6，这是Android支持的唯一的屏幕配置）。
+</p><p>每个广义的尺寸和密度跨越一套实际屏幕尺寸和密度。例如，当用手测量时，两种标准的屏幕尺寸的设备可能具有实际的稍微不同的屏幕尺寸和纵横比。同样，两种hdpi屏幕密度的设备可能包含稍微不同的实际像素密度。Android制造这些差异使应用程序抽象化，所以，你可以提供设计的UI给广义的尺寸和密度，必要时让系统处理任何最后的调整。图1 阐明了不同的尺寸和密度被如何大致归类到不同的尺寸和密度组。
+</p><p><img src="http://developer.android.com/images/screens_support/screens-ranges.png" alt="screens-ranges.png">
+</p><p>图1 阐明了不同的尺寸和密度被如何大致归类到不同的尺寸和密度组
+</p><p>当为不同的屏幕尺寸设计UI时，会发现每个设计需要最低限度的空间。因此，上面提到的每一个广义的屏幕尺寸都有系统定义的相关联的最小分辨率。这些最小尺寸在“dp”单位内，当设计布局时，应当使用相同的单位。
+</p>
+<ul><li>超大屏幕至少960dp x720dp
+</li><li>大屏幕至少640dp x480dp
+</li><li>标准屏幕至少470dp x320dp
+</li><li>小屏幕至少426dp x320dp
+</li></ul>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p><b>注</b>：在Android3.0之前，这些最小屏幕尺寸没有很好的定义，所以可能会遇到一些在标准和大之间被错误归类的设备。这些也是基于屏幕的物理分辨率，因此各种不相同的设备也会遇到前面的问题。例如，一个有系统栏的1024x720平板会留少一点可用的空间给应用程序。
+</p>
+</div>
+<p>为了优化应用程序的UI适应不同的屏幕尺寸和密度，可以提供任何广义的尺寸和密度替代资源。一般来说，应当提供替代布局给不同屏幕尺寸和替代的位图图像给不同的屏幕密度。在运行时，基于当前设备屏幕的广义的尺寸或密度，系统会为你的应用程序使用适当的资源。
+</p><p>没有必要提供替代资源给每个屏幕尺寸和密度的组合。系统提供了强大的兼容特性，这些特性会处理大部分工作使你的应用程序呈现在任何设备的屏幕上，前提是已经通过使用允许它适当地调整尺寸的技术实现了UI（正如下面最佳实践中描述的）。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p><b>注</b>：定义一种设备的广义的屏幕尺寸和密度特性是彼此相互独立的。例如，一种WVGA高密度屏幕被认为是标准尺寸的屏幕，是因为它的物理大小与T-Mobile G1（Android的第一个设备和基准屏幕设置）大约相同。另一方面，一种 WVGA中等密度的屏幕被认为是大尺寸的屏幕。尽管它有相同的分辨率（相同数量的像素），这种WVGA中等密度的屏幕有更低的屏幕密度，意思是每个像素比较大，因此，整个屏幕比基准（标准尺寸）屏幕要更大。
+</p>
+</div>
+<h3> <span class="mw-headline" id=".E5.AF.86.E5.BA.A6.E6.97.A0.E5.85.B3.E6.80.A7"> 密度无关性 </span></h3>
+<p>当应用程序保留了用户界面元素的物理尺寸以不同的密度显示在屏幕上（从用户的角度来看）时，它实现了“密度无关性”。
+维护密度无关系性很重要，因为，如果没有它，一个UI元素（如按钮）在一个低密度屏幕上看起来较大而在一个高密度屏幕上看起来很小。这样的密度相关的尺寸的改变影响应用程序的布局和使用。图2和图3 分别展示了当它不提供密度无关性和提供了密度无关性时，应用程序之间的差异。
+</p><p><img src="http://developer.android.com/images/screens_support/density-test-bad.png" alt="density-test-bad.png">
+</p><p>图2 当不提供密度无关性，应用程序在低、中等、高密度屏幕上显示实例
+</p><p><img src="http://developer.android.com/images/screens_support/density-test-good.png" alt="density-test-good.png">
+</p><p>图3 当提供密度无关性，应用程序在低、中等、高密度屏幕上显示实例
+</p><p>Android系统通过以下两种方式帮助应用程序实现密度无关性：
+</p>
+<ul><li>系统为当前屏幕密度调整dp单位到适当的值
+</li><li>如有必要，系统会根据当前屏幕密度调整绘图资源到适当的尺寸
+</li></ul>
+<p>在图2中，文本视图和位图绘图有规定的尺寸的像素（像素单位），因此这些视图在低密度屏幕上看起来较大，在高密度屏幕上看起来较小。这是因为尽管实际的屏幕尺寸是一样的，但是高密度屏每英尺有较多的像素（相同数量的像素适合于较小区域）。在图3中，布局的尺寸被指定为密度无关性像素（dp 单位）。因为密度无关性像素的基线是中等密度的屏幕，一个有中等密度屏幕的设备看上去与图2中的一样。对于低密度和高密度屏幕而言，不管怎样，系统能分别降低、调高密度无关性像素的值去恰当地适应屏幕。
+在大多数情况下，你可以简单地在密度无关性像素里（dp 单位）指定所有的布局尺寸或者恰当地“包装内容”来确保应用程序的密度无关性。然后系统会根据恰当的缩放因子为当前屏幕密度调整位图视图以适当的尺寸显示出来。
+但是，位图缩放会导致图片模糊，如上面的截图。为了避免这些问题，应该为不同的密度提供替代位图资源。例如，应该给高密度屏幕提供更高分辨率的位图，系统会使用它们，而不是使用为中等密度屏幕设计的缩放位图。以下段落将介绍更多关于如何提供不同替代资源给不同的屏幕配置。
+</p>
+<h2> <span class="mw-headline" id=".E5.A6.82.E4.BD.95.E6.94.AF.E6.8C.81.E5.A4.9A.E5.B1.8F"> 如何支持多屏 </span></h2>
+<p>Android支持多屏的基础是它能够以适当的方式为当前屏幕设置管理应用程序的布局和位图绘图的渲染。根据实际情况，系统通过缩放布局去适应屏幕的尺寸/密度和为屏幕密度缩放位图绘图，处理大部分工作去适当地渲染应用程序到每一个屏幕配置。然而，为了更好地处理不同屏幕配置，应该：
+<b>*在清单文件中明确申明应用程序支持哪种屏幕大小</b>
+</p><p>通过申明应用程序支持哪种屏幕尺寸，可以确保只有支持的屏幕尺寸的设备才能下载应用程序。声明支持不同屏幕尺寸也会影响系统如何在较大屏幕上运行应用程序，尤其是，不论应用程序是否运行在屏幕兼容模式。
+为了申明应用程序支持的屏幕大小，应该在manifest文件中包含&lt;supports-screens&gt;的元素。
+</p><p><b>*为不同的屏幕尺寸提供不同的布局</b>
+</p><p>默认情况下，Android会重新调整应用布局去适合当前设备屏幕。在大多数情况下，这样做很好。在其它情况下，UI可能看上去不太好且可能不同屏幕尺寸需要调整。例如，在较大屏幕上，可能会调整某些元素的位置和尺寸去充分利用额外的屏幕空间，或者在一个较小屏幕上，会调整尺寸使得一切都可以在屏幕上显示。
+可以提供指定大小资源的配置限定符，有小、标准、大、超大。例如，一个超大屏幕的布局应该选Xlarge。
+从Android3.2（API等级为13）起，上面的尺寸分组已被弃用，你应该使用sw&lt;N&gt;dp配置限定符去定义布局资源需要的最小的可用的宽度。例如，如果多窗格平板布局需要至少600dp的屏幕宽度，应该选sw600dp。使用新技术申明布局资源将会在Declaring Tablet Layouts for Android 3.2章节讨论。
+</p><p><b>*为不同的屏幕密度提供不同的位图绘图</b>
+</p><p>默认情况下，Android调整你的位图绘图(.png, .jpg, and .gif 文件)和9补丁绘图(.9.png 文件），让他们在每个设备上以适当的物理尺寸呈现。例如，你用程序只为基线、中等屏幕密度（mdpi）提供了位图绘图，系统会调高高密度屏幕，降低低密度屏幕。这些调整会导致图片不真实。为了确保图片看起来最好，应当在不同分辨率下包含替代版本去适应不同的屏幕密度。可以用来指定密度资源的配置限定符有ldpi（低）、mdpi (中等), hdpi (高), and xhdpi (超高)。例如，高密度屏幕的位图应该选hdpi。
+尺寸和密度配置限定符与上面的支持的屏幕范围中描述的广义尺寸和密度一致。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注释：如果你不太熟悉配置限定符且不知道系统如何使用他们应用替代资源的话，请阅读Providing Alternative Resources章节获取更多信息。
+在运行时，对于任何给定的资源，系统通过以下步骤实现在当前屏幕上获取最佳的显示:
+</p>
+</div>
+<p>1.系统使用适当的替代资源
+</p><p>基于当前屏幕的尺寸和密度，系统会使用应用程序里的任何指定尺寸和密度的资源。例如，如果设备有一个高密度屏幕且应用程序请求绘图资源时，，系统会在绘图资源目录寻找最匹配的设备配置。依赖于其他可用的替代资源，一个有hdpi限定符的资源目录（如 drawable-hdpi）可能是最匹配的，因此系统使用这个目录中的绘图资源。
+</p><p>2.如果没有匹配的资源可用，系统会使用默认资源且会调高或降低资源去匹配当前屏幕的尺寸和密度这些“默认”资源是指那些没有配置限定符标记的资源。例如在drawable/中的资源就是默认的绘图资源。系统假定默认资源是为基准屏幕尺寸和密度设计的，即标准屏幕尺寸和中等密度。例如，系统会恰当地为高密度屏幕调高默认密度资源，为低密度屏幕降低默认资源。
+</p><p>然而，当系统在寻找一个指定密度的资源且在指定密度目录没找到它时，它不会总是使用默认资源。为了获取更好的效果，系统会使用一个其他指定密度资源。例如，当系统在寻找一个低密度资源且这个资源是不可用时，系统更喜欢降低高密度版本的资源，因为系统可以简单地乘以0.5系数将高密度资源降低为低密度，与调整中等密度资源乘以0.75系数相比，这样用到很少的工件。
+</p><p>关于Android是如何通过匹配配置限定符到设备配置来选择替代资源的更多信息，请阅读<a rel="nofollow" target="_blank" class="external text" href="http://developer.android.com/guide/topics/resources/providing-resources.html#BestMatch">How Android Finds the Best-matching Resource</a>章节。
+</p>
+<h3> <span class="mw-headline" id=".E4.BD.BF.E7.94.A8.E9.85.8D.E7.BD.AE.E9.99.90.E5.AE.9A.E7.AC.A6"> 使用配置限定符 </span></h3>
+<p>Android支持多种配置限定符，让你控制系统如何基于当前设备屏幕的特征选择替代资源。一个配置限定符是一个字符串，你可以把它附加到你的Android工程的资源目录中并指定里面的资源是为此配置设计的。
+</p><p>为了使用配置限定符：
+</p><p>1.在你的工程的res目录创建一个新目录，并使用格式命名：
+</p>
+<dl><dd>&lt;resources_name&gt;-&lt;qualifier&gt;
+</dd><dd>&lt;resources_name&gt;是标准的资源名称（如drawable or layout）。
+</dd><dd>&lt;qualifier&gt;是下面表1中的配置限定符，指定这些资源将要被用的屏幕配置（如hdpi or xlarge）。
+</dd></dl>
+<p>2.保存这些适当的指定配置的资源到这个新目录。这些资源文件的命名必须严格与默认的资源文件名一样.
+</p><p>例如，xlarge是用于超大屏幕的配置限定符。当你添加这些字符串到一个资源目录名（如layout-xlarge）时，它告诉系统这些资源将被用到有超大屏幕的设备上。
+</p><p>表1 允许你提供指定资源给不同屏幕配置的配置限定符
+</p>
+<table style="border-spacing: 0px;margin: 4px 4px; width: 90%; border-left:1px solid #ccc;border-top:1px solid #ccc;">
+
+
+<tbody><tr style="background:#DEE8F1;">
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Screen characteristic
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Qualifier
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Description
+</th></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+<p>Size
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>small
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for small size screens
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>normal
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for normal size screens. (This is the baseline size.)
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>large
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for large size screens.
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>xlarge
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for extra large size screens
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+<p>Density
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>ldpi
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for low-density (ldpi) screens (~120dpi).
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>mdpi
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for medium-density (mdpi) screens (~160dpi). (This is the baseline density.)
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>hdpi
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for high-density (hdpi) screens (~240dpi).
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>xhdpi
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for extra high-density (xhdpi) screens (~320dpi).
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>nodpi
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for all densities. These are density-independent resources. The system does not scale resources tagged with this qualifier, regardless of the current screen's density.
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>tvdpi
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for screens somewhere between mdpi and hdpi; approximately 213dpi. This is not considered a "primary" density group. It is mostly intended for televisions and most apps shouldn't need it—providing mdpi and hdpi resources is sufficient for most apps and the system will scale them as appropriate. If you find it necessary to provide tvdpi resources, you should size them at a factor of 1.33*mdpi. For example, a 100px x 100px image for mdpi screens should be 133px x 133px for tvdpi.
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+<p>Orientation
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>land
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for screens in the landscape orientation (wide aspect ratio).
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>port
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for screens in the portrait orientation (tall aspect ratio).
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:0px solid #ccc; padding:5px 15px;">
+<p>Aspect ratio
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>long
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for screens that have a significantly taller or wider aspect ratio (when in portrait or landscape orientation, respectively) than the baseline screen configuration.
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>notlong
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Resources for use screens that have an aspect ratio that is similar to the baseline screen configuration.
+</p>
+</td></tr></tbody></table>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：如果在Android3.2或者更高版本上开发应用程序，请参阅Declaring Tablet Layouts for Android 3.2章节获取关于新的配置限定符的信息，当申明了指定屏幕尺寸（而不是使用表1中的尺寸限定符的布局资源时，你应当使用这些限定符。
+</p>
+</div>
+<p>获取更多关于这些限定符如何大致对应于真实的屏幕尺寸和密度的信息，请参阅本文中前面提到的支持的屏幕范围章节。
+</p><p>例如，下面是应用程序中的资源目录列表，这个程序为中等、高及超高密度屏幕提供了不同的为不同屏幕尺寸和位图绘图设计的布局。
+res/layout/my_layout.xml             // 标准屏幕尺寸的布局("默认")
+res/layout-small/my_layout.xml       // 小屏幕尺寸的布局
+res/layout-large/my_layout.xml       // 大屏幕尺寸的布局
+res/layout-xlarge/my_layout.xml      //超大屏幕尺寸的布局
+res/layout-xlarge-land/my_layout.xml // 横向超大的屏幕布局
+</p><p>res/drawable-mdpi/my_icon.png        // 中等密度的位图
+res/drawable-hdpi/my_icon.png        //高密度的位图
+res/drawable-xhdpi/my_icon.png       // 超高密度的位图
+</p><p>如需要更多关于如何使用替代资源和完整的配置限定符列表（不仅仅是屏幕配置）的信息，请参阅Providing Alternative Resources。
+</p><p>请注意，当Android系统挑选资源时，它采用一定的逻辑来判定“最匹配”资源。也就是说，使用的限定符没必要在所有情况下，为了系统能用到它而严格匹配当前屏幕配置。具体来说，当基于尺寸的限定符选择资源时，如果没有更匹配的资源，系统会使用比当前屏幕更小的屏幕资源（例如，必要时，大尺寸屏幕将会使用标准尺寸屏幕资源）。但是，如果唯一可用的屏幕资源比当前屏幕大，系统将不会使用它们，而且如果没有其他匹配设备的配置的话，应用程序将会崩溃（例如，如果所有布局资源都被标记为xlarger限定符，但是设备是一个标准尺寸的屏幕）。更多关于系统如何选择资源的信息，请阅读How Android Finds the Best-matching Resource章节。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>小提示：如果你有一些系统从未调整过的绘图资源（或许因为在运行时对其进行了调整），应当把他们放置在nodpi配置个限定符的目录。有这些限定符的资源被认为是密度不可知的资源，系统将不会调整它们。
+</p>
+</div>
+<h3> <span class="mw-headline" id=".E8.AE.BE.E8.AE.A1.E5.8F.AF.E6.9B.BF.E4.BB.A3.E7.9A.84.E5.B8.83.E5.B1.80.E5.92.8C.E7.BB.98.E5.9B.BE"> 设计可替代的布局和绘图 </span></h3>
+<p>应该创建的可替代资源的类型取决于应用程序的需要。通常，应该使用尺寸和方向限定符提供可替代的布局资源，使用密度限定符去提供替代的位图绘图资源。
+下面的段落分别总结了应该如何使用尺寸和密度限定符来提供替代的布局和绘图。
+</p>
+<h4> <span class="mw-headline" id=".E5.8F.AF.E6.9B.BF.E4.BB.A3.E7.9A.84.E5.B8.83.E5.B1.80"> 可替代的布局 </span></h4>
+<p>一般情况下，一旦在不同屏幕配置上测试应用程序，应该知道是否需要为不同屏幕尺寸创建可替代的布局。例如：
+</p>
+<ul><li>当在小屏幕上测试时，可能会发现，布局不是很适合这个屏幕。例如，一排按钮可能不适合在小屏幕的设备的屏幕宽度内。这种情况下，应该为小屏幕提供一种可替代的布局，即通过调整这些按钮的大小或位置。
+</li></ul>
+<ul><li>当在超大屏幕上测试时，可能会意识到，布局并没有有效地利用大屏幕，而是通过拉伸来填充它。在这种情况下，应该为超大屏幕提供一种可替代的布局，即可通过提供一种重新设计的最合适于较大屏幕如平板的UI。
+</li></ul>
+<p>虽然应用程序应当可以在没有可替代布局的大屏幕上工作正常，但是，对用户来说，程序看起来好像是专门为他们的设备设计的这一点非常重要。如果是很明显被拉伸的UI，用户对应用程序体验会更加不满意。
+</p>
+<ul><li>而且，当在横向测试时可能会注意到，与纵向相比较，放置在纵向屏幕底部的UI元素应该是在横向屏幕的右侧。
+</li></ul>
+<p><br>
+简而言之，应该确保应用程序的布局：
+</p>
+<ul><li>适合在小屏幕上（这样用户真正使用应用程序）
+</li><li>优化大屏幕，充分利用额外的屏幕空间
+</li><li>优化横向和纵向两个方向
+</li></ul>
+<p><br>
+如果在系统调整了布局后，UI要使用合适大小的位图（如按钮的背景图片），应当使用九补丁的位图文件。九补丁文件基本是一个指定的可拉伸的二维PNG文件。当系统需要调整正在使用的位图的视图时，系统会拉伸九补丁位图，但仅延伸指定区域。同样地，没有必要提供不同的绘图给不同的屏幕尺寸，因为九补丁位图能调整任何大小。然而，应当提供可替代的九补丁文件的版本给不同屏幕密度。
+</p>
+<h4> <span class="mw-headline" id=".E5.8F.AF.E6.9B.BF.E4.BB.A3.E7.9A.84.E7.BB.98.E5.9B.BE"> 可替代的绘图 </span></h4>
+<p>几乎每个应用程序应该有对应于不同屏幕密度的可替代的绘图资源，因为几乎每个应用程序都有一个启动图标，而且图标应该在所有屏幕密度上看起来都很好。同样，如果在应用程序中包含了其他位图绘图（如菜单图标或应用程序的其他图像），应当提供可替代的版本或者每一个版本给不同的密度。
+</p><p>注：只需要给位图文件（(.png, .jpg, or .gif）和九补丁文件(.9.png)提供指定密度的绘图。如果你使用XML去定义形状，颜色或者其他绘图资源，应该在默认的绘图目录（drawable/）做一个备份。
+</p><p><img src="http://developer.android.com/images/screens_support/screens-densities.png" alt="screens-densities.png">
+</p><p>图4支持每个密度的位图绘图的相对尺寸
+</p><p>为了给不同密度创建可替代的位图绘图，应该遵循基于四种广义密度的3:4:6:8的缩放比例。例如，你有一个48x48像素的中等密度屏幕的位图绘图（一个启动图标的尺寸），所有不同的尺寸应该是：
+</p>
+<ul><li>36x36适合于低密度
+</li><li>48x48适合于中等密度
+</li><li>72x72适合于高密度
+</li><li>96x96适合于超高密度
+</li></ul>
+<p>获取更多关于设计图标的信息，请参阅the Icon Design Guidelines，文中包含了各种位图绘图的尺寸信息，如启动图标，菜单图标，状态栏图标，选项卡图标等等。
+</p>
+<h2> <span class="mw-headline" id="Android3.2.E5.B9.B3.E6.9D.BF.E5.B8.83.E5.B1.80.E7.9A.84.E5.A3.B0.E6.98.8E"> Android3.2平板布局的声明 </span></h2>
+<p>对于第一代运行在Android3.0上的平板，正确声明平板布局的方法是把他们放到一个有xlarge配置限定符的目录里（例如，res/layout-xlarge/）。为了适应其他类型的平板和屏幕尺寸-尤其是7寸平板-Android3.2为更多离散的屏幕尺寸引进了一种新的指定资源的方式。这项新技术是基于你的布局需要的空间（如600dp的宽度），而不是试图让你的布局去适合广义的尺寸组（如large or xlarge）。
+</p><p>设计7寸平板的原因是非常复杂的，当时使用广义的尺寸组是指一个7寸的平板在技术上与一个5寸的手机在同一个组（大组）。虽然这两个设备在尺寸上看上去很接近，但是应用程序的UI的空间是显著不同的，用户交互的风格也是如此。因此，一个7寸和5寸的屏不应该总是使用同一个布局。为了把提供两种不同屏的布局变成可能，Android现在允许你基于宽度与/或者高度指定布局资源，在dp单位中指定，这对于应用程序布局很有效。
+</p><p>例如，在已经设计好了要用于平板类型的设备的布局后，当屏幕少于600dp宽时，可能会决定让布局停止工作。这个阈值因此会成为平板布局需要的最小尺寸。照此，现在会指定这些布局资源应当能被使用，仅仅在应用程序的UI有至少600dp宽度可用时。
+</p><p>应该要么选择宽度，并把它设计为最小尺寸，要么测试布局一旦完成时，它支持的最小宽度是多少。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：请记住，所有的这些新尺寸的APPs使用的数字都是密度无关性像素（dp）值，且布局的维度应该总是被定义使用dp单位，因为关心的是，系统占用屏幕密度后可用屏幕空间的数量。更多关于密度无关性像素的信息，请阅读文中前面提到的Terms and concepts。
+</p>
+</div>
+<h3> <span class="mw-headline" id=".E6.96.B0.E7.9A.84.E5.B0.BA.E5.AF.B8.E9.99.90.E5.AE.9A.E7.AC.A6.E7.9A.84.E4.BD.BF.E7.94.A8"> 新的尺寸限定符的使用 </span></h3>
+<p>不同能够指定的基于布局的可用空间的资源配置的总结见表2。与传统的屏幕尺寸组（小、标准、大和超大）相比，这些新的限定符提供了更多的控制权在指定的应用程序支持的屏幕尺寸方面。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：指定的使用这些限定符的尺寸不是实际的屏幕尺寸。相反，在dp单位中的宽度或高度的尺寸对你的activity的窗口是可用的。Android系统可能会使用一些屏幕做系统UI（如屏幕底部的系统栏或顶部的状态栏），所以一些屏幕有可能对于你的布局是不可用的。因此，你申明的尺寸应该是，特别是你的activity需要的尺寸-当申明了系统能提供给你的布局多少空间时，系统会占用任何被系统UI使用的空间。还需要注意的是，工具栏被认为是应用程序窗口空间的一部分，尽管你的布局没有申明，因此，系统会给布局缩减可用空间，在设计时必须考虑到这点。
+</p>
+</div>
+<p>表2 屏幕尺寸的新配置限定符(Android 3.2中介绍的)
+</p>
+<table style="border-spacing: 0px;margin: 4px 4px; width: 90%; border-left:1px solid #ccc;border-top:1px solid #ccc;">
+
+
+<tbody><tr style="background:#DEE8F1;">
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Screen configuratione
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Qualifier values
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Description
+</th></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>smallestWidth
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>sw&lt;N&gt;dp
+</p><p>Examples:
+sw600dp
+sw720dp
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>The fundamental size of a screen, as indicated by the shortest dimension of the available screen area. Specifically, the device's smallestWidth is the shortest of the screen's available height and width (you may also think of it as the "smallest possible width" for the screen). You can use this qualifier to ensure that, regardless of the screen's current orientation, your application's has at least &lt;N&gt; dps of width available for it UI.
+</p><p>For example, if your layout requires that its smallest dimension of screen area be at least 600 dp at all times, then you can use this qualifer to create the layout resources, res/layout-sw600dp/. The system will use these resources only when the smallest dimension of available screen is at least 600dp, regardless of whether the 600dp side is the user-perceived height or width. The smallestWidth is a fixed screen size characteristic of the device; the device's smallestWidth does not change when the screen's orientation changes.
+</p><p>The smallestWidth of a device takes into account screen decorations and system UI. For example, if the device has some persistent UI elements on the screen that account for space along the axis of the smallestWidth, the system declares the smallestWidth to be smaller than the actual screen size, because those are screen pixels not available for your UI.
+</p><p>This is an alternative to the generalized screen size qualifiers (small, normal, large, xlarge) that allows you to define a discrete number for the effective size available for your UI. Using smallestWidth to determine the general screen size is useful because width is often the driving factor in designing a layout. A UI will often scroll vertically, but have fairly hard constraints on the minimum space it needs horizontally. The available width is also the key factor in determining whether to use a one-pane layout for handsets or multi-pane layout for tablets. Thus, you likely care most about what the smallest possible width will be on each device.
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Available screen width
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>w&lt;N&gt;dp
+</p><p>Examples:
+w720dp
+w1024dp
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Specifies a minimum available width in dp units at which the resources should be used—defined by the &lt;N&gt; value. The system's corresponding value for the width changes when the screen's orientation switches between landscape and portrait to reflect the current actual width that's available for your UI.
+</p><p>This is often useful to determine whether to use a multi-pane layout, because even on a tablet device, you often won't want the same multi-pane layout for portrait orientation as you do for landscape. Thus, you can use this to specify the minimum width required for the layout, instead of using both the screen size and orientation qualifiers together.
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Available screen height
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>h&lt;N&gt;dp
+</p><p>Examples:
+h720dp
+h1024dp
+etc. 
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Specifies a minimum screen height in dp units at which the resources should be used—defined by the &lt;N&gt; value. The system's corresponding value for the height changes when the screen's orientation switches between landscape and portrait to reflect the current actual height that's available for your UI.
+</p><p>Using this to define the height required by your layout is useful in the same way as w&lt;N&gt;dp is for defining the required width, instead of using both the screen size and orientation qualifiers. However, most apps won't need this qualifier, considering that UIs often scroll vertically and are thus more flexible with how much height is available, whereas the width is more rigid.
+</p>
+</td></tr></tbody></table>
+<p>虽然使用这些限定符看上去比使用屏幕尺寸组更加复杂，但是当你一旦确定UI的需求后，这实际上应当更简单。当设计UI时，可能关心的主要事情是，应用程序在手机类型的UI和多窗格的平板类型的UI之间切换时的实际尺寸。切换的关键在于特定的设计，也许需要720dp的宽度给平板布局，也许600dp已足够，或者480dp，或者其他位于这之间的数值。使用表2中的限定符，需要掌握布局改变时的精确尺寸。
+</p><p>更多关于这些尺寸配置限定符的讨论，请参阅Providing Resources文档。
+</p>
+<h3> <span class="mw-headline" id=".E9.85.8D.E7.BD.AE.E5.AE.9E.E4.BE.8B"> 配置实例 </span></h3>
+<p>为了帮助实现一些为不同类型的设备设计的目标，下面是一些典型的屏幕宽度的数值：
+</p>
+<ul><li>320dp:一种典型的手机屏幕 (240x320 ldpi, 320x480 mdpi, 480x800 hdpi, 等等).
+</li><li>480dp: 一种有点像条纹的中间态的平板 (480x800 mdpi).
+</li><li>600dp: 7寸平板 (600x1024 mdpi).
+</li><li>720dp: 10寸平板 (720x1280 mdpi, 800x1280 mdpi, etc).
+</li></ul>
+<p>使用表2中的这些尺寸限定符，应用程序可以在使用任何想要的宽度或高度的平板和手机的不同布局资源间切换。例如，如果平板布局支持的最小可用宽度是600dp，应该提高两套布局：
+</p><p><br>
+</p><p>res/layout/main_activity.xml           # 手机适用
+</p><p>res/layout-sw600dp/main_activity.xml   #平板适用
+</p><p><br>
+</p><p>在这种情况下，为了使平板布局能用，可用的屏幕空间的最小宽度必须是600dp。
+</p><p>对于其他情况，你要进一步自定义你的UI以区分如7寸和10寸平板的尺寸，可以定义额外的最小宽度布局：
+</p><p><br>
+</p><p>res/layout/main_activity.xml         # 适用于手机 (小于600dp的可用宽度)
+</p><p>res/layout-sw600dp/main_activity.xml   #适用于7寸平板(大于等于600dp的可用宽度)
+</p><p>res/layout-sw720dp/main_activity.xml   # 适用于10寸平板(大于或等于720dp的可用宽度)
+</p><p><br>
+</p><p>请注意，第二套采用的“可用的宽度”限定符w&lt;N&gt;dp。通过这种方式，一个设备可能实际上使用两种布局，这取决于屏幕的方向（如果在一个方向上可用的宽度是至少600dp，在另一个方向上少于600dp）。
+</p><p>如果关心的是可用高度，可以同样使用h&lt;N&gt;dp限定符。或者，如果情况比较特殊，甚至可以结合w&lt;N&gt;dp 和 h&lt;N&gt;dp一起使用。
+</p>
+<h3> <span class="mw-headline" id=".E6.94.AF.E6.8C.81.E5.B1.8F.E5.B9.95.E5.B0.BA.E5.AF.B8.E7.9A.84.E5.A3.B0.E6.98.8E"> 支持屏幕尺寸的声明 </span></h3>
+<p>一旦已经实现了不同屏幕尺寸的布局，在manifest文件中声明应用程序支持哪种屏幕也同样重要。
+</p><p>随同新的屏幕尺寸的配置限定符一起，Android3.2引进了新的&lt;supports-screens&gt; manifest元素属性。
+</p><p>android:requiresSmallestWidthDp
+</p>
+<dl><dd>指定需要的最小smallestWidth。smallestWidth是必须能被应用程序的UI利用的屏幕空间的（在dp单位里）最小尺寸。也就是，最短的可用的屏幕的二维尺寸。因此，为了让设备与应用程序兼容，设备的smallestWidth必须大于等于这个值。（通常，不论屏幕当前的方向是什么，你提供的值是你的布局支持的“最小宽度”。
+</dd></dl>
+<dl><dd>例如，如果应用程序是为600dp的最小可用宽度的平板类型设备设计的:
+</dd></dl>
+<pre>&lt;manifest ... &gt;
+    &lt;supports-screens android:requiresSmallestWidthDp="600" /&gt;
+    ...
+&lt;/manifest&gt;
+</pre>
+<dl><dd>然而，如果应用程序支持所有Android支持的屏幕尺寸（如426dp x 320dp一样小），那么没有必要申明这个属性，因为需要的最小宽度可能在任何设备上都是最小的。
+</dd></dl>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注意：Android并不关心这个属性，因此它不会影响应用程序在运行时的行为。相反，它常常会为应用程序在服务如谷歌播放上进行过滤。然而，谷歌播放目前不支持过滤属性（在Android3.2上），因此，如果应用程序不支持小屏幕，应该继续使用其它尺寸的属性。
+</p>
+</div>
+<p>android:compatibleWidthLimitDp
+</p>
+<dl><dd>这个属性允许通过指定应用程序支持的最大“最小宽度”将屏幕的兼容模式作为一个用户可选特征。如果设备的可用屏幕最小边大于这个值，用户仍然可以安装应用程序，但是不能在屏幕的兼容模式上运行。默认情况下，屏幕的兼容模式是禁用的，和平常一样，布局会被调整到适合屏幕，但是按钮在系统栏是可用的，它允许用户开启和关闭屏幕的兼容模式。
+</dd></dl>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：如果应用程序的布局正好适合大屏幕，就没必要使用这个属性。我们建议避免使用这个属性，而不是按照本文档中的建议确保布局适合更大屏幕。
+</p>
+</div>
+<p>android:largestWidthLimitDp
+</p>
+<dl><dd>这个属性通过指定你的应用程序支持的最大“最小宽度”强制开启屏幕的兼容模式，如果设备的可用屏幕最小边大于这个值，应用程序会运行在屏幕兼容模式上，且用户没有办法去禁用它。
+</dd></dl>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：如果应用程序的布局正好适合大屏幕，就没必要使用这个属性。我们建议避免使用这个属性，而不是按照本文档中的建议确保你的布局适合更大屏幕。
+</p>
+</div>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注意：当在Android3.2或者更高版本上开发时，不应该使用较旧的屏幕尺寸属性并结合上面列出的属性。同时使用新属性和较旧的尺寸属性会导致不可预料的事情发生。
+</p>
+</div>
+<p>更多关于这些属性的信息，请查阅以上相应的链接。
+</p>
+<h2> <span class="mw-headline" id=".E6.9C.80.E4.BD.B3.E5.AE.9E.E8.B7.B5"> 最佳实践 </span></h2>
+<p>支持多个屏幕的目的是为了创建一个能正常运行，且在任何Android支持的广义的屏幕配置上看起来都很舒服的应用程序。本文的前面章节提供了关于Android如何使应用程序适应屏幕配置和如何在不同屏幕配置上自定义应用程序的外观的信息。这节提供了一些额外的技巧来确保应用程序适用于不同屏幕配置的技术。
+</p><p>下面是关于如何确保你的应用程序能够恰当地显示在不同屏幕上的快速检查清单：
+</p><p>1.当在XML布局文件中指定尺寸时，使用wrap_content, fill_parent, 或者dp单位
+</p><p>2.在应用程序代码中不要使用硬编码的像素值
+</p><p>3.不要使用绝对布局（已被弃用）
+</p><p>4.对不同的屏幕密度采用可替代的位图绘图
+</p><p>下面章节将讲述更多细节。
+</p><p><b>1.布局尺寸使用wrap_content, fill_parent, 或者 dp单位</b>
+</p><p>当在XML布局文件中定义视图的android:layout_width和 android:layout_height时，使用wrap_content, fill_parent, 或者 dp单位以保证在当前设备屏幕上能给视图分配一个适当的尺寸。
+</p><p>例如，一个layout_width为100dp的视图在中等密度的屏幕上是100像素，在高密度屏幕上系统将把它调整到150dp，于是视图在屏幕上占用了大致相同的物理空间。
+</p><p>同样地，应该更喜欢用sp（与比例无关的像素）来定义文本的尺寸。Sp比例因子取决于用户的设置和系统调整的尺寸与它为dp调整的相同。
+</p><p><b>2.在应用程序代码中不要使用硬编码的像素值</b>
+</p><p>出于性能方面的原因及为了保持代码更简单，Android系统采用像素作为尺寸或坐标值的标准单位。意思是，在代码中，视图的尺寸总是用像素表达，但总基于当前屏幕密度。例如，如果myView.getWidth()函数的返回值是10，在当前屏幕上视图有10个像素宽度，但是在更高密度屏幕的设备上，返回值可能是15.如果在你的应用程序代码中，使用像素值为位图的单位，且该位图不是为当前屏幕密度预先调整的，可能会调整这些在代码中你用以匹配未调整的位图源的像素值。
+</p><p>假设应用程序在运行时巧妙地处理位图或像素值，请参阅下面的章节Additional Density Considerations。
+</p><p><b>3. 不要使用绝对布局</b>
+</p><p>不像其他的布局部件，绝对布局强制使用固定位置给子视图布局，这很容易导致用户界面不能很好地工作在不同的屏幕上。正因为如此，在Android1.5（API等级为3）中已经弃用了绝对布局。
+</p><p>相反，应该使用相对布局，它会使用相对位置为它的子视图布局。例如，可以指定按钮部件应该在文本部件的右侧。
+</p><p><b>4.使用尺寸和指定密度资源</b>
+</p><p>虽然系统会基于当前屏幕配置调整你的布局和绘图资源，但是可以在不同屏幕尺寸上调整UI，且提供最优化的位图绘图给不同密度。这在本文的前面已经反复强调过。
+</p><p>如果需要严格控制应用程序在各种屏幕配置上的显示情况，那么在指定配置资源目录中调整布局和位图绘图。例如，假设希望图标显示在中等和高密度屏幕上。简单地创建两个不同尺寸的图标（例如100x100用于中等密度，150x150用于高密度），把这两个变体放在适当的目录，使用适当的限定符：
+</p><p>res/drawable-mdpi/icon.png   //适合于中等密度屏幕
+</p><p>res/drawable-hdpi/icon.png   //适合于高密度屏幕
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：如果密度限定符没有定义在目录名中，系统会假定在那个目录里的资源是为基线中等密度设计的，将会适当地为其他密度做调整。
+</p>
+</div>
+<p>更多关于有效的配置限定符的信息，请参阅本文前面结束的Using configuration qualifiers。
+</p>
+<h2> <span class="mw-headline" id=".E9.99.84.E5.8A.A0.E5.AF.86.E5.BA.A6.E7.9A.84.E6.B3.A8.E6.84.8F.E4.BA.8B.E9.A1.B9"> 附加密度的注意事项 </span></h2>
+<p>本节描述了更多关于系统如何在不同屏幕密度上调整位图绘图、以及如何更好地控制位图在不同密度上的显示信息。本节中的信息对大多数应用程序应该不是很重要，除非应用程序在不同屏幕密度上运行时或者应用程序篡改了图像时，遇到了问题。
+为了更好地了解在运行过程中改变了图像时如何做到支持多密度，应该了解，系统通过以下几种方式确保合适的位图尺寸：
+</p><p>1.预先调整的资源（如位图绘图）
+</p>
+<dl><dd>基于当前屏幕的密度，系统使用应用程序中任何指定尺寸和密度的资源，并显示出来且不需要任何调整。如果资源在当前密度不可用，系统将会下载默认资源并调整他们使之适合于当前屏幕密度。系统认为默认资源（无配置限定符目录的资源）是为基准屏幕密度（mdpi）设计的，除非它们是从指定密度资源目录下载的。预先调整是指调整位图到当前屏幕密度适合的尺寸时系统所做的事情。
+</dd></dl>
+<dl><dd>如果你请求预先调整好的资源的尺寸，系统会返回调整后代表该尺寸的值。例如，一个50x50 像素的mdpi屏幕的位图要在hdpi屏幕上扩大为75x75像素（如果此时没有可替代资源给hdpi），系统会这样返回此值。
+</dd><dd>有一些情况下，可能不需要Android的预先调整的资源。避免预先调整的最简单方式是将资源放置到nodpi配置限定符的目录中。例如：
+</dd></dl>
+<dl><dd>res/drawable-nodpi/icon.png
+</dd></dl>
+<dl><dd>当系统使用这个文件夹中的icon.png位图时，它不会基于当前屏幕密度去调整该位图。
+</dd></dl>
+<p>2.像素尺寸和坐标值的自动调整
+</p>
+<dl><dd>应用程序可以通过在清单文件中设置android:anyDensity的属性为“假”或在程序中设置位图的inScaled值为“假”禁止预先调整资源。在这种情况下，系统在绘图时会自动调整绝对像素的坐标值和像素尺寸。这样做的目的是，为了确保已定义像素的屏幕元素仍然能以接近他们在基线屏幕密度（hdpi）上的物理尺寸显示出来。系统透明地处理这种调整并把调整后的像素尺寸，而不是物理像素尺寸告诉应用程序。
+</dd></dl>
+<dl><dd>例如，假设一个设备有WVGA高密度屏幕，即480x800，这与传统的HVGA屏幕的尺寸大约相同，但是它运行着已禁止预先调整资源功能的应用程序。在这种情况下，当系统在查找屏幕尺寸时，它会“欺骗”应用程序，给它返回值320x533（转化成屏幕密度接近mdpi）。然后，当应用程序开始绘图操作时，如使矩形从(10,10) 扩大到 (100, 100)变成无效，系统通过缩放接近数量的值调整坐标，且把区域(15,15) 扩大到 (150, 150)变成无效。如果你的应用程序直接使用这个调整后的位图，这个误差会导致不可预期的行为，但是这被认为是合理的折中的尽可能保持应用程序性能的方法。如果遇到这种情况，请阅读下面关于Converting dp units to pixel units章节。
+</dd></dl>
+<dl><dd>通常情况下，不应该禁止预先调整资源。支持多屏的最好方式是按照上面的How to Support Multiple Screens提到的基本技术操作。
+</dd></dl>
+<p>如果应用程序在屏幕上以其它某种方式操作位图或与像素直接交互，你可能需要采取额外的步骤来支持不同屏幕密度。例如，如果你通过数手指划过时的像素值的方式响应触摸，你需要使用适当的密度无关性像素值，而不是实际的像素值。
+</p>
+<h3> <span class="mw-headline" id=".E8.B0.83.E6.95.B4.E8.BF.90.E8.A1.8C.E6.97.B6.E5.88.9B.E5.BB.BA.E7.9A.84.E4.BD.8D.E5.9B.BE.E5.AF.B9.E8.B1.A1"> 调整运行时创建的位图对象 </span></h3>
+<p>如果应用程序创建一个内存中的位图（位图对象），系统认为这个位图是为基线中等密度屏幕设计的，默认情况下，在绘制时自动调整位图。当位图没有指定密度特性时，系统采用“自动调整”技术。如果没有正确地考虑到当前屏幕密度，也没有指定位图的密度特性，自动调整会导致人为缩放，这与没有提供可替代资源时一样。
+</p><p>为了控制在运行时创建的位图是否需要调整，你可以通过setDensity()指定位图的密度，从DisplayMetrics传递一个密度常量，比如DENSITY_HIGH 或 DENSITY_LOW。
+</p><p>如果正在创建一个使用BitmapFactory（如从文件或者流）的位图，可以使用BitmapFactory。选择定义一个已经存在的位图的特性，这决定系统是否或如何调整位图。例如，可以使用Density来定义位图是为哪种密度设计的，用Scaled去指定位图是否应该调整到匹配当前设备的屏幕密度。
+</p><p>如果设置Scaled为假，禁用了任何系统会用于位图的预先调整功能，系统在运行时将会自动调整它。使用自动调整而不是预先调整会耗费更多CPU，但是占用更少的内存。
+</p><p><img src="http://developer.android.com/images/screens_support/scale-test.png" alt="scale-test.png">
+</p><p>图5  预先调整和自动调整位图的演示比较结果
+</p><p>图5 演示了当在高密度屏幕上下载低（120），中等(160) 和高 (240) 密度位图时，预先调整和自动调整机制的结果。区别是微妙的，因为所有的位图都被调整以匹配当前屏幕密度，然而调整过的位图的外观稍微不同，这取决于在绘制时采用的是预先调整还是自动调整。你会找到此示例应用程序的源代码，在ApiDemos里，演示了如何使用预调整和自动调整位图。
+</p>
+<div style="margin: 1em 0; padding: 10px; overflow: auto; background: #F7F7F7; border-left:4px solid; border-color:#258AAF;">
+<p>注：在Android3.0或者以上版本，由于图形框架的改进，预先调整和自动调整位图之间应该没有明显的差异。
+</p>
+</div>
+<h1> <span class="mw-headline" id="-.3D_.E8.BD.AC.E6.8D.A2dp.E5.8D.95.E4.BD.8D.E4.B8.BA.E5.83.8F.E7.B4.A0.E5.8D.95.E4.BD.8D_.3D-">-= 转换dp单位为像素单位 =-</span></h1>
+<p>在某些情况下，需要用dp来表示尺寸，然后把他们转换为像素。想象一下，在应用程序中滚动或者扔的手势在用户的手指划过至少16像素后才能被识别出。在基准屏幕上，在手势被识别出来之前，用户必须划过16像素除160dpi，这等于十分之一英寸（或者2.5毫米）。在一个高密度屏幕（240dpi）设备上，用户必须划过16像素除240dpi，即十五分之一英寸（或者1.7毫米）。这个距离相当短，因此对用户来说，程序看上去更加敏感。
+</p><p>要解决这个问题，手势阈值必须用dp表示，然后转换成实际的像素。例如：
+</p>
+<pre class="java">&nbsp;
+<span style="color: #808080; font-style: italic;">// The gesture threshold expressed in dp</span>
+<span style="color: #000000; font-weight: bold;">private</span> <span style="color: #000000; font-weight: bold;">static</span> <span style="color: #000000; font-weight: bold;">final</span> <span style="color: #993333;">float</span> GESTURE_THRESHOLD_DP = <span style="color: #cc66cc;">16</span>.0f;
+&nbsp;
+<span style="color: #808080; font-style: italic;">// Get the screen's density scale</span>
+<span style="color: #000000; font-weight: bold;">final</span> <span style="color: #993333;">float</span> scale = getResources<span style="color: #66cc66;">(</span><span style="color: #66cc66;">)</span>.<span style="color: #006600;">getDisplayMetrics</span><span style="color: #66cc66;">(</span><span style="color: #66cc66;">)</span>.<span style="color: #006600;">density</span>;
+<span style="color: #808080; font-style: italic;">// Convert the dps to pixels, based on density scale</span>
+mGestureThreshold = <span style="color: #66cc66;">(</span><span style="color: #993333;">int</span><span style="color: #66cc66;">)</span> <span style="color: #66cc66;">(</span>GESTURE_THRESHOLD_DP * scale + <span style="color: #cc66cc;">0</span>.5f<span style="color: #66cc66;">)</span>;
+&nbsp;
+<span style="color: #808080; font-style: italic;">// Use mGestureThreshold as a distance in pixels...</span>
+&nbsp;</pre>
+<p>根据当前屏幕密度，DisplayMetrics.density指定了你必须使用的将dp单位转为像素单位的比例因子。在一个中等密度屏幕上，DisplayMetrics.density等于1.0；在高密度屏幕上，DisplayMetrics.density等于1.5；在一个超高密度屏幕上，DisplayMetrics.density等于2.0；在低密度屏幕上，DisplayMetrics.density等于0.75.这个比例因子乘以dp单位得到的值就是当前屏幕的实际像素值（然后添加0.5f做四舍五入，转化的整数）。更多信息，请参看DisplayMetrics类。
+</p><p>然而，不是为这里事件定义任意阈值，而是你应该使用预先调整的可从ViewConfiguration获取的配置值。
+</p>
+<h3> <span class="mw-headline" id=".E4.BD.BF.E7.94.A8.E9.A2.84.E5.85.88.E8.B0.83.E6.95.B4.E7.9A.84.E9.85.8D.E7.BD.AE.E5.80.BC"> 使用预先调整的配置值 </span></h3>
+<p>可以使用ViewConfiguration类去访问Android使用的共同的距离、速度和时间。例如，框架使用的作为滚动阈值的距离可通过getScaledTouchSlop()得到：
+</p>
+<pre>private static final int GESTURE_THRESHOLD_DP =ViewConfiguration.get(myContext).getScaledTouchSlop();
+</pre>
+<p>以前缀getScaled开头的ViewConfiguration的方法保证返回值以像素为单位，无论当前屏幕的密度是什么，它都能正确显示。
+</p>
+<h2> <span class="mw-headline" id=".E5.A6.82.E4.BD.95.E5.9C.A8.E5.A4.9A.E5.B1.8F.E4.B8.8A.E6.B5.8B.E8.AF.95.E4.BD.A0.E7.9A.84.E5.BA.94.E7.94.A8.E7.A8.8B.E5.BA.8F"> 如何在多屏上测试你的应用程序 </span></h2>
+<p>在发布应用程序之前，应该在所有支持的屏幕尺寸和密度上彻底地测试应用程序。Android的SDK包含了你可以使用的模拟器，它复制了应用程序可以运行的通用的屏幕配置的尺寸和密度。可以修改模拟器默认的尺寸，密度和分辨率以复制任何指定屏幕的特征。使用模拟器和额外的自定义配置让你可以测试任何可能的屏幕配置，因此不必买各种设备来测试应用程序支持的屏幕。
+</p><p>为了建立测试应用程序支持的屏幕环境，通过使用模拟器和模仿应用程序支持的屏幕的尺寸和密度的屏幕配置，应当创建一组AVDs（Android虚拟设备）。要做到这一点，可以使用AVD管理器去创建AVDs，然后以图形界面方式启动它们。
+</p><p>为了启动Android SDK管理器，在Android SDK目录（在windows上）执行SDK Manager.exe或者在&lt;sdk&gt;/tools/目录执行android。图6展示了用来测试各种屏幕配置的选择了AVDs的AVD管理器。
+</p><p><img src="http://developer.android.com/images/screens_support/avds-config.png" alt="avds-config.png">
+</p><p>图6展示了用来测试各种屏幕配置的选择了AVDs的AVD管理器。
+</p><p>更多有关创建和使用AVDs测试应用程序的信息，请参阅Managing AVDs with AVD Manager。
+</p><p>表3 Android SDK中从模拟器获取的各种屏幕配置和其它典型的分辨率
+</p>
+<table style="border-spacing: 0px;margin: 4px 4px; width: 90%; border-left:1px solid #ccc;border-top:1px solid #ccc;">
+
+
+<tbody><tr style="background:#DEE8F1;">
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px">
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Low density (120), ldpi
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Medium density (160), mdpi
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> High density (240), hdpi
+</th>
+<th style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px"> Extra high density (320), xhdpi
+</th></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Small screen 
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b>QVGA (240x320)</b>
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>480x640
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Normal screen  
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b> WQVGA400</b> 
+<b>(240x400)</b>
+<b> WQVGA432</b> 
+<b>(240x432)</b>
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b>HVGA (320x480)</b>
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b>WVGA800 (480x800)</b>
+<b>WVGA854 (480x854)</b>
+600x1024
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>640x960
+</p>
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Large screen 
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b> WVGA800** </b>
+<b>(480x800)</b>
+<b> WVGA854** </b>
+<b>(480x854)</b>
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b>WVGA800* (480x800)</b>
+<b>WVGA854* (480x854)</b>
+600x1024
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+</td></tr>
+<tr style="vertical-align:top;">
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>Extra Large screen 
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>1024x600
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p><b>WXGA(1280x800)†</b>
+<b>1024x768</b>
+<b>1280x768</b>
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>1536x1152
+1920x1152 
+1920x1200
+</p>
+</td>
+<td style="border-right:1px solid #ccc;border-bottom:1px solid #ccc; padding:5px 15px;">
+<p>2048x1536
+2560x1536 
+2560x1600
+</p>
+</td></tr></tbody></table>
+<pre>* 为了模仿此配置，在创建一个使用WVGA800或者WVGA854外观的AVD时指定.自定义的密度为160.
+**为了模仿此配置，在创建一个使用WVGA800或者WVGA854外观的AVD时指定.自定义的密度为120
+† 这个外观是Android3.0平台可用的. 
+</pre>
+<p>想要知道支持任何给定屏幕配置的有源设备的相对数量，请参看屏幕尺寸和密度仪表板。
+</p><p>我们也建议在物理尺寸接近匹配的实际设备的模拟器上测试应用程序。这使得比较各种尺寸和密度上的测试结果变得非常容易。做到这点，需要知道电脑显示器（例如，30寸的Dell显示器的密度大约为960dpi）的以dpi为单位的近似密度。当从AVD管理器启动AVD时，可以在启动选项中，如图7所示，指定模拟器的屏幕尺寸和显示器的dpi。
+</p><p><img src="http://developer.android.com/images/screens_support/avd-start.png" alt="avd-start.png">
+</p><p>图7 当从AVD管理器启动AVD时，你能设置的尺寸和密度
+</p><p>如果想在内置外观不支持的分辨率或密度的屏幕上测试应用程序，可以创建一个使用自定义分辨率或密度的AVD。在创建AVD时，应指定分辨率，而不是选择内置的外观。
+</p><p>如果正通过命令行启动AVD，可以指定通过选项参数-scale来指定比例。例如：
+</p>
+<pre>emulator -avd &lt;avd_name&gt; -scale 96dpi
+</pre>
+<p>为了改变模拟器的大小，可以通过参数选项选择想要的比例因子0.1-3实现。
+</p><p>更多关于从命令行创建AVDs的信息，请参阅Managing AVDs from the Command Line。
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 150/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key eoeandroid_wiki:pcache:idhash:781-0!*!*!!zh-hans!*!* and timestamp 20150511085429 -->
+</div>				<!-- /bodycontent -->
+								<!-- printfooter -->
+				<div class="printfooter">
+				来自“<a href="http://wiki.eoeandroid.com/index.php?title=Supporting_Multiple_Screens&oldid=11095">http://wiki.eoeandroid.com/index.php?title=Supporting_Multiple_Screens&amp;oldid=11095</a>”				</div>
+				<!-- /printfooter -->
+												<!-- catlinks -->
+				<div id="catlinks" class="catlinks catlinks-allhidden"></div>				<!-- /catlinks -->
+												<div class="visualClear"></div>
+				<!-- debughtml -->
+								<!-- /debughtml -->
+			</div>
+			<!-- /bodyContent -->
+		</div>
+		<!-- /content -->
+		<!-- header -->
+		<div id="mw-head" class="noprint">
+			
+<!-- 0 -->
+<div id="p-personal" class="">
+	<h5>个人工具</h5>
+	<ul>
+		<li id="pt-login"><a href="http://wiki.eoeandroid.com/index.php?title=%E7%89%B9%E6%AE%8A:%E7%94%A8%E6%88%B7%E7%99%BB%E5%BD%95&returnto=Supporting+Multiple+Screens" title="我们希望您可以登入，但不强求 [alt-o]" accesskey="o">登录/创建账户</a></li>
+	</ul>
+</div>
+
+<!-- /0 -->
+			<div id="left-navigation">
+				
+<!-- 0 -->
+<div id="p-namespaces" class="vectorTabs">
+	<h5>名字空间</h5>
+	<ul>
+					<li id="ca-nstab-main" class="selected"><span><a href="./Supporting Multiple Screens - eoeAndroid wiki_files/Supporting Multiple Screens - eoeAndroid wiki.htm" title="查看内容页面 [alt-c]" accesskey="c">页面</a></span></li>
+					<li id="ca-talk"><span><a href="http://wiki.eoeandroid.com/%E8%AE%A8%E8%AE%BA:Supporting_Multiple_Screens" title="关于内容页面的讨论 [alt-t]" accesskey="t">讨论</a></span></li>
+			</ul>
+</div>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-variants" class="vectorMenu emptyPortlet">
+		<h5><span>变换</span><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /1 -->
+			</div>
+			<div id="right-navigation">
+				
+<!-- 0 -->
+<div id="p-search">
+	<h5><label for="searchInput">搜索</label></h5>
+	<form action="http://wiki.eoeandroid.com/index.php" id="searchform">
+		<input type="hidden" name="title" value="特殊:搜索">
+				<input type="search" name="search" title="在eoeAndroid wiki中搜索 [alt-f]" accesskey="f" id="searchInput">		<input type="submit" name="fulltext" value="搜索" title="搜索含这些文字的页面" id="mw-searchButton" class="searchButton">			</form>
+</div>
+<script type="text/javascript"> 
+$(document).ready(function() 
+{ 
+if($(window).width() <= 1024){
+	$("div#content").css({"margin-left":"15em","margin-right":"0em","border-right":"0"});
+	$("#mw-head-base").css({"margin-right":"0em","margin-left":"15em","padding-left":"1em"});
+	$("#p-personal").css({"right":"0.75em"});
+	$("#left-navigation").css({"left":"16em"});
+	$("#right-navigation").css({"margin-right":"0em"});
+	$("div#mw-panel").css({"padding-left":"1em"});
+	$("div#footer").css({"margin-left":"15em"});
+	$("#p-logo").css({"left":"1em"});
+	$("#mw-page-base").css({"padding-left":"1em"});
+	
+	}; 
+} 
+) 
+</script>
+
+<!-- /0 -->
+
+<!-- 1 -->
+<div id="p-views" class="vectorTabs">
+	<h5>查看</h5>
+	<ul>
+					<li id="ca-view" class="selected"><span><a href="./Supporting Multiple Screens - eoeAndroid wiki_files/Supporting Multiple Screens - eoeAndroid wiki.htm">阅读</a></span></li>
+					<li id="ca-viewsource"><span><a href="http://wiki.eoeandroid.com/index.php?title=Supporting_Multiple_Screens&action=edit" title="本页面已被保护。你可以查看其源代码。 [alt-e]" accesskey="e">查看源代码</a></span></li>
+					<li id="ca-history" class="collapsible"><span><a href="http://wiki.eoeandroid.com/index.php?title=Supporting_Multiple_Screens&action=history" title="本页面的早前修订版本 [alt-h]" accesskey="h">查看历史</a></span></li>
+			</ul>
+</div>
+
+<!-- /1 -->
+
+<!-- 2 -->
+<div id="p-cactions" class="vectorMenu emptyPortlet">
+	<h5><span>操作</span><a href="http://wiki.eoeandroid.com/Supporting_Multiple_Screens#"></a></h5>
+	<div class="menu">
+		<ul>
+					</ul>
+	</div>
+</div>
+
+<!-- /2 -->
+			</div>
+		</div>
+		<!-- /header -->
+		<!-- panel -->
+			<div id="mw-panel" class="noprint">
+				<!-- logo -->
+					<div id="p-logo"><a style="background-image: url(/images/static/eoe_wiki_logo.png);" href="http://wiki.eoeandroid.com/%E9%A6%96%E9%A1%B5" title="访问首页"></a></div>
+				<!-- /logo -->
+				
+<!-- navigation -->
+<div class="portal" id="p-navigation">
+	<h5>导航</h5>
+	<div class="body">
+		<ul>
+			<li id="n-mainpage-description"><a href="http://wiki.eoeandroid.com/%E9%A6%96%E9%A1%B5" title="访问首页 [alt-z]" accesskey="z">首页</a></li>
+			<li id="n-currentevents"><a href="http://wiki.eoeandroid.com/eoe_wiki:%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81" title="查看当前事件的背景信息">新闻动态</a></li>
+			<li id="n-recentchanges"><a href="http://wiki.eoeandroid.com/%E7%89%B9%E6%AE%8A:%E6%9C%80%E8%BF%91%E6%9B%B4%E6%94%B9" title="本wiki的最近更改列表 [alt-r]" accesskey="r">最近更改</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /navigation -->
+
+<!-- Android - 安卓 -->
+<div class="portal" id="p-Android_-_.E5.AE.89.E5.8D.93">
+	<h5>Android - 安卓</h5>
+	<div class="body">
+		<ul>
+			<li id="n-.E5.BC.80.E5.8F.91.E5.AE.9E.E6.88.98---Android-Training"><a href="http://wiki.eoeandroid.com/Android_Training">开发实战 - Android Training</a></li>
+			<li id="n-.E5.BC.80.E5.8F.91.E6.8C.87.E5.8D.97---Android-API-Guidese"><a href="http://wiki.eoeandroid.com/Android_API_Guides">开发指南 - Android API Guidese</a></li>
+			<li id="n-.E8.AE.BE.E8.AE.A1.E6.A8.A1.E5.BC.8F---Android-Design"><a href="http://wiki.eoeandroid.com/Android_Design">设计模式 - Android Design</a></li>
+			<li id="n-.E5.BC.80.E5.8F.91.E5.8F.82.E8.80.83---Android-Reference"><a href="http://wiki.eoeandroid.com/Android_Reference">开发参考 - Android Reference</a></li>
+			<li id="n-.E5.BC.80.E5.8F.91.E5.B7.A5.E5.85.B7---Android-Tools"><a href="http://wiki.eoeandroid.com/Android_Tools">开发工具 - Android Tools</a></li>
+			<li id="n-Android-Distribute---.E8.BD.AF.E4.BB.B6.E5.8F.91.E5.B8.83"><a href="http://wiki.eoeandroid.com/Android_Distribute">Android Distribute - 软件发布</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /Android - 安卓 -->
+
+<!-- Swift -->
+<div class="portal" id="p-Swift">
+	<h5>Swift</h5>
+	<div class="body">
+		<ul>
+			<li id="n-.E6.AC.A2.E8.BF.8E.E4.BD.BF.E7.94.A8Swift---Welcome-to-Swift"><a href="http://wiki.eoeandroid.com/Welcome_to_Swift">欢迎使用Swift - Welcome to Swift</a></li>
+			<li id="n-Swift.E6.8C.87.E5.8D.97---swift-Guides"><a href="http://wiki.eoeandroid.com/Swift_Guides">Swift指南 - swift Guides</a></li>
+			<li id="n-.E8.AF.AD.E8.A8.80.E5.8F.82.E8.80.83---Language-Reference"><a href="http://wiki.eoeandroid.com/Language_Reference">语言参考 - Language Reference</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /Swift -->
+
+<!-- 关于 -->
+<div class="portal" id="p-.E5.85.B3.E4.BA.8E">
+	<h5>关于</h5>
+	<div class="body">
+		<ul>
+			<li id="n-.E5.85.B3.E4.BA.8E.E8.BF.99.E9.87.8C"><a href="http://wiki.eoeandroid.com/%E5%85%B3%E4%BA%8E%E8%BF%99%E9%87%8C">关于这里</a></li>
+			<li id="n-.E8.B4.A1.E7.8C.AE.E5.9B.A2.E9.98.9F"><a href="http://wiki.eoeandroid.com/%E8%B4%A1%E7%8C%AE%E5%9B%A2%E9%98%9F">贡献团队</a></li>
+			<li id="n-.E5.8F.82.E4.B8.8E.E7.BC.96.E5.86.99"><a href="http://wiki.eoeandroid.com/%E5%8F%82%E4%B8%8E%E7%BC%96%E5%86%99">参与编写</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /关于 -->
+
+<!-- 帮助 -->
+<div class="portal" id="p-.E5.B8.AE.E5.8A.A9">
+	<h5>帮助</h5>
+	<div class="body">
+		<ul>
+			<li id="n-.E7.BC.96.E8.BE.91.E6.8C.87.E5.8D.97"><a href="http://wiki.eoeandroid.com/%E7%BC%96%E8%BE%91%E6%8C%87%E5%8D%97">编辑指南</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /帮助 -->
+
+<!-- 站外导航 -->
+<div class="portal" id="p-.E7.AB.99.E5.A4.96.E5.AF.BC.E8.88.AA">
+	<h5>站外导航</h5>
+	<div class="body">
+		<ul>
+			<li id="n-eoeAndroid.E5.BC.80.E5.8F.91.E9.97.A8.E6.88.B7"><a href="http://www.eoeandroid.com/" rel="nofollow" target="_blank">eoeAndroid开发门户</a></li>
+			<li id="n-eoeAndroid.E5.BC.80.E5.8F.91.E8.80.85.E7.A4.BE.E5.8C.BA"><a href="http://www.eoeandroid.com/forum.php" rel="nofollow" target="_blank">eoeAndroid开发者社区</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /站外导航 -->
+
+<!-- SEARCH -->
+
+<!-- /SEARCH -->
+
+<!-- TOOLBOX -->
+<div class="portal" id="p-tb">
+	<h5>工具箱</h5>
+	<div class="body">
+		<ul>
+			<li id="t-whatlinkshere"><a href="http://wiki.eoeandroid.com/%E7%89%B9%E6%AE%8A:%E9%93%BE%E5%85%A5%E9%A1%B5%E9%9D%A2/Supporting_Multiple_Screens" title="所有链入本页的wiki页面列表 [alt-j]" accesskey="j">链入页面</a></li>
+			<li id="t-recentchangeslinked"><a href="http://wiki.eoeandroid.com/%E7%89%B9%E6%AE%8A:%E9%93%BE%E5%87%BA%E6%9B%B4%E6%94%B9/Supporting_Multiple_Screens" title="本页链入的页面的最近更改 [alt-k]" accesskey="k">链出更改</a></li>
+			<li id="t-specialpages"><a href="http://wiki.eoeandroid.com/%E7%89%B9%E6%AE%8A:%E7%89%B9%E6%AE%8A%E9%A1%B5%E9%9D%A2" title="所有特殊页面列表 [alt-q]" accesskey="q">特殊页面</a></li>
+			<li><a href="http://wiki.eoeandroid.com/index.php?title=Supporting_Multiple_Screens&printable=yes" rel="alternate">可打印版</a></li>
+			<li id="t-permalink"><a href="http://wiki.eoeandroid.com/index.php?title=Supporting_Multiple_Screens&oldid=11095" title="本页面该修订版本的永久链接">永久链接</a></li>
+		</ul>
+	</div>
+</div>
+
+<!-- /TOOLBOX -->
+
+<!-- LANGUAGES -->
+
+<!-- /LANGUAGES -->
+			</div>
+		<!-- /panel -->
+		<!-- footer -->
+		<div id="footer">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> 本页面最后修订于2012年9月12日 (星期三) 17:17。</li>
+											<li id="footer-info-viewcount">此页面已被浏览过9,174次。</li>
+											<li id="footer-info-copyright">本站全部文字内容使用<a href="http://wiki.eoeandroid.com/eoe_wiki:Copyright" title="eoe wiki:Copyright">版权申明</a>授权。</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="http://wiki.eoeandroid.com/eoe_wiki:%E9%9A%90%E7%A7%81%E6%9D%83%E6%94%BF%E7%AD%96" title="eoe wiki:隐私权政策">隐私权政策</a></li>
+											<li id="footer-places-about"><a href="http://wiki.eoeandroid.com/eoe_wiki:%E5%85%B3%E4%BA%8E" title="eoe wiki:关于">关于eoeAndroid wiki</a></li>
+											<li id="footer-places-disclaimer"><a href="http://wiki.eoeandroid.com/eoe_wiki:%E5%85%8D%E8%B4%A3%E5%A3%B0%E6%98%8E" title="eoe wiki:免责声明">免责声明</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+					<li id="footer-poweredbyico">
+						<a href="http://www.mediawiki.org/"><img src="./Supporting Multiple Screens - eoeAndroid wiki_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"></a>
+					</li>
+				</ul>
+						<div style="clear:both"></div>
+		</div>
+		<!-- /footer -->
+		<!-- fixalpha -->
+		<script type="text/javascript"> if ( window.isMSIE55 ) fixalpha(); </script>
+		<!-- /fixalpha -->
+		<script src="./Supporting Multiple Screens - eoeAndroid wiki_files/load(3).php"></script>
+<script>if(window.mw){
+	mw.loader.load(["mediawiki.user", "mediawiki.util", "mediawiki.page.ready", "mediawiki.legacy.wikibits", "mediawiki.legacy.ajax"]);
+}
+</script><script type="text/javascript" src="./Supporting Multiple Screens - eoeAndroid wiki_files/load(4).php"></script>
+<script type="text/javascript" src="./Supporting Multiple Screens - eoeAndroid wiki_files/Drafts.js"></script>
+<script>if(window.mw){
+	mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"highlightbroken":1,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,
+	"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"zh-hans","language":"zh-hans","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;mw.user.tokens.set({"editToken":"+\\","watchToken":false});;mw.loader.state({"user.options":"ready","user.tokens":"ready"});
+	
+	/* cache key: eoeandroid_wiki:resourceloader:filter:minify-js:4:800285f2e9053607719212b9265af6aa */
+}
+</script><!-- Served in 0.062 secs. -->		
+		<!-- add google analytics-->
+		<script type="text/javascript">
+
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-8242804-7']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+
+		</script>
+		<!-- add google analytics end-->
+		<script type="text/javascript">
+		var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fb5966730acd323b2c6ada69e83f2ecfe' type='text/javascript'%3E%3C/script%3E"));
+		</script><script src="./Supporting Multiple Screens - eoeAndroid wiki_files/h.js" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=b5966730acd323b2c6ada69e83f2ecfe" target="_blank"><img border="0" src="./Supporting Multiple Screens - eoeAndroid wiki_files/21.gif" width="20" height="20"></a>
+
+	
+
+</body></html>
