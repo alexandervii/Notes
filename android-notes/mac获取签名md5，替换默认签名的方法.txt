@@ -1,0 +1,9 @@
+签名获取方法：进入终端：cd到keystore所在目录，要输出一个keystore的证书信息到一个文本文件，请运行以下命令：
+keytool -list -v -keystore [enter keystore name] -storepass [enter keystore password] > keystoreOutput.txt（获取其中的md5，去除冒号，英文大写换小写，最后的字符串就是签名）
+
+
+在 Mac 文件的文件名前添加  .  即可使文件隐藏
+也可以在终端里面能用命令来控制
+显示Mac隐藏文件的命令：defaults write com.apple.finder AppleShowAllFiles  YES搜索隐藏Mac隐藏文件的命令：defaults write com.apple.finder AppleShowAllFiles  NO
+
+命令运行后需要按 Command Option Esc  选中 Finder 然后点一下 重新开启 就 Ok 了
