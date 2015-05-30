@@ -1,0 +1,42 @@
+自定义Android中EditText中的Hint文本的大小
+
+今天同事在工作中碰到一个问题, 就是EditText中的文字在设定大小后, Hint文本由于太长导致在EditText中无法完整的显示, 所以问有没有单独设置Hint文本大小的选项. 在网上看了一下都没有这方面的介绍. 于是我看了下TextView的源码(EditText继承自TextView), 发现了一些端倪,如下:
+    public final void setHint(CharSequence hint) {
+        mHint = TextUtils.stringOrSpannedString(hint);
+        if (mLayout != null) {
+            checkForRelayout();
+        }
+        if (mText.length() == 0) {
+            invalidate();
+        }
+       // Invalidate display list if hint is currently used
+        if (mEditor != null &amp;&amp; mText.length() == 0 &amp;&amp; mHint != null) {
+            mEditor.invalidateTextDisplayList();
+        }
+    }
+在方法的一开始就是对hint文本的转换.由于hint是CharSequence类型的, 说明有希望可以增加一些自定义属性, 我们再看TextUtils.stringOrSpannedString这个方法:
+
+
+    public static CharSequence stringOrSpannedString(CharSequence source) {
+        if (source == null)
+            return null;
+        if (source instanceof SpannedString)
+            return source;
+        if (source instanceof Spanned)
+            return new SpannedString(source);
+        return source.toString();
+    }
+那么问题来了,我们只要传入的hint是SpannedString或者Spanned类型,就可以保持文本的自定义属性了吗? 答案是肯定的! 直接上代码:
+
+
+            EditText editText = (EditText) rootView.findViewById(R.id.et);
+            // 新建一个可以添加属性的文本对象
+            SpannableString ss = new SpannableString(&quot;喝酒就要喝一斤!&quot;);
+            // 新建一个属性对象,设置文字的大小
+            AbsoluteSizeSpan ass = new AbsoluteSizeSpan(8, true);
+            // 附加属性到文本
+            ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // 设置hint
+            editText.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
+注意最后一步,一定要进行转换, 类型不对会被转换为String对象,这样自定义的额属性就会丢失.
+
