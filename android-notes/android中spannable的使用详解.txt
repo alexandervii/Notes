@@ -1,0 +1,53 @@
+Spannable 对文字的编辑减少TextView的拼接并且达到改变一串字符中的部分文字的字体颜色，背景颜色，字体大小，样式 增加文字的超链接。
+如 把部分字体改成红色：
+SpannableString amountS=new SpannableString(amount);
+   
+amountS.setSpan(new ForegroundColorSpan(Color.RED), amount.indexOf(orderInfo.PayMoney+""), amount.indexOf("元")+1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+
+具体主要介绍setSpan（）中的what和flags参数：
+ setSpan(Object what, int start, int end, int flags)
+1.Object what主要是对文字的一些属性的设置，大小，颜色，已经文字的背景颜色：
+
+BackgroundColorSpan, ClickableSpan, ForegroundColorSpan, MaskFilterSpan, MetricAffectingSpan,
+RasterizerSpan, StrikethroughSpan, SuggestionSpan, UnderlineSpan
+
+详细说明：
+BackgroundColorSpan：背景颜色
+ClickableSpan    设置可点击的部分文字
+ForegroundColorSpan  改变文字字体的颜色
+MaskFilterSpan(MaskFilter filter) 修饰效果，如模糊（BlurMaskFilter）、浮雕（EmbossMaskFilter）
+MetricAffectingSpan
+  直接子类：  AbsoluteSizeSpan, LocaleSpan, RelativeSizeSpan, ReplacementSpan, ScaleXSpan, StyleSpan, SubscriptSpan, SuperscriptSpan, TextAppearanceSpan, TypefaceSpan
+  间接子类：  DynamicDrawableSpan， ImageSpan
+ 
+RasterizerSpan 光栅效果
+StrikethroughSpan  中划线 （删除线）
+SuggestionSpan 占位符
+UnderlineSpan 下划线
+ImageSpan 图片包裹，可以在一段文字中添加一个图片
+SubscriptSpan 下标- 数学公式 用到
+SuperscriptSpan 上标-数学公式会用到
+ScaleXSpan(3.8f) 基于x轴的缩放
+StyleSpan(Typeface.BOLD_ITALIC)字体样式：粗体、斜体等
+TextAppearanceSpan(this, android.R.style.TextAppearance_Medium) 文本外貌（包括字体、大小、样式和颜色）
+TypefaceSpan("monospace")文本字体
+URLSpan("http://orgcent.com") 文本超链接
+
+2.flags：对一段文字设置一些标识
+ 如：  Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+   SPAN_COMPOSING：临时申请流行的一个输入法的构成的文本信息  标示：该段文字可以被删除或者替换
+SPAN_EXCLUSIVE_EXCLUSIVE：包括内容不会扩大，只会包含起点和终点，长度绝对不能为0，如果被删除的所有它们涵盖文字也会自动从缓冲区中删除。
+        SPAN_EXCLUSIVE_INCLUSIVE：可以扩大的跨度，非0，包括文字插入他们的终点，而不是在他们的出发点，如果为0的时候就像一个点。
+SPAN_INCLUSIVE_EXCLUSIVE：可以扩大的跨度，非0，包括文字插入他们的出发点，而不是在他们的终点，如果为0的时候就像一个点
+SPAN_INCLUSIVE_INCLUSIVE：跨度类型的扩大包括文本插入他们的起点或终点。
+SPAN_INTERMEDIATE：标志将被设置为中间跨度的变化，这意味着有保证是另一个变化。通常情况下，它是用于选择自动使用与第一偏移量被更新时选择设置
+SPAN_MARK_MARK：像文本标记长度为0的跨度与SPAN_MARK_MARK型：他们仍然在原来的偏移该偏移处插入文本时
+SPAN_MARK_POINT：SPAN_MARK_POINT==SPAN_INCLUSIVE_INCLUSIVE
+SPAN_PARAGRAPH ：必须是它的端点的缓冲区或后立即\ n字符的开始或结束，而如果它被删除，锚，端点被拉到下一个的\ n \舀下中的缓冲区（或结束缓冲区）。 即以换行符为起始点和终点
+SPAN_POINT_MARK：SPAN_POINT_MARK==SPAN_EXCLUSIVE_EXCLUSIVE。
+SPAN_POINT_MARK_MASK:
+SPAN_POINT_POINT：长度为0的跨度型SPAN_POINT_POINT像游标：它们被插入文本被插入时，在其偏移的长度推进。在概念上的文字插入点之前
+SPAN_PRIORITY：指定由SPAN_PRIORITY位图确定的顺序变更通知 - 较高的数字先走。你可能并不需要设置的，通常使用在当文本变化的时候，能有机会更新数据，在其他回调的方法里面进行处理之前
+SPAN_PRIORITY_SHIFT：确定的顺序变更通知 - 较高的数字先走。你可能并不需要设置的，通常使用在当文本变化的时候，能有机会更新数据 在其他回调的方法里面进行处理之前
+SPAN_USER：指定由SPAN_USER位域是呼叫者使用存储相关的标量数据与他们的跨度对象
+SPAN_USER_SHIFT：位编号SPAN_USER_SHIFT的，可用于呼叫者使用存储相关的标量数据与他们的跨度对象
