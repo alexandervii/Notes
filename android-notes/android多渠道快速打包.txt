@@ -1,0 +1,164 @@
+使用Ant或者Gradle来给程序进行多渠道批量打包，通常都是在manifest文件中写入一个meta标签：
+
+<meta-data android:name="CHANNEL" android:value="xxx" />
+meta的key值固定，通过循环改变meta中的value值来实现市场渠道的写入。
+
+Ant批量打包实现相对麻烦，以前写的时候多亏了谦虚的天下-《App自动化之使用Ant编译项目多渠道打包》 。如果没有这篇帖子，真不知道当时Ant要折腾多少回才能写好。
+
+Gradle作为新的安卓官方构建工具，有Google老大撑腰，它的批量打包实现会相对简单些。可以参考《迁移到Android Studio》。当然这里面有些指令过时了，例如：runProguard已经被minifyEnabled替代了。
+
+以上两种都是传统的批量打包方式，他们最大的缺点就是打包时间长。
+在前期渠道很少时这种方法还可以接受，但只要渠道稍微增多该方法就不再适用了，原因是每打一个包都要执行一遍构建过程，效率太低。（电脑比较烂，以前一般打包都要花费个30-40分钟。）
+
+打包界的曙光
+前几天看到美团的技术分享文档:《美团Android自动化之旅—生成渠道包》，其中第三种方式提到：
+
+如果能直接修改apk的渠道号，而不需要再重新签名能节省不少打包的时间。幸运的是我们找到了这种方法。直接解压apk，解压后的根目录会有一个META-INF目录，如下图所示：
+META-INF目录
+如果在META-INF目录内添加空文件，可以不用重新签名应用。因此，通过为不同渠道的应用添加不同的空文件，可以唯一标识一个渠道。
+采用这种方式，每打一个渠道包只需复制一个apk，在META-INF中添加一个使用渠道号命名的空文件即可。
+这种打包方式速度非常快，900多个渠道不到一分钟就能打完。
+
+OK，到这里，思路就有了。
+
+在META-INF中放置一个类似 channel_xxx 的空文件来标识市场。
+在Java代码中解析这个文件名获取市场xxx即可。
+由于文档中的代码实现较少，这里我来讲述一下我的实现。
+
+我的实现
+基于以上总结的美团思路，实现了一套自己的代码，方便引入到工程后实现这种打包方式。
+
+代码在Github：GavinCT/AndroidMultiChannelBuildTool
+
+Python工具实现（基于Python 3）
+首先创建一个空文件，等待写入META-INF目录作为channel_xxx文件
+
+# 空文件 便于写入此空文件到apk包中作为channel文件
+src_empty_file = 'info/czt.txt'
+# 创建一个空文件（不存在则创建）
+f = open(src_empty_file, 'w')
+f.close()
+
+获取渠道列表。
+考虑到渠道的更新不应该是程序员来做，因此在info文件夹下放置一个channel文件，便于不懂程序的人更新渠道。（每个渠道以换行结束）
+
+# 获取渠道列表
+channel_file = 'info/channel.txt'
+f = open(channel_file)
+lines = f.readlines()
+f.close()
+
+找到初始apk
+考虑到现实中为了防止安装包过大，我们通常分为arm和x86两个版本，所以python中支持当前目录下放多个apk来进行打包。
+当然有人会说共用了一个channel文件，多个apk会生成相同市场的对应包。
+你也可以修改一下python，使不同的apk去找不同的channel文件进行打包。
+这里由于我的业务场景这样更方便，我就不修改了。
+
+# 获取当前目录中所有的apk源包
+src_apks = []
+for file in os.listdir():
+    if os.path.isfile(file):
+        extension = os.path.splitext(file)[1][1:]
+        if extension in 'apk':
+            src_apks.append(file)
+遍历渠道号并写入apk。
+多个apk只是for循环问题，我们来看单个apk生成多市场包的代码
+
+
+# file name (with extension)
+src_apk_file_name = os.path.basename(src_apk)
+# 分割文件名与后缀
+temp_list = os.path.splitext(file)
+# name without extension
+src_apk_name = temp_list[0]
+# 后缀名，包含.   例如: ".apk "
+src_apk_extension = temp_list[1]
+ 
+# 创建生成目录,与文件名相关
+output_dir = 'output_' + src_apk_name + '/'
+# 目录不存在则创建
+if not os.path.exists(output_dir):
+os.mkdir(output_dir)
+ 
+# 遍历渠道号并创建对应渠道号的apk文件
+for line in lines:
+    # 获取当前渠道号，因为从渠道文件中获得带有\n,所有strip一下
+    target_channel = line.strip()
+    # 拼接对应渠道号的apk
+    target_apk = output_dir + src_apk_name + "-" + target_channel + src_apk_extension 
+    # 拷贝建立新apk
+    shutil.copy(src_apk,  target_apk)
+    # zip获取新建立的apk文件
+    zipped = zipfile.ZipFile(target_apk, 'a', zipfile.ZIP_DEFLATED)
+    # 初始化渠道信息
+    empty_channel_file = "META-INF/cztchannel_{channel}".format(channel = target_channel)
+    # 写入渠道信息
+    zipped.write(src_empty_file, empty_channel_file)
+    # 关闭zip流
+    zipped.close()
+以上Python是属于现学现写，有什么可以优化的地方还请告知。
+
+
+Java工具实现
+Python帮我们向apk包中写入了channel信息，Java端当然也需要对应更改才能使用。
+由于解析channel需要去apk也就是zip中去找文件，所以相对耗时一些。
+因此在ChannelUtil.java中，会将找到的channel和对应versionCode存储在静态变量和SharedPreference中，保证本次甚至本版本中channel只从zip中获取一次。
+
+在Java代码中读取空渠道文件名
+从apk中获取channel，美团留下的代码if (entryName.startsWith("mtchannel"))是有问题的，应该采用if (entryName.startsWith("META-INF/mtchannel")) 。
+我的代码如下：
+
+
+/**
+ * 从apk中获取版本信息
+ * @param context
+ * @param channelKey
+ * @return
+ */
+private static String getChannelFromApk(Context context, String channelKey) {
+    //从apk包中获取
+    ApplicationInfo appinfo = context.getApplicationInfo();
+    String sourceDir = appinfo.sourceDir;
+    //注意这里：默认放在meta-inf/里， 所以需要再拼接一下
+    String key = "META-INF/" + channelKey;
+    String ret = "";
+    ZipFile zipfile = null;
+    try {
+        zipfile = new ZipFile(sourceDir);
+        Enumeration<?> entries = zipfile.entries();
+        while (entries.hasMoreElements()) {
+            ZipEntry entry = ((ZipEntry) entries.nextElement());
+            String entryName = entry.getName();
+            if (entryName.startsWith(key)) {
+                ret = entryName;
+                break;
+            }
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        if (zipfile != null) {
+            try {
+                zipfile.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    String[] split = ret.split("_");
+    String channel = "";
+    if (split != null && split.length >= 2) {
+        channel = ret.substring(split[0].length() + 1);
+    }
+    return channel;
+}
+总结
+使用这种方式打包，打包工作不再需要非得是安卓程序员。需要打包时，只要下载安装Python环境，点击MultiChannelBuildTool.py执行即可。
+
+那Gradle是不是没用了呢？
+当然不是，Google老大为他做了这么多，怎么能说不用就不用呢？
+他的用处在于实现订制，比如打包出x86和arm的包，或者打出手机包和适应平板的hd包，然后借助上面的工具生成多个市场，即完成了多种适配包多个市场的任务。
+
+Gradle渠道订制的具体内容可以参见：《美团Android自动化之旅—适配渠道包》 。
+还是美团的文档，还是熟悉的味道。在此感谢美团的分享。
+
