@@ -1,0 +1,26 @@
+invalidate()方法 ：
+ 
+   说明：请求重绘View树，即draw()过程，假如视图发生大小没有变化就不会调用layout()过程，并且只绘制那些“需要重绘的”
+视图，即谁(View的话，只绘制该View ；ViewGroup，则绘制整个ViewGroup)请求invalidate()方法，就绘制该视图。
+ 
+     一般引起invalidate()操作的函数如下：
+            1、直接调用invalidate()方法，请求重新draw()，但只会绘制调用者本身。
+            2、setSelection()方法 ：请求重新draw()，但只会绘制调用者本身。
+            3、setVisibility()方法 ： 当View可视状态在INVISIBLE转换VISIBLE时，会间接调用invalidate()方法，
+                     继而绘制该View。
+            4 、setEnabled()方法 ： 请求重新draw()，但不会重新绘制任何视图包括该调用者本身。
+ 
+    requestLayout()方法 ：会导致调用measure()过程 和 layout()过程 。
+ 
+           说明：只是对View树重新布局layout过程包括measure()和layout()过程，不会调用draw()过程，但不会重新绘制
+任何视图包括该调用者本身。
+ 
+    一般引起invalidate()操作的函数如下：
+         1、setVisibility()方法：
+             当View的可视状态在INVISIBLE/ VISIBLE 转换为GONE状态时，会间接调用requestLayout() 和invalidate方法。
+    同时，由于整个个View树大小发生了变化，会请求measure()过程以及draw()过程，同样地，只绘制需要“重新绘制”的视图。
+ 
+    requestFocus()函数说明：
+ 
+          说明：请求View树的draw()过程，但只绘制“需要重绘”的视图。
+ 
